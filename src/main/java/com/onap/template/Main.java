@@ -1,13 +1,16 @@
 package com.onap.template;
 
-import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.onap.template.ui.Launcher;
+import com.onap.template.controller.LauncherController;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -32,12 +35,18 @@ public class Main extends Application {
     try {
       mainStage = primaryStage;
 
-      // build Menu Bar
+      // 构建初始化界面
       outerRoot = new BorderPane();
-      Launcher launcher = new Launcher();
-      outerRoot.setCenter(launcher.getPane());
+     // AnchorPane ap_launcher = new AnchorPane((Node) FXMLLoader.load(Main.class.getResource("Launcher.fxml")));
+      
+      FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Launcher.fxml"));
+      Parent root = fxmlLoader.load();    
+      LauncherController controller = (LauncherController)fxmlLoader.getController();   //获取Controller的实例对象
+      controller.setMainStage(mainStage);
+      
+      outerRoot.setCenter(root);
 
-      // show UI
+      // 显示界面
       Scene scene = new Scene(outerRoot, 600, 200);
       scene.getStylesheets().add(appCssUrl);
       primaryStage.setScene(scene);
