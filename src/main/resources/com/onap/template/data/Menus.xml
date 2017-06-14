@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Menus mdCount="3" mdName="sample">
+  <MetaMenu name="install" bigheader="Install" desc="Install Guides" />
+  <MetaMenu name="userGuides" bigheader="User Guides" desc="User Guides" />
+  <MetaMenu name="deployGuides" bigheader="Deploy Guides" desc="Deploy Guides" />
+</Menus>

@@ -3,8 +3,18 @@ package com.onap.template.jekyll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import com.onap.template.model.JekyllMenu;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -20,21 +30,26 @@ public class Launcher {
    * Jekyll项目路径.
    */
   private String projectPath;
-  
+
   /**
    * Jekyll项目配置文件.
    */
   private File configFile;
-  
+
   /**
    * Jekyll项目数据目录.
    */
   private File dataDir;
-  
+
   /**
    * Jekyll项目md文件目录.
    */
   private File mdDir;
+
+  /**
+   * Jekyll项目菜单列表.
+   */
+  private List<JekyllMenu> listMenu = null;
 
   /**
    * 构造函数.
@@ -52,9 +67,9 @@ public class Launcher {
    * @return 包含配置文件返回true,否则返回false
    */
   public boolean hasConfigFile() {
-    String configFilePath = projectPath + File.separator + Constants.JEKYLL_CONFIG_FILE;
-    configFile = new File(configFilePath);
-    return configFile.exists()?true:false;
+    String path = projectPath + File.separator + Constants.JEKYLL_CONFIG_FILE;
+    configFile = new File(path);
+    return configFile.exists() ? true : false;
   }
 
   /**
@@ -63,9 +78,9 @@ public class Launcher {
    * @return 包含配置文件返回true,否则返回false
    */
   public boolean hasDataDir() {
-    String configFilePath = projectPath + File.separator + Constants.JEKYLL_DATA_DIR;
-    dataDir = new File(configFilePath);
-    return dataDir.exists()?true:false;
+    String path = projectPath + File.separator + Constants.JEKYLL_DATA_DIR;
+    dataDir = new File(path);
+    return dataDir.exists() ? true : false;
   }
 
   /**
@@ -74,8 +89,75 @@ public class Launcher {
    * @return 包含配置文件返回true,否则返回false
    */
   public boolean hasMdDir() {
-    String configFilePath = projectPath + File.separator + Constants.JEKYLL_MD_DIR;
-    mdDir = new File(configFilePath);
-    return mdDir.exists()?true:false;
+    String path = projectPath + File.separator + Constants.JEKYLL_MD_DIR;
+    mdDir = new File(path);
+    return mdDir.exists() ? true : false;
+  }
+
+  /**
+   * 加载项目菜单数据.
+   * 
+   * @return 项目菜单列表
+   */
+  public List<JekyllMenu> loadProject() {
+    readConfig();
+    
+    readDataAndIndex();
+    
+    return listMenu;
+  }
+
+  /**
+   * 读取配置文件中tocs参数.
+   * 
+   */
+  private void readConfig(){
+    try {
+      listMenu = new ArrayList<JekyllMenu>();
+      
+      //读取_config.yml文件
+      List<String> lines = FileUtils.readLines(configFile, Charset.forName(Constants.ENCODING));
+      
+      //查找菜单配置tocs所在行
+      int index = lines.indexOf(Constants.JEKYLL_CONFIG_TOCS);
+      for (int i = index + 1; i < lines.size(); i++) {
+        //只查以"  - "开头的数据
+        if (!StringUtils.startsWith(lines.get(i), Constants.JEKYLL_CONFIG_TOCS_PRE)) {
+          break;
+        }
+        JekyllMenu menu = new JekyllMenu();
+        menu.setName(lines.get(i).replace(Constants.JEKYLL_CONFIG_TOCS_PRE, ""));
+        listMenu.add(menu);
+      }
+    } catch (IOException e) {
+      logger.error(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * 读取菜单数据文件和主页文件
+   */
+  private void readDataAndIndex(){
+    for (int i = 0; i < listMenu.size(); i++) {
+      JekyllMenu menu = listMenu.get(i);
+      //在_data目录下找到对应菜单的数据文件
+      File leftTree = FileUtils.getFile(dataDir, menu.getName()+Constants.JEKYLL_DATA_EXTENSION);
+      if(leftTree.exists()){
+        menu.setLeftTreeFile(leftTree);
+        menu.setLeftTreePath(leftTree.getAbsolutePath());
+      }
+      
+      //在docs目录下找到对应菜单的主页文件
+      String indexPath = menu.getName();
+      if(menu.getName().indexOf("-")!=-1){
+        indexPath = menu.getName().split("-")[1];
+      }
+      File index = FileUtils.getFile(mdDir, indexPath+File.separator+Constants.JEKYLL_MD_INDEX);
+      if(index.exists()){
+        menu.setIndexFile(index);
+        menu.setIndexPath(index.getAbsolutePath());
+      }
+    }
   }
 }

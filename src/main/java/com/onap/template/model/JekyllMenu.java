@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 
  * @author ywx474563 2017年6月13日
  */
-public class Menu implements Serializable {
+public class JekyllMenu implements Serializable {
 
   private static final long serialVersionUID = 1L;
   
@@ -30,7 +30,7 @@ public class Menu implements Serializable {
   /**
    * 菜单主页文件
    */
-  private File index;
+  private File indexFile;
   
   /**
    * 菜单左侧导航文件路径
@@ -40,7 +40,7 @@ public class Menu implements Serializable {
   /**
    * 菜单左侧导航文件
    */
-  private File leftTree;
+  private File leftTreeFile;
 
   public String getName() {
     return name;
@@ -66,12 +66,12 @@ public class Menu implements Serializable {
     this.indexPath = indexPath;
   }
 
-  public File getIndex() {
-    return index;
+  public File getIndexFile() {
+    return indexFile;
   }
 
-  public void setIndex(File index) {
-    this.index = index;
+  public void setIndexFile(File indexFile) {
+    this.indexFile = indexFile;
   }
 
   public String getLeftTreePath() {
@@ -82,18 +82,18 @@ public class Menu implements Serializable {
     this.leftTreePath = leftTreePath;
   }
 
-  public File getLeftTree() {
-    return leftTree;
+  public File getLeftTreeFile() {
+    return leftTreeFile;
   }
 
-  public void setLeftTree(File leftTree) {
-    this.leftTree = leftTree;
+  public void setLeftTreeFile(File leftTreeFile) {
+    this.leftTreeFile = leftTreeFile;
   }
 
   @Override
   public String toString() {
     return "Menu [name=" + name + ", desc=" + desc + ", indexPath=" 
-        + indexPath + ", index=" + index + ", leftTreePath="
-        + leftTreePath + ", leftTree=" + leftTree + "]";
+        + indexPath + ", indexFile=" + indexFile + ", leftTreePath="
+        + leftTreePath + ", leftTreeFile=" + leftTreeFile + "]";
   }
 }

@@ -2,17 +2,19 @@ package com.onap.template.controller;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.onap.template.Main;
 import com.onap.template.jekyll.Launcher;
+import com.onap.template.model.JekyllMenu;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -29,7 +31,7 @@ import javafx.stage.Stage;
 public class LauncherController extends BaseController {
 
   private static final Logger logger = LoggerFactory.getLogger(LauncherController.class);
-  
+
   /**
    * 加载Jekyll项目业务处理
    */
@@ -97,40 +99,44 @@ public class LauncherController extends BaseController {
       cbPath.setValue(choosedPath);
     }
   }
-  
+
   /**
    * 加载Jekyll项目
    */
   private void loadProject() {
     String choosedPath = cbPath.getValue();
-    
+
     Alert tip = new Alert(Alert.AlertType.INFORMATION);
-    tip.setTitle("提示"); 
-    
-    if(StringUtils.isEmpty(choosedPath)){
+    tip.setTitle("提示");
+    tip.initOwner(mainStage);
+
+    if (StringUtils.isEmpty(choosedPath)) {
       tip.setContentText("请选择项目路径");
       tip.showAndWait();
       return;
     }
-    
+
     launcher = new Launcher(choosedPath);
-    
-    if(!launcher.hasConfigFile()){
+
+    if (!launcher.hasConfigFile()) {
       tip.setContentText("选中目录不包含_config.yml文件，请选择正确的Jekyll项目目录");
       tip.showAndWait();
       return;
     }
-    
-    if(!launcher.hasDataDir()){
+
+    if (!launcher.hasDataDir()) {
       tip.setContentText("选中目录不包含_data文件夹，请选择正确的Jekyll项目目录");
       tip.showAndWait();
       return;
     }
-    
-    if(!launcher.hasMdDir()){
+
+    if (!launcher.hasMdDir()) {
       tip.setContentText("选中目录不包含docs文件夹，请选择正确的Jekyll项目目录");
       tip.showAndWait();
       return;
     }
+
+    List<JekyllMenu> listMenu = launcher.loadProject();
+    Main.getInstance().buildMainUI(new Stage(), listMenu);
   }
 }
