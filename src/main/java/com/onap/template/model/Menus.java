@@ -27,7 +27,7 @@ public class Menus  implements Serializable{
   /**
    * Jekyll菜单模板
    */
-  private List<MetaMenu> metaMenus= new ArrayList<MetaMenu>(); ;
+  private List<MetaMenu> metaMenus= new ArrayList<MetaMenu>(); 
   
   public void add(MetaMenu metaMenu){
     this.metaMenus.add(metaMenu);

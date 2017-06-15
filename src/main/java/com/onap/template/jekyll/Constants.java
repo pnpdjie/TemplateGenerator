@@ -34,6 +34,11 @@ public class Constants {
   public static final String JEKYLL_DATA_DIR = "_data";
 
   /**
+   * Jekyll项目yml文件参数和值之间必须有一个空格
+   */
+  public static final String JEKYLL_YML_SEPARATOR = " ";
+
+  /**
    * Jekyll项目数据文件类型.
    */
   public static final String JEKYLL_DATA_EXTENSION = ".yml";
@@ -44,6 +49,21 @@ public class Constants {
   public static final String JEKYLL_DATA_ABSTRACT = "abstract:";
 
   /**
+   * Jekyll项目数据文件中toc属性名.
+   */
+  public static final String JEKYLL_DATA_TOC = "toc:";
+
+  /**
+   * Jekyll项目数据文件中bigheader属性名.
+   */
+  public static final String JEKYLL_DATA_BIGHEADER = "bigheader:";
+
+  /**
+   * Jekyll项目数据文件中每项子页前缀.
+   */
+  public static final String JEKYLL_DATA_TOCS_PRE = "- ";
+
+  /**
    * Jekyll项目md文件目录名称.
    */
   public static final String JEKYLL_MD_DIR = "docs";
@@ -52,5 +72,10 @@ public class Constants {
    * Jekyll项目菜单主页md文件名称.
    */
   public static final String JEKYLL_MD_INDEX = "index.md";
+
+  /**
+   * Jekyll项目菜单主页md文件名称.
+   */
+  public static final String JEKYLL_MD_EXTENSION = ".md";
 
 }

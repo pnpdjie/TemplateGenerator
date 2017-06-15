@@ -84,11 +84,11 @@ public class LauncherController extends BaseController {
           return o1.compareTo(o2);
         }
       });
-      
+
       for (Project project : projectList) {
         cbPath.getItems().add(project.getPath());
       }
-      if(cbPath.getItems().size()>0){
+      if (cbPath.getItems().size() > 0) {
         cbPath.getSelectionModel().selectFirst();
       }
 
@@ -140,11 +140,10 @@ public class LauncherController extends BaseController {
 
     launcher = new Launcher(choosedPath);
 
-    try{
-    List<JekyllMenu> listMenu = launcher.loadProject();
-    Main.getInstance().buildMainUI(new Stage(), listMenu);
-    }
-    catch (InvalidPathException e) {
+    try {
+      List<JekyllMenu> listMenu = launcher.loadProject();
+      Main.getInstance().buildMainUI(new Stage(), listMenu);
+    } catch (InvalidPathException e) {
       logger.error(e.getLocalizedMessage());
       tip.setContentText(e.getMessage());
       tip.showAndWait();

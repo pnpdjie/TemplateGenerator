@@ -2,6 +2,7 @@ package com.onap.template;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.InvalidPathException;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.onap.template.controller.LauncherController;
 import com.onap.template.jekyll.Launcher;
+import com.onap.template.jekyll.MenuGenerator;
 import com.onap.template.jekyll.MenuLoader;
 import com.onap.template.model.JekyllMenu;
 import com.onap.template.model.Menus;
@@ -166,7 +168,7 @@ public class Main extends Application {
     // 从Menus.xml文件加载菜单
     Menus loadedMenus = MenuLoader.loadMenus(Main.class.getResource("data/Menus.xml").getPath());
     for (MetaMenu m : loadedMenus.getMetaMenus()) {
-      menus.getItems().add(buildMenuItem(m));
+      menus.getItems().add(buildMenuItem(m, loadedMenus));
     }
 
     MenuItem type = new MenuItem("导航类型");
@@ -189,7 +191,7 @@ public class Main extends Application {
    *          导航名称
    * @return 菜单
    */
-  private MenuItem buildMenuItem(MetaMenu metaMenu) {
+  private MenuItem buildMenuItem(MetaMenu metaMenu, Menus loadedMenus) {
     MenuItem item = new MenuItem(metaMenu.getDesc());
     for (JekyllMenu jekyllMenu : Launcher.listMenu) {
       if (StringUtils.equalsIgnoreCase(jekyllMenu.getName(), metaMenu.getName())) {
@@ -197,7 +199,7 @@ public class Main extends Application {
         break;
       }
     }
-    item.setOnAction(event -> createJekyllMenu(metaMenu.getDesc()));
+    item.setOnAction(event -> createJekyllMenu(metaMenu, loadedMenus));
     return item;
   }
 
@@ -207,8 +209,16 @@ public class Main extends Application {
    * @param name
    *          项目路径
    */
-  private void createJekyllMenu(String name) {
+  private void createJekyllMenu(MetaMenu metaMenu, Menus loadedMenus) {
+    //创建Jekyll菜单
+    MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus,
+        Main.class.getResource("data/MdTemplate.md").getPath());
+    menuGenerator.execute();
 
+    //重新初始化界面数据
+    Launcher launcher = new Launcher(Launcher.projectPath);
+    List<JekyllMenu> listMenu = launcher.loadProject();
+    buildMainUI(new Stage(), listMenu);
   }
 
   /**
