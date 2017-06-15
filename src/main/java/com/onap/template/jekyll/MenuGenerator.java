@@ -119,21 +119,21 @@ public class MenuGenerator {
   private void createDataFile() {
     try {
       // _data目录下新创建的数据文件路径
-      dataFilePath = Launcher.dataDir + File.separator + metaMenu.getName() + Constants.JEKYLL_DATA_EXTENSION;
+      dataFilePath = Launcher.dataDir + Constants.JEKYLL_DATA_PATH_SEPARATOR + metaMenu.getName() + Constants.JEKYLL_DATA_EXTENSION;
 
       // 组成需写入文件的数据
       List<String> lines = new ArrayList<String>();
-      lines.add(Constants.JEKYLL_DATA_BIGHEADER + Constants.JEKYLL_YML_SEPARATOR + metaMenu.getName());
-      lines.add(Constants.JEKYLL_DATA_ABSTRACT + Constants.JEKYLL_YML_SEPARATOR + metaMenu.getDesc());
+      lines.add(Constants.JEKYLL_DATA_BIGHEADER + Constants.JEKYLL_YML_SEPARATOR +"\""+ metaMenu.getName()+"\"");
+      lines.add(Constants.JEKYLL_DATA_ABSTRACT + Constants.JEKYLL_YML_SEPARATOR +"\""+ metaMenu.getDesc()+"\"");
       lines.add(Constants.JEKYLL_DATA_TOC + Constants.JEKYLL_YML_SEPARATOR);
-      String menuDir = Constants.JEKYLL_MD_DIR + File.separator + metaMenu.getName() + File.separator;
+      String menuDir = Constants.JEKYLL_MD_DIR + Constants.JEKYLL_DATA_PATH_SEPARATOR + metaMenu.getName() + Constants.JEKYLL_DATA_PATH_SEPARATOR;
 
       // 写入主页路径
       lines.add(Constants.JEKYLL_DATA_TOCS_PRE + menuDir + Constants.JEKYLL_MD_INDEX);
 
       // 写入示例文件路径
       for (int i = 0; i < loadedMenus.getMdCount(); i++) {
-        lines.add(Constants.JEKYLL_DATA_TOCS_PRE + menuDir + loadedMenus.getMdName() + Constants.JEKYLL_MD_EXTENSION);
+        lines.add(Constants.JEKYLL_DATA_TOCS_PRE + menuDir + loadedMenus.getMdName() +(i+1)+ Constants.JEKYLL_MD_EXTENSION);
       }
 
       // 将数据写入文件
@@ -150,24 +150,25 @@ public class MenuGenerator {
     try {
       // md内容模板
       File mdTemplate = new File(mdTemplatePath);
+      String dataFileRelativePath = Constants.JEKYLL_DATA_DIR+ Constants.JEKYLL_DATA_PATH_SEPARATOR + metaMenu.getName() + Constants.JEKYLL_DATA_EXTENSION;
       String mdTemplateContent = FileUtils.readFileToString(mdTemplate, Constants.ENCODING)
-          .replaceAll("\\{leftTreePath\\}", dataFilePath.replace("\\", "\\\\"));
+          .replaceAll("\\{leftTreePath\\}", dataFileRelativePath.replace("\\", "\\\\"));
 
       // 替换模板中标题和菜单数据文件路径
       String indexContent = mdTemplateContent.replaceAll("\\{title\\}", metaMenu.getDesc());
 
       // 写数据到index.md
-      String indexPath = Launcher.mdDir + File.separator + metaMenu.getName() + File.separator
+      String indexPath = Launcher.mdDir + Constants.JEKYLL_DATA_PATH_SEPARATOR + metaMenu.getName() + Constants.JEKYLL_DATA_PATH_SEPARATOR
           + Constants.JEKYLL_MD_INDEX;
       FileUtils.write(new File(indexPath), indexContent, Constants.ENCODING);
 
       // 写入示例文件路径
       for (int i = 0; i < loadedMenus.getMdCount(); i++) {
         // 替换模板中标题和菜单数据文件路径
-        String sampleContent = mdTemplateContent.replaceAll("\\{title\\}", loadedMenus.getMdName() + i);
+        String sampleContent = mdTemplateContent.replaceAll("\\{title\\}", loadedMenus.getMdName() + (i+1));
 
         // 写数据到sample1...3.md
-        String samplePath = Launcher.mdDir + File.separator + metaMenu.getName() + File.separator
+        String samplePath = Launcher.mdDir + Constants.JEKYLL_DATA_PATH_SEPARATOR + metaMenu.getName() + Constants.JEKYLL_DATA_PATH_SEPARATOR
             + loadedMenus.getMdName() + (i + 1) + Constants.JEKYLL_MD_EXTENSION;
         FileUtils.write(new File(samplePath), sampleContent, Constants.ENCODING);
       }

@@ -34,6 +34,11 @@ public class Constants {
   public static final String JEKYLL_DATA_DIR = "_data";
 
   /**
+   * Jekyll项目数据目录名称.
+   */
+  public static final String JEKYLL_DATA_PATH_SEPARATOR = "/";
+
+  /**
    * Jekyll项目yml文件参数和值之间必须有一个空格
    */
   public static final String JEKYLL_YML_SEPARATOR = " ";
