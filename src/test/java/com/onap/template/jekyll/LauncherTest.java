@@ -52,30 +52,27 @@ public class LauncherTest {
   @After
   public void tearDown() throws Exception {
   }
-
-  @Test
-  public void testHasConfigFile() {
-    boolean res = launcher.hasConfigFile();
-    assertEquals(res, true);
-  }
-
-  @Test
-  public void testHasDataDir() {
-    boolean res = launcher.hasDataDir();
-    assertEquals(res, true);
-  }
-
-  @Test
-  public void testHasMdDir() {
-    boolean res = launcher.hasMdDir();
-    assertEquals(res, true);
-  }
+//
+//  @Test
+//  public void testHasConfigFile() {
+//    boolean res = launcher.hasConfigFile();
+//    assertEquals(res, true);
+//  }
+//
+//  @Test
+//  public void testHasDataDir() {
+//    boolean res = launcher.hasDataDir();
+//    assertEquals(res, true);
+//  }
+//
+//  @Test
+//  public void testHasMdDir() {
+//    boolean res = launcher.hasMdDir();
+//    assertEquals(res, true);
+//  }
 
   @Test
   public void testLoadProject() { 
-    launcher.hasConfigFile();
-    launcher.hasDataDir();
-    launcher.hasMdDir();
     
     List<JekyllMenu> res = launcher.loadProject();
     assertEquals(res.size(), 3);

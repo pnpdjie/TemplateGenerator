@@ -2,6 +2,7 @@ package com.onap.template.controller;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.file.InvalidPathException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -139,25 +140,14 @@ public class LauncherController extends BaseController {
 
     launcher = new Launcher(choosedPath);
 
-    if (!launcher.hasConfigFile()) {
-      tip.setContentText("选中目录不包含_config.yml文件，请选择正确的Jekyll项目目录");
-      tip.showAndWait();
-      return;
-    }
-
-    if (!launcher.hasDataDir()) {
-      tip.setContentText("选中目录不包含_data文件夹，请选择正确的Jekyll项目目录");
-      tip.showAndWait();
-      return;
-    }
-
-    if (!launcher.hasMdDir()) {
-      tip.setContentText("选中目录不包含docs文件夹，请选择正确的Jekyll项目目录");
-      tip.showAndWait();
-      return;
-    }
-
+    try{
     List<JekyllMenu> listMenu = launcher.loadProject();
     Main.getInstance().buildMainUI(new Stage(), listMenu);
+    }
+    catch (InvalidPathException e) {
+      logger.error(e.getLocalizedMessage());
+      tip.setContentText(e.getMessage());
+      tip.showAndWait();
+    }
   }
 }

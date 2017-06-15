@@ -8,6 +8,7 @@ import com.onap.template.model.JekyllMenu;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.InvalidPathException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,24 +28,24 @@ public class Launcher {
   private static final Logger logger = LoggerFactory.getLogger(Launcher.class);
 
   /**
-   * Jekyll项目路径.
+   * Jekyll项目根目录.
    */
-  private String projectPath;
+  public static String projectPath;
 
   /**
-   * Jekyll项目配置文件.
+   * Jekyll项目配置文件_confit.yml.
    */
-  private File configFile;
+  public static File configFile;
 
   /**
-   * Jekyll项目数据目录.
+   * Jekyll项目数据目录_data.
    */
-  private File dataDir;
+  public static File dataDir;
 
   /**
-   * Jekyll项目md文件目录.
+   * Jekyll项目md文件目录docs.
    */
-  private File mdDir;
+  public static File mdDir;
 
   /**
    * Jekyll项目菜单列表.
@@ -66,10 +67,12 @@ public class Launcher {
    * 
    * @return 包含配置文件返回true,否则返回false
    */
-  public boolean hasConfigFile() {
+  private void hasConfigFile() {
     String path = projectPath + File.separator + Constants.JEKYLL_CONFIG_FILE;
     configFile = new File(path);
-    return configFile.exists() ? true : false;
+    if(!configFile.exists()){
+      throw new InvalidPathException("","选中目录不包含_config.yml文件，请选择正确的Jekyll项目目录");
+    }
   }
 
   /**
@@ -77,10 +80,12 @@ public class Launcher {
    * 
    * @return 包含配置文件返回true,否则返回false
    */
-  public boolean hasDataDir() {
+  private void hasDataDir() {
     String path = projectPath + File.separator + Constants.JEKYLL_DATA_DIR;
     dataDir = new File(path);
-    return dataDir.exists() ? true : false;
+    if(!dataDir.exists()){
+      throw new InvalidPathException("", "选中目录不包含_data文件夹，请选择正确的Jekyll项目目录");
+    }
   }
 
   /**
@@ -88,10 +93,12 @@ public class Launcher {
    * 
    * @return 包含配置文件返回true,否则返回false
    */
-  public boolean hasMdDir() {
+  private void hasMdDir() {
     String path = projectPath + File.separator + Constants.JEKYLL_MD_DIR;
     mdDir = new File(path);
-    return mdDir.exists() ? true : false;
+    if(!mdDir.exists()){
+      throw new InvalidPathException("", "选中目录不包含docs文件夹，请选择正确的Jekyll项目目录");
+    }
   }
 
   /**
@@ -100,11 +107,19 @@ public class Launcher {
    * @return 项目菜单列表
    */
   public List<JekyllMenu> loadProject() {
+    validate();
+    
     readConfig();
     
     readDataAndIndex();
     
     return listMenu;
+  }
+  
+  private void validate(){
+    hasConfigFile();
+    hasDataDir();
+    hasMdDir();
   }
 
   /**
