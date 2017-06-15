@@ -21,29 +21,27 @@ public class MenuLoader {
 
   private static final Logger logger = LoggerFactory.getLogger(MenuLoader.class);
 
-  public MenuLoader() {
-
-  }
-
   /**
    * 读取xml文件生成菜单数据
-   * @param xml
+   * @param xmlPath xml文件路径
    * @return
    */
-  public Menus loadFromXml(File xml) {
+  public static Menus loadFromXml(String xmlPath) {
+    
     Digester digester = new Digester();
 
-    digester.addObjectCreate("menus", "com.onap.template.model.Menus");
-    digester.addSetProperties("metamenu");
-    digester.addObjectCreate("menus/metamenu", "com.onap.template.model.MetaMenu");
-    digester.addSetProperties("menus/metamenu");
-    digester.addSetNext("menus/metamenu", "add");
+    digester.addObjectCreate("Menus", "com.onap.template.model.Menus");
+    digester.addSetProperties("Menus");
+    digester.addObjectCreate("Menus/MetaMenu", "com.onap.template.model.MetaMenu");
+    digester.addSetProperties("Menus/MetaMenu");
+    digester.addSetNext("Menus/MetaMenu", "add");
 
     Menus menus = null;
     try {
-      menus = (Menus) digester.parse(xml);
+      menus = (Menus) digester.parse(new File(xmlPath));
     } catch (SAXException e) {
       logger.error("转换xml文件出错");
+      e.printStackTrace(); 
     } catch (IOException e) {
       logger.error("读取xml文件出错");
     }

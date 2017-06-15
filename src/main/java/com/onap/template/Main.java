@@ -1,5 +1,6 @@
 package com.onap.template;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -7,6 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.onap.template.controller.LauncherController;
+import com.onap.template.jekyll.MenuLoader;
+import com.onap.template.model.Menus;
+import com.onap.template.model.MetaMenu;
 import com.onap.template.controller.CreatedMenuController;
 import com.onap.template.ui.CreatedMenus;
 
@@ -79,7 +83,7 @@ public class Main extends Application {
       // 构建初始化界面
       outerRoot = new BorderPane();
 
-      FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Launcher.fxml"));
+      FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Launcher1.fxml"));
       root.setCenter(fxmlLoader.load());
       LauncherController controller = (LauncherController) fxmlLoader.getController(); // 获取Controller的实例对象
       controller.setMainStage(mainStage);
@@ -148,17 +152,27 @@ public class Main extends Application {
   private MenuBar buildMenuBar() {
     MenuBar menuBar = new MenuBar();
     menuBar.setUseSystemMenuBar(true);
+    
+    //初始化创建菜单
     Menu createMenu = new Menu("创建");
     Menu menus = new Menu("导航");
-    menus.getItems().addAll(buildMenuItem("install"), buildMenuItem("install"), buildMenuItem("install"));
+    
+    //从Menus.xml文件加载菜单
+    Menus loadedMenus = MenuLoader.loadFromXml(Main.class.getResource("data/Menus.xml").getPath());
+    for (MetaMenu m : loadedMenus.getMetaMenus()) {
+      menus.getItems().add(buildMenuItem(m.getName()));
+    }
+    
     MenuItem type = new MenuItem("导航类型");
     createMenu.getItems().addAll(menus, type);
-    menuBar.getMenus().add(createMenu);
-
+    
+    //初始化切换菜单
     Menu switchMenu = new Menu("切换");
     ToggleGroup tg = new ToggleGroup();
     switchMenu.getItems().addAll(buildProjectItem("c:\\", tg), buildProjectItem("d:\\", tg),
         buildProjectItem("e:\\", tg));
+    
+    menuBar.getMenus().addAll(createMenu,switchMenu);
     return menuBar;
   }
 
