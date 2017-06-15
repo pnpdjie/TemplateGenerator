@@ -41,6 +41,11 @@ public class JekyllMenu implements Serializable {
    * 菜单左侧导航文件
    */
   private File leftTreeFile;
+  
+  /**
+   * 是否已创建
+   */
+  private boolean created;
 
   public String getName() {
     return name;
@@ -88,6 +93,14 @@ public class JekyllMenu implements Serializable {
 
   public void setLeftTreeFile(File leftTreeFile) {
     this.leftTreeFile = leftTreeFile;
+  }
+
+  public boolean isCreated() {
+    return created;
+  }
+
+  public void setCreated(boolean created) {
+    this.created = created;
   }
 
   @Override

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.onap.template.model.JekyllMenu;
+import com.onap.template.model.MetaMenu;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class Launcher {
   /**
    * Jekyll项目菜单列表.
    */
-  private List<JekyllMenu> listMenu = null;
+  public static List<JekyllMenu> listMenu = null;
 
   /**
    * 构造函数.

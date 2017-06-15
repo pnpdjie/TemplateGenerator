@@ -22,13 +22,11 @@ public class Menus  implements Serializable{
   /**
    * 创建markdown示例文件名称
    */
-  
   private String mdName;
   
   /**
    * Jekyll菜单模板
    */
-  
   private List<MetaMenu> metaMenus= new ArrayList<MetaMenu>(); ;
   
   public void add(MetaMenu metaMenu){
