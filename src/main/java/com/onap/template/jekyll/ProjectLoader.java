@@ -18,34 +18,34 @@ import com.onap.template.model.Projects;
  * 
  * @author ywx474563 2017年6月14日
  */
-public class MenuLoader {
+public class ProjectLoader {
 
-  private static final Logger logger = LoggerFactory.getLogger(MenuLoader.class);
+  private static final Logger logger = LoggerFactory.getLogger(ProjectLoader.class);
 
   /**
-   * 读取xml文件生成菜单数据
+   * 读取xml文件生成Jekyll项目列表
    * @param xmlPath xml文件路径
    * @return
    */
-  public static Menus loadMenus(String xmlPath) {
+  public static Projects loadProjects(String xmlPath) {
     
     Digester digester = new Digester();
 
-    digester.addObjectCreate("Menus", "com.onap.template.model.Menus");
-    digester.addSetProperties("Menus");
-    digester.addObjectCreate("Menus/MetaMenu", "com.onap.template.model.MetaMenu");
-    digester.addSetProperties("Menus/MetaMenu");
-    digester.addSetNext("Menus/MetaMenu", "add");
+    digester.addObjectCreate("projects", "com.onap.template.model.Projects");
+    digester.addSetProperties("projects");
+    digester.addObjectCreate("projects/project", "com.onap.template.model.Project");
+    digester.addSetProperties("projects/project");
+    digester.addSetNext("projects/project", "addProject");
 
-    Menus menus = null;
+    Projects projects = null;
     try {
-      menus = (Menus) digester.parse(new File(xmlPath));
+      projects = (Projects) digester.parse(new File(xmlPath));
     } catch (SAXException e) {
       logger.error("转换xml文件出错");
       e.printStackTrace(); 
     } catch (IOException e) {
       logger.error("读取xml文件出错");
     }
-    return menus;
+    return projects;
   }
 }

@@ -39,6 +39,11 @@ public class Constants {
   public static final String JEKYLL_DATA_EXTENSION = ".yml";
 
   /**
+   * Jekyll项目数据文件中abstract属性名.
+   */
+  public static final String JEKYLL_DATA_ABSTRACT = "abstract:";
+
+  /**
    * Jekyll项目md文件目录名称.
    */
   public static final String JEKYLL_MD_DIR = "docs";

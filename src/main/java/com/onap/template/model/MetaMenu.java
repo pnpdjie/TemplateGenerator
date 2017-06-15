@@ -13,10 +13,14 @@ public class MetaMenu implements Serializable {
 
   private static final long serialVersionUID = 1L;
   
+  /**
+   * _config.yml中tocs中的toc名称，_data目录下对应yml文件的bigheader.
+   */
   private String name;
   
-  private String bigheader;
-  
+  /**
+   * _data目录下对应yml文件的abstract.
+   */
   private String desc;
 
   public String getName() {
@@ -25,14 +29,6 @@ public class MetaMenu implements Serializable {
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public String getBigheader() {
-    return bigheader;
-  }
-
-  public void setBigheader(String bigheader) {
-    this.bigheader = bigheader;
   }
 
   public String getDesc() {
@@ -45,7 +41,7 @@ public class MetaMenu implements Serializable {
 
   @Override
   public String toString() {
-    return "MetaMenu [name=" + name + ", bigheader=" + bigheader + ", desc=" + desc + "]";
+    return "MetaMenu [name=" + name + ", desc=" + desc + "]";
   }
 
 }

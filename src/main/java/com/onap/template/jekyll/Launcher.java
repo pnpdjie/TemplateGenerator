@@ -146,13 +146,24 @@ public class Launcher {
       if(leftTree.exists()){
         menu.setLeftTreeFile(leftTree);
         menu.setLeftTreePath(leftTree.getAbsolutePath());
+        
+        try {
+        //读取_data目录下找到对应菜单的数据文件
+          List<String> lines = FileUtils.readLines(leftTree, Charset.forName(Constants.ENCODING));
+          for (int j =0; j < lines.size(); j++) {
+            if (StringUtils.startsWith(lines.get(j), Constants.JEKYLL_DATA_ABSTRACT)) {
+              String[] abstracts = lines.get(j).split(":");
+              menu.setDesc(StringUtils.remove(abstracts[1], '"'));
+              break;
+            }
+          }
+        } catch (IOException e) {
+          logger.error(e.getMessage());
+        }
       }
       
       //在docs目录下找到对应菜单的主页文件
       String indexPath = menu.getName();
-      if(menu.getName().indexOf("-")!=-1){
-        indexPath = menu.getName().split("-")[1];
-      }
       File index = FileUtils.getFile(mdDir, indexPath+File.separator+Constants.JEKYLL_MD_INDEX);
       if(index.exists()){
         menu.setIndexFile(index);

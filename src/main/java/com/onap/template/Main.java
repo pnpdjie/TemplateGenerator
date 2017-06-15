@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +54,7 @@ public class Main extends Application {
    */
   @Override
   public void start(Stage primaryStage) {
-    try {
+    try {      
       buildLauncherUI(primaryStage);
     } catch (Exception e) {
       logger.error(e.getMessage());
@@ -65,6 +66,8 @@ public class Main extends Application {
    * 主程序入口.
    */
   public static void main(String[] args) {
+
+    PropertyConfigurator.configure("config\\log4j.properties");
     launch(args);
   }
 
@@ -83,7 +86,7 @@ public class Main extends Application {
       // 构建初始化界面
       outerRoot = new BorderPane();
 
-      FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Launcher1.fxml"));
+      FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Launcher.fxml"));
       root.setCenter(fxmlLoader.load());
       LauncherController controller = (LauncherController) fxmlLoader.getController(); // 获取Controller的实例对象
       controller.setMainStage(mainStage);
@@ -100,7 +103,7 @@ public class Main extends Application {
       instance = this;
     } catch (IOException e) {
       logger.error(e.getMessage());
-      e.printStackTrace();
+      //e.printStackTrace();
     }
   }
 
@@ -158,9 +161,9 @@ public class Main extends Application {
     Menu menus = new Menu("导航");
     
     //从Menus.xml文件加载菜单
-    Menus loadedMenus = MenuLoader.loadFromXml(Main.class.getResource("data/Menus.xml").getPath());
+    Menus loadedMenus = MenuLoader.loadMenus(Main.class.getResource("data/Menus.xml").getPath());
     for (MetaMenu m : loadedMenus.getMetaMenus()) {
-      menus.getItems().add(buildMenuItem(m.getName()));
+      menus.getItems().add(buildMenuItem(m.getDesc()));
     }
     
     MenuItem type = new MenuItem("导航类型");

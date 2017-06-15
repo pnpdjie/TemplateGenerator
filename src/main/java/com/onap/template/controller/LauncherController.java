@@ -2,6 +2,8 @@ package com.onap.template.controller;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -11,7 +13,11 @@ import org.slf4j.LoggerFactory;
 
 import com.onap.template.Main;
 import com.onap.template.jekyll.Launcher;
+import com.onap.template.jekyll.MenuLoader;
+import com.onap.template.jekyll.ProjectLoader;
 import com.onap.template.model.JekyllMenu;
+import com.onap.template.model.Project;
+import com.onap.template.model.Projects;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -70,6 +76,21 @@ public class LauncherController extends BaseController {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     Platform.runLater(() -> {
+      Projects projects = ProjectLoader.loadProjects(System.getProperty("user.dir") + "\\config\\projects.xml");
+      List<Project> projectList = projects.getProjects();
+      Collections.sort(projectList, new Comparator<Project>() {
+        public int compare(Project o1, Project o2) {
+          return o1.compareTo(o2);
+        }
+      });
+      
+      for (Project project : projectList) {
+        cbPath.getItems().add(project.getPath());
+      }
+      if(cbPath.getItems().size()>0){
+        cbPath.getSelectionModel().selectFirst();
+      }
+
       btnSelectFile.setOnAction(event -> {
         showFileDialog();
       });

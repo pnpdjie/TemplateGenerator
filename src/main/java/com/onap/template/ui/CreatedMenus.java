@@ -36,7 +36,7 @@ public class CreatedMenus extends BorderPane {
         CreatedMenuController controller = (CreatedMenuController) fxmlLoader.getController(); // 获取Controller的实例对象
         controller.initData(menu);
         
-        Tab tab = new Tab(menu.getName());
+        Tab tab = new Tab(menu.getDesc());
         tab.setContent(new ScrollPane(root));
         tab.setClosable(false);
         contentTabs.getTabs().add(tab);
