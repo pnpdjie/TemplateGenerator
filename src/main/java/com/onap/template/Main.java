@@ -17,9 +17,10 @@ import com.onap.template.jekyll.MenuLoader;
 import com.onap.template.model.JekyllMenu;
 import com.onap.template.model.Menus;
 import com.onap.template.model.MetaMenu;
+import com.onap.template.controller.CreateMenuTypeController;
 import com.onap.template.controller.CreatedMenuController;
 import com.onap.template.ui.CreatedMenus;
-import com.onap.template.ui.ProgressPane;
+import com.onap.template.ui.ProgressDialog;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -29,11 +30,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.ToggleGroup;
@@ -58,6 +61,7 @@ public class Main extends Application {
   private Stage mainStage;
   private BorderPane outerRoot;
   private BorderPane root;
+  private TabPane contentTabs;
 
   private static Main instance;
 
@@ -118,7 +122,7 @@ public class Main extends Application {
       primaryStage.getIcons().add(new Image(this.getClass().getResource("images/favicon.png").toString()));
       primaryStage.show();
       instance = this;
-      
+
     } catch (IOException e) {
       logger.error(e.getMessage());
       // e.printStackTrace();
@@ -129,7 +133,8 @@ public class Main extends Application {
    * 构建主界面
    * 
    * @param primaryStage
-   * @param listMenu Jekyll菜单数据
+   * @param listMenu
+   *          Jekyll菜单数据
    */
   public void buildMainUI(Stage primaryStage, List<com.onap.template.model.JekyllMenu> listMenu) {
     mainStage.close();
@@ -148,7 +153,7 @@ public class Main extends Application {
     CreatedMenus menus = new CreatedMenus(listMenu);
 
     // 构建界面内容
-    TabPane contentTabs = new TabPane();
+    contentTabs = new TabPane();
     Tab tab = new Tab("已创建导航");
     tab.setContent(menus);
     tab.setClosable(false);
@@ -168,9 +173,17 @@ public class Main extends Application {
   }
 
   /**
+   * 重新读取菜单.
+   */
+  public void rebuildMenuBar() {
+    MenuBar menuBar = buildMenuBar();
+    outerRoot.setTop(menuBar);
+  }
+
+  /**
    * 重启主界面数据.
    */
-  private void restartMainUI(List<com.onap.template.model.JekyllMenu> listMenu){
+  private void restartMainUI(List<com.onap.template.model.JekyllMenu> listMenu) {
     // 构建初始化界面
     outerRoot = new BorderPane();
     // 设置界面顶部菜单
@@ -182,7 +195,7 @@ public class Main extends Application {
     CreatedMenus menus = new CreatedMenus(listMenu);
 
     // 构建界面内容
-    TabPane contentTabs = new TabPane();
+    contentTabs = new TabPane();
     Tab tab = new Tab("已创建导航");
     tab.setContent(menus);
     tab.setClosable(false);
@@ -191,15 +204,17 @@ public class Main extends Application {
     outerRoot.setCenter(root);
 
     // 显示界面
-    Scene scene = new Scene(outerRoot, 800, 600);
-    scene.getStylesheets().add(appCssUrl);
-    mainStage.setScene(scene);
+    // Scene scene = new Scene(outerRoot, 800, 600);
+    // scene.getStylesheets().add(appCssUrl);
+    // mainStage.setScene(scene);
+
+    mainStage.getScene().setRoot(outerRoot);
     mainStage.setTitle("模板生成工具");
     mainStage.getIcons().add(new Image(this.getClass().getResource("images/favicon.png").toString()));
     mainStage.show();
     instance = this;
   }
-  
+
   /**
    * 构建菜单栏
    * 
@@ -215,6 +230,15 @@ public class Main extends Application {
 
     // 从Menus.xml文件加载菜单
     Menus loadedMenus = MenuLoader.loadMenus(Main.class.getResource("data/Menus.xml").getPath());
+    if(loadedMenus == null){
+      Alert tip = new Alert(Alert.AlertType.INFORMATION);
+      tip.setTitle("提示");
+      tip.initOwner(null);
+      tip.setHeaderText(null);
+      tip.setContentText("菜单xml文件读取失败");
+      tip.showAndWait();
+      return null;
+    }
     for (MetaMenu m : loadedMenus.getMetaMenus()) {
       menus.getItems().add(buildMenuItem(m, loadedMenus));
     }
@@ -241,7 +265,7 @@ public class Main extends Application {
    * @return 菜单
    */
   private MenuItem buildMenuItem(MetaMenu metaMenu, Menus loadedMenus) {
-    MenuItem item = new MenuItem(metaMenu.getDesc());
+    MenuItem item = new MenuItem(metaMenu.getDesc()+"("+metaMenu.getName()+")");
     for (JekyllMenu jekyllMenu : Launcher.listMenu) {
       if (StringUtils.equalsIgnoreCase(jekyllMenu.getName(), metaMenu.getName())) {
         item.setDisable(true);
@@ -275,25 +299,25 @@ public class Main extends Application {
    *          项目路径
    */
   private void createJekyllMenu(MetaMenu metaMenu, Menus loadedMenus) {
-    //创建Jekyll菜单
+    // 创建Jekyll菜单
     MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus,
-      Main.class.getResource("data/MdTemplate.md").getPath()) {
-      
+        Main.class.getResource("data/MdTemplate.md").getPath()) {
+
       @Override
       public void afterSucceeded() {
-        //重新初始化界面数据
+        // 重新初始化界面数据
         Launcher launcher = new Launcher(Launcher.projectPath);
         List<JekyllMenu> listMenu = launcher.loadProject();
         restartMainUI(listMenu);
       }
-      
+
       @Override
       public void afterFailed() {
-        
+
       }
     };
-    
-    ProgressPane.getInstance(mainStage).show().exec(menuGenerator);
+
+    ProgressDialog.getInstance(mainStage).show().exec(menuGenerator);
   }
 
   /**
@@ -302,8 +326,17 @@ public class Main extends Application {
    * @param name
    *          项目路径
    */
-  private void createJekyllMenuType() {    
-      ProgressPane.getInstance(mainStage).show().exec(null);
+  private void createJekyllMenuType() {
+    try {
+      Tab tab = new Tab("创建导航类型");
+      Node node = FXMLLoader.load(Main.class.getResource("ui/CreateMenuType.fxml"));
+      tab.setContent(new ScrollPane(node));
+      contentTabs.getTabs().add(tab);
+      SingleSelectionModel<Tab> selectionModel = contentTabs.getSelectionModel();
+      selectionModel.select(tab); 
+    } catch (IOException e) {
+      logger.error(e.getMessage());
+    }
   }
 
   /**
@@ -315,7 +348,5 @@ public class Main extends Application {
   private void switchProject(String name) {
 
   }
-
-
 
 }

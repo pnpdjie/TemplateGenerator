@@ -16,7 +16,7 @@ import org.junit.Test;
 import com.onap.template.model.JekyllMenu;
 
 /**
- * 测试com.onap.template.jekyll.Launcher类.
+ * com.onap.template.jekyll.Launcher单元测试.
  * 
  * @author ywx474563 2017年6月15日
  */

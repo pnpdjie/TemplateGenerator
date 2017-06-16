@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -23,9 +24,9 @@ import javafx.stage.Window;
  * 
  * @author ywx474563 2017年6月16日
  */
-public class ProgressPane {
+public class ProgressDialog {
 
-  private static final Logger logger = LoggerFactory.getLogger(ProgressPane.class);
+  private static final Logger logger = LoggerFactory.getLogger(ProgressDialog.class);
   
   /**
    * 父窗口.
@@ -47,18 +48,31 @@ public class ProgressPane {
    */
   private TextArea areaLog;
 
-  private static ProgressPane instance;
+  /**
+   * 单例.
+   */
+  private static ProgressDialog instance;
 
-  public static ProgressPane getInstance(Window owner) {
+  /**
+   * 获取单例.
+   * 
+   * @param owner 父窗口
+   * @return 单例
+   */
+  public static ProgressDialog getInstance(Window owner) {
     if (instance == null) {
-      instance = new ProgressPane(owner);
+      instance = new ProgressDialog(owner);
     }
     return instance;
   }
 
-  private ProgressPane(Window owner) {
+  /**
+   * 构造函数.
+   * @param owner 父窗口
+   */
+  private ProgressDialog(Window owner) {
     try {
-      FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("ProgressDialog.fxml"));
+      FXMLLoader fxmlLoader = new FXMLLoader(ProgressDialog.class.getResource("ProgressDialog.fxml"));
       Parent root = fxmlLoader.load();
 
       progressExec = (ProgressBar) root.lookup("#progressExec");
@@ -73,73 +87,37 @@ public class ProgressPane {
       stage.setTitle("执行中...");
       stage.initStyle(StageStyle.UNIFIED);
       stage.setResizable(false);
+      stage.getIcons().add(new Image(Main.class.getResource("images/favicon.png").toString()));
     } catch (IOException e) {
       logger.error(e.getMessage());
     }
   }
 
-  public ProgressPane show() {
+  /**
+   * 显示弹出框.
+   * @return
+   */
+  public ProgressDialog show() {
     stage.show();
     return instance;
   }
 
+  /**
+   * 关闭弹出框.
+   */
   public void close() {
     stage.close();
   }
 
+  /**
+   * 执行任务.
+   * @param task 异步任务
+   */
   public void exec(Task task) {
     stage.titleProperty().bind(task.titleProperty());
     progressExec.progressProperty().bind(task.progressProperty());
     areaLog.textProperty().bind(task.messageProperty());
     new Thread(task).start();
   }
-//
-//  Task<Integer> task1 = new Task<Integer>() {
-//    private StringBuilder logBuilder = new StringBuilder();
-//
-//    @Override
-//    protected Integer call() throws Exception {
-//      for (int i = 0; i < 100; i++) {
-//        Thread.sleep(50);
-//        updateProgress(i + 1, 100);
-//        updateMessage("Loading..." + (i + 1) + "%");
-//      }
-//      updateMessage("执行结束");
-//      return null;
-//    }
-//
-//    @Override
-//    protected void running() {
-//      super.running();
-//    }
-//
-//    @Override
-//    protected void succeeded() {
-//      super.succeeded();
-//      updateMessage("执行成功");
-//    }
-//
-//    @Override
-//    protected void failed() {
-//      super.failed();
-//      updateMessage("执行失败");
-//    }
-//
-//    @Override
-//    protected void updateProgress(long workDone, long max) {
-//      super.updateProgress(workDone, max);
-//    }
-//
-//    @Override
-//    protected void updateMessage(String message) {
-//      logBuilder.append(message + "\r\n");
-//      super.updateMessage(logBuilder.toString());
-//    }
-//
-//    @Override
-//    protected void updateTitle(String title) {
-//      super.updateTitle(title);
-//    }
-//
-//  };
+
 }

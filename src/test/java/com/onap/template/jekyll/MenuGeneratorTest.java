@@ -36,12 +36,14 @@ public class MenuGeneratorTest {
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
 
+    //测试数据路径
+    String relativePath =System.getProperty("user.dir")+"\\_test_jekyll_project\\";
     // 读取菜单模板
-    loadedMenus = MenuLoader.loadMenus(Main.class.getResource("data/Menus.xml").getPath());
+    loadedMenus = MenuLoader.loadMenus(relativePath+"data/Menus.xml");
     metaMenu = loadedMenus.getMetaMenus().get(0);
 
     // 初始化菜单生成器
-    menuGenerator = new MenuGenerator(metaMenu, loadedMenus, Main.class.getResource("data/MdTemplate.md").getPath()){
+    menuGenerator = new MenuGenerator(metaMenu, loadedMenus, relativePath+"data/MdTemplate.md"){
       @Override
       public void afterSucceeded() {
         Launcher launcher = new Launcher(Launcher.projectPath);
@@ -81,7 +83,7 @@ public class MenuGeneratorTest {
     };
 
     // 读取Jekyll项目菜单数据
-    new Launcher(System.getProperty("user.dir") + "\\_test_jekyll_project\\pnpdjie.github.io").loadProject();
+    new Launcher(relativePath+ "\\pnpdjie.github.io").loadProject();
   }
 
   @AfterClass
