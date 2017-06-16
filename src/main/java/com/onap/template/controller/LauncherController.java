@@ -131,6 +131,7 @@ public class LauncherController extends BaseController {
     Alert tip = new Alert(Alert.AlertType.INFORMATION);
     tip.setTitle("提示");
     tip.initOwner(mainStage);
+    tip.setHeaderText(null);
 
     if (StringUtils.isEmpty(choosedPath)) {
       tip.setContentText("请选择项目路径");

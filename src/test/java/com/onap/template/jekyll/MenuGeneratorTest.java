@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -40,7 +41,44 @@ public class MenuGeneratorTest {
     metaMenu = loadedMenus.getMetaMenus().get(0);
 
     // 初始化菜单生成器
-    menuGenerator = new MenuGenerator(metaMenu, loadedMenus, Main.class.getResource("data/MdTemplate.md").getPath());
+    menuGenerator = new MenuGenerator(metaMenu, loadedMenus, Main.class.getResource("data/MdTemplate.md").getPath()){
+      @Override
+      public void afterSucceeded() {
+        Launcher launcher = new Launcher(Launcher.projectPath);
+        List<JekyllMenu> listMenu = launcher.loadProject();
+
+        assertEquals(listMenu.size(), 4);
+        assertEquals(listMenu.get(3).getName(), metaMenu.getName());
+
+        File dataFile = new File(menuGenerator.getDataFilePath());
+        if (!dataFile.exists()) {
+          fail("_data目录下菜单数据文件未创建成功");
+        }
+
+        // index.md路径
+        String indexPath = Launcher.mdDir + File.separator + metaMenu.getName() + File.separator + Constants.JEKYLL_MD_INDEX;
+        File indexFile = new File(indexPath);
+        if (!indexFile.exists()) {
+          fail("docs目录下index.md未创建成功");
+        }
+
+        for (int i = 0; i < loadedMenus.getMdCount(); i++) {
+          // sample1...3.md
+          String samplePath = Launcher.mdDir + File.separator + metaMenu.getName() + File.separator + loadedMenus.getMdName() + (i + 1)
+              + Constants.JEKYLL_MD_EXTENSION;
+          File sampleFile = new File(samplePath);
+          if (!sampleFile.exists()) {
+            fail("docs目录下" + loadedMenus.getMdName() + (i + 1) + ".md未创建成功");
+          }
+        }
+      }
+
+      @Override
+      public void afterFailed() {
+        // TODO Auto-generated method stub
+        
+      }
+    };
 
     // 读取Jekyll项目菜单数据
     new Launcher(System.getProperty("user.dir") + "\\_test_jekyll_project\\pnpdjie.github.io").loadProject();
@@ -60,35 +98,12 @@ public class MenuGeneratorTest {
 
   @Test
   public void testExecute() {
-    menuGenerator.execute();
-
-    Launcher launcher = new Launcher(Launcher.projectPath);
-    List<JekyllMenu> listMenu = launcher.loadProject();
-
-    assertEquals(listMenu.size(), 4);
-    assertEquals(listMenu.get(3).getName(), metaMenu.getName());
-
-    File dataFile = new File(menuGenerator.getDataFilePath());
-    if (!dataFile.exists()) {
-      fail("_data目录下菜单数据文件未创建成功");
+    try {
+      Thread th=new Thread(menuGenerator);
+      th.start();
+    } catch (Exception e) {
+      fail("执行出错");
     }
-
-    // index.md路径
-    String indexPath = Launcher.mdDir + File.separator + metaMenu.getName() + File.separator + Constants.JEKYLL_MD_INDEX;
-    File indexFile = new File(indexPath);
-    if (!indexFile.exists()) {
-      fail("docs目录下index.md未创建成功");
-    }
-
-    for (int i = 0; i < loadedMenus.getMdCount(); i++) {
-      // sample1...3.md
-      String samplePath = Launcher.mdDir + File.separator + metaMenu.getName() + File.separator + loadedMenus.getMdName() + (i + 1)
-          + Constants.JEKYLL_MD_EXTENSION;
-      File sampleFile = new File(samplePath);
-      if (!sampleFile.exists()) {
-        fail("docs目录下" + loadedMenus.getMdName() + (i + 1) + ".md未创建成功");
-      }
-    }
+      
   }
-
 }

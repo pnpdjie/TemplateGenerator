@@ -6,7 +6,7 @@ title: {title}
 
 ## 标题
 
-请在`{% capture article %}`和`{% endcapture %}`两个标签之间编辑正文。
+请在{% raw %}`{% capture article %}`和`{% endcapture %}`{% endraw %}两个标签之间编辑正文。
 
 ## 操作指南
 
