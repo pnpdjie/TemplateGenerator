@@ -57,6 +57,12 @@ public abstract class MenuGenerator extends Task<Boolean> {
    */
   private String dataFilePath;
 
+  /**
+   * 构造导航生成器.
+   * @param metaMenu 准备生成的导航
+   * @param loadedMenus 导航模板
+   * @param mdTemplatePath markdown文件模板路径
+   */
   public MenuGenerator(MetaMenu metaMenu, Menus loadedMenus, String mdTemplatePath) {
     this.metaMenu = metaMenu;
     this.loadedMenus = loadedMenus;

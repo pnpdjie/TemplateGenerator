@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.PropertyConfigurator;
@@ -34,6 +35,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -321,24 +324,34 @@ public class Main extends Application {
    *          项目路径
    */
   private void createJekyllMenu(MetaMenu metaMenu, Menus loadedMenus) {
-    // 创建Jekyll菜单
-    MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus,
-        Main.class.getResource("data/MdTemplate.md").getPath()) {
+    Alert alert = new Alert(AlertType.CONFIRMATION);
+    alert.setTitle("确认");
+    alert.setHeaderText(null);
+    alert.setContentText("确认创建导航"+metaMenu.getDesc() + "(" + metaMenu.getName() + ")"+"?");
 
-      @Override
-      public void afterSucceeded() {
-        // 重新初始化界面数据
-        List<JekyllMenu> listMenu = launcherController.getJekyllMenu(jekyllProjectPath);
-        rebuildMainUI(listMenu, jekyllProjectPath);
-      }
+    Optional<ButtonType> result = alert.showAndWait();
+    if (result.get() == ButtonType.OK){
+      // 创建Jekyll菜单
+      MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus,
+          Main.class.getResource("data/MdTemplate.md").getPath()) {
 
-      @Override
-      public void afterFailed() {
+        @Override
+        public void afterSucceeded() {
+          // 重新初始化界面数据
+          List<JekyllMenu> listMenu = launcherController.getJekyllMenu(jekyllProjectPath);
+          rebuildMainUI(listMenu, jekyllProjectPath);
+        }
 
-      }
-    };
+        @Override
+        public void afterFailed() {
 
-    ProgressDialog.getInstance(mainStage).show().exec(menuGenerator);
+        }
+      };
+
+      ProgressDialog.getInstance(mainStage).show().exec(menuGenerator);
+    } else {
+    }
+    
   }
 
   /**
