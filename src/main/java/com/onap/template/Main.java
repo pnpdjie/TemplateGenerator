@@ -249,7 +249,8 @@ public class Main extends Application {
     Menu menus = new Menu("导航");
 
     // 从Menus.xml文件加载菜单
-    Menus loadedMenus = MenuLoader.loadMenus(Main.class.getResource("data/Menus.xml").getPath());
+    String menuXmlPath = System.getProperty("user.dir") + "\\config\\Menus.xml";
+    Menus loadedMenus = MenuLoader.loadMenus(menuXmlPath);
     if (loadedMenus == null) {
       Alert tip = new Alert(Alert.AlertType.INFORMATION);
       tip.setTitle("提示");
@@ -333,7 +334,7 @@ public class Main extends Application {
     if (result.get() == ButtonType.OK){
       // 创建Jekyll菜单
       MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus,
-          Main.class.getResource("data/MdTemplate.md").getPath()) {
+          System.getProperty("user.dir") + "\\config\\MdTemplate.md") {
 
         @Override
         public void afterSucceeded() {
@@ -379,7 +380,10 @@ public class Main extends Application {
    * @param project
    */
   private void switchJekyllProject(Project project) {
-    List<JekyllMenu> listMenu = launcherController.getJekyllMenu(jekyllProjectPath);
+    if(StringUtils.equalsIgnoreCase(project.getPath(), jekyllProjectPath)){
+      return;
+    }
+    List<JekyllMenu> listMenu = launcherController.getJekyllMenu(project.getPath());
     rebuildMainUI(listMenu, project.getPath()); 
   }
 

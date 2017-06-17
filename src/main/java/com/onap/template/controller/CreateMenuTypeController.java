@@ -37,6 +37,11 @@ import javafx.scene.control.TextField;
 public class CreateMenuTypeController extends BaseController {
 
   private static final Logger logger = LoggerFactory.getLogger(CreateMenuTypeController.class);
+  
+  /**
+   * 导航模板xml文件路径.
+   */
+  private static final String menuXmlPath = System.getProperty("user.dir") + "\\config\\Menus.xml";
 
   /**
    * 简称输入框.
@@ -124,7 +129,7 @@ public class CreateMenuTypeController extends BaseController {
     }
     
     //判断简称和全称是否已存在
-    Menus loadedMenus = MenuLoader.loadMenus(Main.class.getResource("data/Menus.xml").getPath());
+    Menus loadedMenus = MenuLoader.loadMenus(menuXmlPath);
     for (MetaMenu metaMenu : loadedMenus.getMetaMenus()) {
       if (StringUtils.equalsIgnoreCase(name, metaMenu.getName())) {
         tip.setContentText("简称已存在，请重新输入");
@@ -133,8 +138,7 @@ public class CreateMenuTypeController extends BaseController {
       }
     }
 
-    String xmlPath = Main.class.getResource("data/Menus.xml").getPath();
-    boolean res = MenuLoader.addMenuType(xmlPath, new MetaMenu(name, desc));
+    boolean res = MenuLoader.addMenuType(menuXmlPath, new MetaMenu(name, desc));
     
     tip.setContentText(res?"创建成功":"创建失败");
     tip.showAndWait();

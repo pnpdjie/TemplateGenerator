@@ -63,7 +63,7 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\TemplateGenerator.jar;%APP_HOME%\lib\commons-math3-3.6.1.jar;%APP_HOME%\lib\guava-21.0.jar;%APP_HOME%\lib\slf4j-api-1.7.25.jar;%APP_HOME%\lib\slf4j-log4j12-1.7.25.jar;%APP_HOME%\lib\jackson-jaxrs-json-provider-2.6.3.jar;%APP_HOME%\lib\log4j-1.2.17.jar;%APP_HOME%\lib\jackson-jaxrs-base-2.6.3.jar;%APP_HOME%\lib\jackson-core-2.6.3.jar;%APP_HOME%\lib\jackson-databind-2.6.3.jar;%APP_HOME%\lib\jackson-module-jaxb-annotations-2.6.3.jar;%APP_HOME%\lib\jackson-annotations-2.6.0.jar
+set CLASSPATH=%APP_HOME%\lib\TemplateGenerator.jar;%APP_HOME%\lib\slf4j-api-1.7.25.jar;%APP_HOME%\lib\slf4j-log4j12-1.7.25.jar;%APP_HOME%\lib\commons-lang3-3.3.2.jar;%APP_HOME%\lib\commons-digester3-3.2.jar;%APP_HOME%\lib\commons-io-2.5.jar;%APP_HOME%\lib\dom4j-1.6.1.jar;%APP_HOME%\lib\log4j-1.2.17.jar;%APP_HOME%\lib\cglib-2.2.2.jar;%APP_HOME%\lib\commons-beanutils-1.8.3.jar;%APP_HOME%\lib\commons-logging-1.1.1.jar;%APP_HOME%\lib\xml-apis-1.0.b2.jar;%APP_HOME%\lib\asm-3.3.1.jar
 
 @rem Execute TemplateGenerator
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %TEMPLATE_GENERATOR_OPTS%  -classpath "%CLASSPATH%" com.onap.template.Main %CMD_LINE_ARGS%

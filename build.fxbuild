@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ASCII"?>
+<anttasks:AntTask xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:anttasks="http://org.eclipse.fx.ide.jdt/1.0" buildDirectory="${project}/run">
+  <deploy packagingFormat="exe">
+    <application name="teste" mainclass="com.onap.template.Main" version="1.0" toolkit="fx"/>
+    <info title="TemplateGenerator" vendor="ONAP"/>
+  </deploy>
+  <signjar/>
+</anttasks:AntTask>

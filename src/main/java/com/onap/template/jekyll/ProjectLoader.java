@@ -91,7 +91,8 @@ public class ProjectLoader {
       Element rootElem = doc.getRootElement();
       Element projectElem;
       if(exist){
-         List<Element> elemList = rootElem.elements();
+         @SuppressWarnings("unchecked")
+        List<Element> elemList = rootElem.elements();
         for (Element elem : elemList) {
           Attribute pathAttr=elem.attribute("path");
           Attribute loadDateAttr=elem.attribute("loadDate");
@@ -136,6 +137,9 @@ public class ProjectLoader {
       logger.error("projects.xml文件不支持utf-8编码");
       return false;
     } catch (IOException e) {
+      logger.error("projects.xml文件写入出错");
+      return false;
+    } catch (ClassCastException e) {
       logger.error("projects.xml文件写入出错");
       return false;
     }
