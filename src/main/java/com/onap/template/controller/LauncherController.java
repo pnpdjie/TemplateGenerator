@@ -5,6 +5,7 @@ import java.net.URL;
 import java.nio.file.InvalidPathException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -38,6 +39,8 @@ import javafx.stage.Stage;
 public class LauncherController extends BaseController {
 
   private static final Logger logger = LoggerFactory.getLogger(LauncherController.class);
+
+  private static final String projectXmlPath = System.getProperty("user.dir") + "\\config\\projects.xml";
 
   /**
    * 加载Jekyll项目业务处理
@@ -77,14 +80,7 @@ public class LauncherController extends BaseController {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     Platform.runLater(() -> {
-      Projects projects = ProjectLoader.loadProjects(System.getProperty("user.dir") + "\\config\\projects.xml");
-      List<Project> projectList = projects.getProjects();
-      Collections.sort(projectList, new Comparator<Project>() {
-        public int compare(Project o1, Project o2) {
-          return o1.compareTo(o2);
-        }
-      });
-
+      List<Project> projectList = getProjects();
       for (Project project : projectList) {
         cbPath.getItems().add(project.getPath());
       }
@@ -96,7 +92,7 @@ public class LauncherController extends BaseController {
         showFileDialog();
       });
       btnOk.setOnAction(event -> {
-        loadProject();
+        loadProject(cbPath.getValue());
       });
       btnCancel.setOnAction(event -> {
         if (mainStage != null) {
@@ -104,6 +100,32 @@ public class LauncherController extends BaseController {
         }
       });
     });
+  }
+
+  /**
+   * 获取Jekyll项目路径数据并按时间倒叙排列.
+   * @return
+   */
+  public List<Project> getProjects() {
+    Projects projects = ProjectLoader.loadProjects(projectXmlPath);
+    List<Project> projectList = projects.getProjects();
+    Collections.sort(projectList, new Comparator<Project>() {
+      public int compare(Project o1, Project o2) {
+        return o1.compareTo(o2);
+      }
+    });
+    return projectList;
+  }
+  
+  /**
+   * 获取Jekyll项目导航数据.
+   * @param choosedPath Jekyll项目路径
+   * @return
+   */
+  public List<JekyllMenu> getJekyllMenu(String choosedPath) {
+    launcher = new Launcher(choosedPath);
+    List<JekyllMenu> listMenu = launcher.loadProject();
+    return listMenu;
   }
 
   /**
@@ -125,8 +147,7 @@ public class LauncherController extends BaseController {
   /**
    * 加载Jekyll项目
    */
-  private void loadProject() {
-    String choosedPath = cbPath.getValue();
+  private void loadProject(String choosedPath) {
 
     Alert tip = new Alert(Alert.AlertType.INFORMATION);
     tip.setTitle("提示");
@@ -139,11 +160,15 @@ public class LauncherController extends BaseController {
       return;
     }
 
-    launcher = new Launcher(choosedPath);
-
     try {
-      List<JekyllMenu> listMenu = launcher.loadProject();
-      Main.getInstance().buildMainUI(new Stage(), listMenu);
+      //加载Jekyll项目中已有的导航数据
+      List<JekyllMenu> listMenu = getJekyllMenu(choosedPath);
+      
+      //修改projects.xml中Jekyll项目路径
+      ProjectLoader.addProject(projectXmlPath, new Project(choosedPath, Project.formatter.format(new Date())));
+      
+      //启动主界面
+      Main.getInstance().buildMainUI(new Stage(), listMenu, choosedPath);
     } catch (InvalidPathException e) {
       logger.error(e.getLocalizedMessage());
       tip.setContentText(e.getMessage());

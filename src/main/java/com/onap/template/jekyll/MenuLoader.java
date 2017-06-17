@@ -95,16 +95,16 @@ public class MenuLoader {
       
       return true;
     } catch (DocumentException e) {
-      logger.error("导航xml文件读取出错");
+      logger.error("Menus.xml文件读取出错");
       return false;
     } catch (FileNotFoundException e) {
-      logger.error("导航xml文件未找到");
+      logger.error("Menus.xml文件未找到");
       return false;
     } catch (UnsupportedEncodingException e) {
-      logger.error("导航xml文件不支持utf-8编码");
+      logger.error("Menus.xml文件不支持utf-8编码");
       return false;
     } catch (IOException e) {
-      logger.error("导航xml文件写入出错");
+      logger.error("Menus.xml文件写入出错");
       return false;
     }
   }

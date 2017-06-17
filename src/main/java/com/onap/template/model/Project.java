@@ -16,7 +16,16 @@ public class Project implements Serializable, Comparable<Project> {
 
   private static final long serialVersionUID = 1L;
   
-  private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  public final static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  
+  public Project() {
+    
+  }
+
+  public Project(String path,String loadDate) {
+    this.path = path;
+    this.loadDate = loadDate;
+  }
   
   /**
    * 项目路径.

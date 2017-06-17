@@ -14,9 +14,12 @@ import com.onap.template.controller.LauncherController;
 import com.onap.template.jekyll.Launcher;
 import com.onap.template.jekyll.MenuGenerator;
 import com.onap.template.jekyll.MenuLoader;
+import com.onap.template.jekyll.ProjectLoader;
 import com.onap.template.model.JekyllMenu;
 import com.onap.template.model.Menus;
 import com.onap.template.model.MetaMenu;
+import com.onap.template.model.Project;
+import com.onap.template.model.Projects;
 import com.onap.template.controller.CreateMenuTypeController;
 import com.onap.template.controller.CreatedMenuController;
 import com.onap.template.ui.CreatedMenus;
@@ -62,6 +65,12 @@ public class Main extends Application {
   private BorderPane outerRoot;
   private BorderPane root;
   private TabPane contentTabs;
+  private LauncherController launcherController;
+
+  /**
+   * 选中的Jekyll项目路径
+   */
+  private String jekyllProjectPath;
 
   private static Main instance;
 
@@ -108,8 +117,8 @@ public class Main extends Application {
 
       FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Launcher.fxml"));
       root.setCenter(fxmlLoader.load());
-      LauncherController controller = (LauncherController) fxmlLoader.getController(); // 获取Controller的实例对象
-      controller.setMainStage(mainStage);
+      launcherController = (LauncherController) fxmlLoader.getController(); // 获取Controller的实例对象
+      launcherController.setMainStage(mainStage);
 
       outerRoot.setCenter(root);
 
@@ -130,13 +139,18 @@ public class Main extends Application {
   }
 
   /**
-   * 构建主界面
+   * 构建主界面.
    * 
    * @param primaryStage
+   *          界面容器
    * @param listMenu
-   *          Jekyll菜单数据
+   *          Jekyll项目导航数据
+   * @param choosedPath
+   *          Jekyll项目路径
    */
-  public void buildMainUI(Stage primaryStage, List<com.onap.template.model.JekyllMenu> listMenu) {
+  public void buildMainUI(Stage primaryStage, List<com.onap.template.model.JekyllMenu> listMenu, String choosedPath) {
+    jekyllProjectPath = choosedPath;
+
     mainStage.close();
     root = null;
 
@@ -165,7 +179,7 @@ public class Main extends Application {
     Scene scene = new Scene(outerRoot, 800, 600);
     scene.getStylesheets().add(appCssUrl);
     primaryStage.setScene(scene);
-    primaryStage.setTitle("模板生成工具");
+    primaryStage.setTitle("模板生成工具，项目路径：" + jekyllProjectPath);
     primaryStage.getIcons().add(new Image(this.getClass().getResource("images/favicon.png").toString()));
     primaryStage.show();
     instance = this;
@@ -182,8 +196,15 @@ public class Main extends Application {
 
   /**
    * 重启主界面数据.
+   * 
+   * @param listMenu
+   *          Jekyll项目导航数据
+   * @param choosedPath
+   *          Jekyll项目路径
    */
-  private void restartMainUI(List<com.onap.template.model.JekyllMenu> listMenu) {
+  private void rebuildMainUI(List<com.onap.template.model.JekyllMenu> listMenu, String choosedPath) {
+    jekyllProjectPath = choosedPath;
+
     // 构建初始化界面
     outerRoot = new BorderPane();
     // 设置界面顶部菜单
@@ -203,15 +224,11 @@ public class Main extends Application {
     root.setCenter(contentTabs);
     outerRoot.setCenter(root);
 
-    // 显示界面
-    // Scene scene = new Scene(outerRoot, 800, 600);
-    // scene.getStylesheets().add(appCssUrl);
-    // mainStage.setScene(scene);
-
     mainStage.getScene().setRoot(outerRoot);
-    mainStage.setTitle("模板生成工具");
-    mainStage.getIcons().add(new Image(this.getClass().getResource("images/favicon.png").toString()));
-    mainStage.show();
+    mainStage.setTitle("模板生成工具，项目路径：" + jekyllProjectPath);
+    // mainStage.getIcons().add(new
+    // Image(this.getClass().getResource("images/favicon.png").toString()));
+    // mainStage.show();
     instance = this;
   }
 
@@ -230,7 +247,7 @@ public class Main extends Application {
 
     // 从Menus.xml文件加载菜单
     Menus loadedMenus = MenuLoader.loadMenus(Main.class.getResource("data/Menus.xml").getPath());
-    if(loadedMenus == null){
+    if (loadedMenus == null) {
       Alert tip = new Alert(Alert.AlertType.INFORMATION);
       tip.setTitle("提示");
       tip.initOwner(null);
@@ -250,8 +267,12 @@ public class Main extends Application {
     // 初始化切换菜单
     Menu switchMenu = new Menu("切换");
     ToggleGroup tg = new ToggleGroup();
-    switchMenu.getItems().addAll(buildProjectItem("c:\\", tg), buildProjectItem("d:\\", tg),
-        buildProjectItem("e:\\", tg));
+
+    // 读取Jekyll项目路径
+    List<Project> projectList = launcherController.getProjects();
+    for (Project project : projectList) {
+      switchMenu.getItems().add(buildSwitchMenuItem(project, tg));
+    }
 
     menuBar.getMenus().addAll(createMenu, switchMenu);
     return menuBar;
@@ -265,7 +286,7 @@ public class Main extends Application {
    * @return 菜单
    */
   private MenuItem buildMenuItem(MetaMenu metaMenu, Menus loadedMenus) {
-    MenuItem item = new MenuItem(metaMenu.getDesc()+"("+metaMenu.getName()+")");
+    MenuItem item = new MenuItem(metaMenu.getDesc() + "(" + metaMenu.getName() + ")");
     for (JekyllMenu jekyllMenu : Launcher.listMenu) {
       if (StringUtils.equalsIgnoreCase(jekyllMenu.getName(), metaMenu.getName())) {
         item.setDisable(true);
@@ -277,17 +298,18 @@ public class Main extends Application {
   }
 
   /**
-   * 构建切换Jekyll项目菜单.
+   * 构建切换项目菜单.
    * 
-   * @param name
-   *          项目路径
-   * @param tg
-   *          菜单组
+   * @param project
+   *          Jekyll项目
    * @return 菜单
    */
-  private RadioMenuItem buildProjectItem(String name, ToggleGroup tg) {
-    RadioMenuItem rmItem = new RadioMenuItem(name);
-    rmItem.setOnAction(event -> switchProject(name));
+  private RadioMenuItem buildSwitchMenuItem(Project project, ToggleGroup tg) {
+    RadioMenuItem rmItem = new RadioMenuItem(project.getPath());
+    if (StringUtils.equalsIgnoreCase(project.getPath(), jekyllProjectPath)) {
+      rmItem.setSelected(true);
+    }
+    rmItem.setOnAction(event -> switchJekyllProject(project));
     rmItem.setToggleGroup(tg);
     return rmItem;
   }
@@ -306,9 +328,8 @@ public class Main extends Application {
       @Override
       public void afterSucceeded() {
         // 重新初始化界面数据
-        Launcher launcher = new Launcher(Launcher.projectPath);
-        List<JekyllMenu> listMenu = launcher.loadProject();
-        restartMainUI(listMenu);
+        List<JekyllMenu> listMenu = launcherController.getJekyllMenu(jekyllProjectPath);
+        rebuildMainUI(listMenu, jekyllProjectPath);
       }
 
       @Override
@@ -333,7 +354,7 @@ public class Main extends Application {
       tab.setContent(new ScrollPane(node));
       contentTabs.getTabs().add(tab);
       SingleSelectionModel<Tab> selectionModel = contentTabs.getSelectionModel();
-      selectionModel.select(tab); 
+      selectionModel.select(tab);
     } catch (IOException e) {
       logger.error(e.getMessage());
     }
@@ -342,11 +363,11 @@ public class Main extends Application {
   /**
    * 切换Jekyll项目.
    * 
-   * @param name
-   *          项目路径
+   * @param project
    */
-  private void switchProject(String name) {
-
+  private void switchJekyllProject(Project project) {
+    List<JekyllMenu> listMenu = launcherController.getJekyllMenu(jekyllProjectPath);
+    rebuildMainUI(listMenu, project.getPath()); 
   }
 
 }
