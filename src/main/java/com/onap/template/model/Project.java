@@ -15,18 +15,23 @@ import org.apache.commons.lang3.StringUtils;
 public class Project implements Serializable, Comparable<Project> {
 
   private static final long serialVersionUID = 1L;
-  
-  public final static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-  
+
+  public final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
   public Project() {
-    
+
   }
 
-  public Project(String path,String loadDate) {
+  public Project(String path, String loadDate) {
     this.path = path;
     this.loadDate = loadDate;
   }
-  
+
+  public Project(String path, Date loadDate) {
+    this.path = path;
+    this.loadDate = formatter.format(loadDate);
+  }
+
   /**
    * 项目路径.
    */
@@ -39,7 +44,7 @@ public class Project implements Serializable, Comparable<Project> {
 
   @Override
   public int compareTo(Project p) {
-    try{
+    try {
       if (this == p) {
         return 0;
       } else if (p != null) {
@@ -48,11 +53,10 @@ public class Project implements Serializable, Comparable<Project> {
         } else {
           return -1;
         }
-      } else{
+      } else {
         return 1;
       }
-    }
-    catch (ParseException e) {
+    } catch (ParseException e) {
       return -1;
     }
   }
@@ -62,15 +66,20 @@ public class Project implements Serializable, Comparable<Project> {
     if (this == obj) {
       return true;
     } else if (obj != null && obj instanceof Project) {
-      Project p = (Project)obj;
+      Project p = (Project) obj;
       if (StringUtils.equalsIgnoreCase(this.path, p.path)) {
         return true;
       } else {
         return false;
       }
-    } else{
+    } else {
       return false;
     }
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
   }
 
   public String getPath() {
@@ -88,6 +97,5 @@ public class Project implements Serializable, Comparable<Project> {
   public void setLoadDate(String loadDate) {
     this.loadDate = loadDate;
   }
-  
-  
+
 }

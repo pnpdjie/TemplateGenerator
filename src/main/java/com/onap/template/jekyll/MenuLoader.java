@@ -1,5 +1,8 @@
 package com.onap.template.jekyll;
 
+import com.onap.template.model.Menus;
+import com.onap.template.model.MetaMenu;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,9 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
-import com.onap.template.model.Menus;
-import com.onap.template.model.MetaMenu;
-
 /**
  * xml转换对象.
  * 
@@ -34,7 +34,7 @@ public class MenuLoader {
    * 
    * @param xmlPath
    *          xml文件路径
-   * @return
+   * @return 界面菜单项
    */
   public static Menus loadMenus(String xmlPath) {
 
@@ -60,9 +60,9 @@ public class MenuLoader {
 
   /**
    * 在xml文件中增加导航类型.
-   * @param xmlPath
-   * @param menu
-   * @return
+   * @param xmlPath xml文件路径
+   * @param menu Jekyll导航模板
+   * @return 是否成功
    */
   public static boolean addMenuType(String xmlPath, MetaMenu menu) {
     try {

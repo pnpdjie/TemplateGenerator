@@ -13,37 +13,37 @@ public class JekyllMenu implements Serializable {
   private static final long serialVersionUID = 1L;
   
   /**
-   * 菜单名称
+   * 菜单名称.
    */
   private String name;
   
   /**
-   * 菜单描述
+   * 菜单描述.
    */
   private String desc;
   
   /**
-   * 菜单主页文件路径
+   * 菜单主页文件路径.
    */
   private String indexPath;
   
   /**
-   * 菜单主页文件
+   * 菜单主页文件.
    */
   private File indexFile;
   
   /**
-   * 菜单左侧导航文件路径
+   * 菜单左侧导航文件路径.
    */
   private String leftTreePath;
   
   /**
-   * 菜单左侧导航文件
+   * 菜单左侧导航文件.
    */
   private File leftTreeFile;
   
   /**
-   * 是否已创建
+   * 是否已创建.
    */
   private boolean created;
 

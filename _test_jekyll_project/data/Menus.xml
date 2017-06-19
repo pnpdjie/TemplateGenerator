@@ -3,36 +3,5 @@
 <Menus mdCount="3" mdName="sample"> 
   <MetaMenu name="install" desc="Install"/>  
   <MetaMenu name="guides" desc="User Guides"/>  
-  <MetaMenu name="deploy" desc="Deploy Guides"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>  
-  <MetaMenu name="a" desc="a b"/>
+  <MetaMenu name="deploy" desc="Deploy Guides"/> 
 </Menus>

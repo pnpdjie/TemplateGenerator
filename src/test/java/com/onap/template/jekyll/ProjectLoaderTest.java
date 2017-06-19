@@ -1,20 +1,13 @@
 package com.onap.template.jekyll;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+import com.onap.template.model.Project;
+import com.onap.template.model.Projects;
 
 import java.util.Date;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.onap.template.Main;
-import com.onap.template.model.Menus;
-import com.onap.template.model.MetaMenu;
-import com.onap.template.model.Project;
-import com.onap.template.model.Projects;
 
 /**
  * ProjectLoader单元测试.
@@ -36,14 +29,14 @@ public class ProjectLoaderTest {
 
   @Test
   public void testAddProject() {
-    boolean res = ProjectLoader.addProject(projectXmlPath, new Project("c:/", Project.formatter.format(new Date())));
+    boolean res = ProjectLoader.addProject(projectXmlPath, new Project("c:/", new Date()));
     assertEquals(res, true);
 
     Projects projects = ProjectLoader.loadProjects(projectXmlPath);
     assertEquals(projects.getProjects().size(), 3);
     
     //重复添加系统路径，只是替换时间
-    res = ProjectLoader.addProject(projectXmlPath, new Project("c:/", Project.formatter.format(new Date())));
+    res = ProjectLoader.addProject(projectXmlPath, new Project("c:/", new Date()));
     assertEquals(res, true);
 
     projects = ProjectLoader.loadProjects(projectXmlPath);

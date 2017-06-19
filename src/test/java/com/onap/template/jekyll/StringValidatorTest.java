@@ -1,6 +1,6 @@
 package com.onap.template.jekyll;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -19,6 +19,7 @@ public class StringValidatorTest {
     assertEquals(StringValidator.validateLowercase("a b"), false);
     assertEquals(StringValidator.validateLowercase("a B"), false);
   }
+  
   @Test
   public void testValidateLowerUpperWhitespace() {
 

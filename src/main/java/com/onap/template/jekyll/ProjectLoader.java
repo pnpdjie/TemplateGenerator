@@ -1,11 +1,13 @@
 package com.onap.template.jekyll;
 
+import com.onap.template.model.Project;
+import com.onap.template.model.Projects;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.digester3.Digester;
@@ -21,12 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
-import com.onap.template.controller.LauncherController;
-import com.onap.template.model.Menus;
-import com.onap.template.model.MetaMenu;
-import com.onap.template.model.Project;
-import com.onap.template.model.Projects;
-
 /**
  * xml转换对象.
  * 
@@ -37,11 +33,11 @@ public class ProjectLoader {
   private static final Logger logger = LoggerFactory.getLogger(ProjectLoader.class);
 
   /**
-   * 读取xml文件生成Jekyll项目列表
+   * 读取xml文件生成Jekyll项目列表.
    * 
    * @param xmlPath
    *          xml文件路径
-   * @return
+   * @return Jekyll项目列表
    */
   public static Projects loadProjects(String xmlPath) {
 
@@ -68,46 +64,46 @@ public class ProjectLoader {
   /**
    * 在xml文件中增加Jekyll项目路径.
    * 
-   * @param xmlPath
-   * @param project
-   * @return
+   * @param xmlPath xml文件路径
+   * @param project Jekyll项目
+   * @return 执行结果
    */
   public static boolean addProject(String xmlPath, Project project) {
     try {
-      //判断路径是否已存在
+      // 判断路径是否已存在
       Projects projects = loadProjects(xmlPath);
       boolean exist = false;
       for (Project p : projects.getProjects()) {
-        if(StringUtils.equalsIgnoreCase(p.getPath(), project.getPath())){
+        if (StringUtils.equalsIgnoreCase(p.getPath(), project.getPath())) {
           exist = true;
           break;
         }
       }
-      
+
       // 读取Menus.xml文件
       Document doc = new SAXReader().read(new File(xmlPath));
 
       // 添加标签
       Element rootElem = doc.getRootElement();
       Element projectElem;
-      if(exist){
-         @SuppressWarnings("unchecked")
+      if (exist) {
+        @SuppressWarnings("unchecked")
         List<Element> elemList = rootElem.elements();
         for (Element elem : elemList) {
-          Attribute pathAttr=elem.attribute("path");
-          Attribute loadDateAttr=elem.attribute("loadDate");
-          if(StringUtils.equalsIgnoreCase(pathAttr.getData().toString(), project.getPath())){
+          Attribute pathAttr = elem.attribute("path");
+          Attribute loadDateAttr = elem.attribute("loadDate");
+          if (StringUtils.equalsIgnoreCase(pathAttr.getData().toString(), project.getPath())) {
             loadDateAttr.setValue(project.getLoadDate());
             break;
           }
         }
-      }else{
+      } else {
         projectElem = rootElem.addElement("project");
 
         // 增加属性
         projectElem.addAttribute("path", project.getPath());
         projectElem.addAttribute("loadDate", project.getLoadDate());
-        
+
       }
 
       // 指定文件输出的位置

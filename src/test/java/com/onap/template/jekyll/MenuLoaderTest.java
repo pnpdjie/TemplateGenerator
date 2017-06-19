@@ -1,16 +1,11 @@
 package com.onap.template.jekyll;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import com.onap.template.Main;
 import com.onap.template.model.Menus;
 import com.onap.template.model.MetaMenu;
+
+import org.junit.Test;
 
 /**
  * MenuLoader单元测试.
@@ -18,14 +13,14 @@ import com.onap.template.model.MetaMenu;
  * @author ywx474563 2017年6月15日
  */
 public class MenuLoaderTest {
-  String relativePath =System.getProperty("user.dir")+"\\_test_jekyll_project\\";
+  String relativePath = System.getProperty("user.dir") + "\\_test_jekyll_project\\";
 
   @Test
   public void testLoadFromXml() {
-    Menus menus = MenuLoader.loadMenus(relativePath+"data/Menus.xml");
+    Menus menus = MenuLoader.loadMenus(relativePath + "data/Menus.xml");
     assertEquals(menus.getMdCount(), 3);
     assertEquals(menus.getMdName(), "sample");
-//    assertEquals(menus.getMetaMenus().size(), 3);
+    // assertEquals(menus.getMetaMenus().size(), 3);
     assertEquals(menus.getMetaMenus().get(0).getName(), "install");
     assertEquals(menus.getMetaMenus().get(1).getName(), "guides");
     assertEquals(menus.getMetaMenus().get(2).getName(), "deploy");
@@ -33,8 +28,7 @@ public class MenuLoaderTest {
 
   @Test
   public void testAddMenuType() {
-    boolean res = MenuLoader.addMenuType(relativePath+"data/Menus.xml",
-        new MetaMenu("a", "a b"));
+    boolean res = MenuLoader.addMenuType(relativePath + "data/Menus.xml", new MetaMenu("a", "a b"));
     assertEquals(res, true);
   }
 

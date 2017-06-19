@@ -1,38 +1,24 @@
 package com.onap.template;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.InvalidPathException;
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.PropertyConfigurator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.onap.template.controller.LauncherController;
 import com.onap.template.jekyll.Launcher;
 import com.onap.template.jekyll.MenuGenerator;
 import com.onap.template.jekyll.MenuLoader;
-import com.onap.template.jekyll.ProjectLoader;
 import com.onap.template.model.JekyllMenu;
 import com.onap.template.model.Menus;
 import com.onap.template.model.MetaMenu;
 import com.onap.template.model.Project;
-import com.onap.template.model.Projects;
-import com.onap.template.controller.CreateMenuTypeController;
-import com.onap.template.controller.CreatedMenuController;
 import com.onap.template.ui.CreatedMenus;
 import com.onap.template.ui.ProgressDialog;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -45,15 +31,16 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.PropertyConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 主界面.
@@ -71,9 +58,11 @@ public class Main extends Application {
   private LauncherController launcherController;
 
   /**
-   * 选中的Jekyll项目路径
+   * 选中的Jekyll项目路径.
    */
   private String jekyllProjectPath;
+  
+  private RadioMenuItem selectedJekyllProject;
 
   private static Main instance;
 
@@ -87,7 +76,7 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) {
     try {
-      buildLauncherUI(primaryStage);
+      buildLauncherUi(primaryStage);
     } catch (Exception e) {
       logger.error(e.getMessage());
       e.printStackTrace();
@@ -104,13 +93,12 @@ public class Main extends Application {
   }
 
   /**
-   * 构建启动界面
+   * 构建启动界面.
    * 
    * @param primaryStage
-   * @param listMenu
    *          菜单数据列表
    */
-  public void buildLauncherUI(Stage primaryStage) {
+  public void buildLauncherUi(Stage primaryStage) {
     try {
       mainStage = primaryStage;
       root = new BorderPane();
@@ -131,7 +119,8 @@ public class Main extends Application {
       primaryStage.setScene(scene);
       primaryStage.setTitle("模板生成工具启动");
       primaryStage.setResizable(false);
-      primaryStage.getIcons().add(new Image(this.getClass().getResource("images/favicon.png").toString()));
+      primaryStage.getIcons()
+          .add(new Image(this.getClass().getResource("images/favicon.png").toString()));
       primaryStage.show();
       instance = this;
 
@@ -151,7 +140,8 @@ public class Main extends Application {
    * @param choosedPath
    *          Jekyll项目路径
    */
-  public void buildMainUI(Stage primaryStage, List<com.onap.template.model.JekyllMenu> listMenu, String choosedPath) {
+  public void buildMainUi(Stage primaryStage, List<com.onap.template.model.JekyllMenu> listMenu,
+      String choosedPath) {
     jekyllProjectPath = choosedPath;
 
     mainStage.close();
@@ -183,7 +173,8 @@ public class Main extends Application {
     scene.getStylesheets().add(appCssUrl);
     primaryStage.setScene(scene);
     primaryStage.setTitle("模板生成工具，项目路径：" + jekyllProjectPath);
-    primaryStage.getIcons().add(new Image(this.getClass().getResource("images/favicon.png").toString()));
+    primaryStage.getIcons()
+        .add(new Image(this.getClass().getResource("images/favicon.png").toString()));
     primaryStage.show();
     instance = this;
 
@@ -205,7 +196,8 @@ public class Main extends Application {
    * @param choosedPath
    *          Jekyll项目路径
    */
-  private void rebuildMainUI(List<com.onap.template.model.JekyllMenu> listMenu, String choosedPath) {
+  private void rebuildMainUi(List<com.onap.template.model.JekyllMenu> listMenu,
+      String choosedPath) {
     jekyllProjectPath = choosedPath;
 
     // 构建初始化界面
@@ -236,9 +228,9 @@ public class Main extends Application {
   }
 
   /**
-   * 构建菜单栏
+   * 构建菜单栏.
    * 
-   * @return
+   * @return 菜单栏
    */
   private MenuBar buildMenuBar() {
     MenuBar menuBar = new MenuBar();
@@ -291,7 +283,7 @@ public class Main extends Application {
    */
   private MenuItem buildMenuItem(MetaMenu metaMenu, Menus loadedMenus) {
     MenuItem item = new MenuItem(metaMenu.getDesc() + "(" + metaMenu.getName() + ")");
-    for (JekyllMenu jekyllMenu : Launcher.listMenu) {
+    for (JekyllMenu jekyllMenu : Launcher.getInstance().getListMenu()) {
       if (StringUtils.equalsIgnoreCase(jekyllMenu.getName(), metaMenu.getName())) {
         item.setDisable(true);
         break;
@@ -312,8 +304,9 @@ public class Main extends Application {
     RadioMenuItem rmItem = new RadioMenuItem(project.getPath());
     if (StringUtils.equalsIgnoreCase(project.getPath(), jekyllProjectPath)) {
       rmItem.setSelected(true);
+      selectedJekyllProject = rmItem;
     }
-    rmItem.setOnAction(event -> switchJekyllProject(project));
+    rmItem.setOnAction(event -> switchJekyllProject(event, project));
     rmItem.setToggleGroup(tg);
     return rmItem;
   }
@@ -328,10 +321,10 @@ public class Main extends Application {
     Alert alert = new Alert(AlertType.CONFIRMATION);
     alert.setTitle("确认");
     alert.setHeaderText(null);
-    alert.setContentText("确认创建导航"+metaMenu.getDesc() + "(" + metaMenu.getName() + ")"+"?");
+    alert.setContentText("确认创建导航" + metaMenu.getDesc() + "(" + metaMenu.getName() + ")" + "?");
 
     Optional<ButtonType> result = alert.showAndWait();
-    if (result.get() == ButtonType.OK){
+    if (result.get() == ButtonType.OK) {
       // 创建Jekyll菜单
       MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus,
           System.getProperty("user.dir") + "\\config\\MdTemplate.md") {
@@ -340,7 +333,7 @@ public class Main extends Application {
         public void afterSucceeded() {
           // 重新初始化界面数据
           List<JekyllMenu> listMenu = launcherController.getJekyllMenu(jekyllProjectPath);
-          rebuildMainUI(listMenu, jekyllProjectPath);
+          rebuildMainUi(listMenu, jekyllProjectPath);
         }
 
         @Override
@@ -350,9 +343,8 @@ public class Main extends Application {
       };
 
       ProgressDialog.getInstance(mainStage).show().exec(menuGenerator);
-    } else {
     }
-    
+
   }
 
   /**
@@ -377,14 +369,39 @@ public class Main extends Application {
   /**
    * 切换Jekyll项目.
    * 
+   * @param event
+   *          事件
    * @param project
+   *          Jekyll项目路径信息
    */
-  private void switchJekyllProject(Project project) {
-    if(StringUtils.equalsIgnoreCase(project.getPath(), jekyllProjectPath)){
-      return;
+  private boolean switchJekyllProject(ActionEvent event, Project project) {
+    RadioMenuItem menu = (RadioMenuItem)event.getSource();
+    
+    if (StringUtils.equalsIgnoreCase(project.getPath(), jekyllProjectPath)) {
+//      menu.setSelected(false);
+//      selectedJekyllProject.setSelected(true);
+      return false;
     }
-    List<JekyllMenu> listMenu = launcherController.getJekyllMenu(project.getPath());
-    rebuildMainUI(listMenu, project.getPath()); 
+    
+    try {
+      List<JekyllMenu> listMenu = launcherController.getJekyllMenu(project.getPath());
+      rebuildMainUi(listMenu, project.getPath());
+      //menu.setSelected(true);
+      selectedJekyllProject = menu;
+      return true;
+    } catch (RuntimeException e) {
+      logger.error(e.getLocalizedMessage());
+      menu.setSelected(false);
+      selectedJekyllProject.setSelected(true);
+      
+      Alert tip = new Alert(Alert.AlertType.INFORMATION);
+      tip.setTitle("提示");
+      tip.initOwner(null);
+      tip.setHeaderText(null);
+      tip.setContentText(e.getMessage());
+      tip.showAndWait();
+      return false;
+    }
   }
 
 }

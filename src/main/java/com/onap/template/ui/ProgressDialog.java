@@ -1,11 +1,8 @@
 package com.onap.template.ui;
 
-import java.io.IOException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.onap.template.Main;
+
+import java.io.IOException;
 
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +16,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 进度条弹出框.
  * 
@@ -27,7 +27,7 @@ import javafx.stage.Window;
 public class ProgressDialog {
 
   private static final Logger logger = LoggerFactory.getLogger(ProgressDialog.class);
-  
+
   /**
    * 父窗口.
    */
@@ -56,7 +56,8 @@ public class ProgressDialog {
   /**
    * 获取单例.
    * 
-   * @param owner 父窗口
+   * @param owner
+   *          父窗口
    * @return 单例
    */
   public static ProgressDialog getInstance(Window owner) {
@@ -68,11 +69,14 @@ public class ProgressDialog {
 
   /**
    * 构造函数.
-   * @param owner 父窗口
+   * 
+   * @param owner
+   *          父窗口
    */
   private ProgressDialog(Window owner) {
     try {
-      FXMLLoader fxmlLoader = new FXMLLoader(ProgressDialog.class.getResource("ProgressDialog.fxml"));
+      FXMLLoader fxmlLoader = new FXMLLoader(
+          ProgressDialog.class.getResource("ProgressDialog.fxml"));
       Parent root = fxmlLoader.load();
 
       progressExec = (ProgressBar) root.lookup("#progressExec");
@@ -95,7 +99,8 @@ public class ProgressDialog {
 
   /**
    * 显示弹出框.
-   * @return
+   * 
+   * @return 进度条弹出框
    */
   public ProgressDialog show() {
     stage.show();
@@ -111,7 +116,9 @@ public class ProgressDialog {
 
   /**
    * 执行任务.
-   * @param task 异步任务
+   * 
+   * @param task
+   *          异步任务
    */
   public void exec(Task task) {
     stage.titleProperty().bind(task.titleProperty());

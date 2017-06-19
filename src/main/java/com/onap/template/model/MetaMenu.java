@@ -1,10 +1,9 @@
 package com.onap.template.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * 创建导航菜单元数据
+ * 创建导航菜单元数据.
  * 
  * @author ywx474563 2017年6月14日
  */

@@ -1,33 +1,23 @@
 package com.onap.template.controller;
 
-import java.net.URL;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.onap.template.Main;
-import com.onap.template.jekyll.Launcher;
 import com.onap.template.jekyll.MenuLoader;
-import com.onap.template.jekyll.ProjectLoader;
 import com.onap.template.jekyll.StringValidator;
-import com.onap.template.model.JekyllMenu;
 import com.onap.template.model.Menus;
 import com.onap.template.model.MetaMenu;
-import com.onap.template.model.Project;
-import com.onap.template.model.Projects;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 创建导航类型控制器.
@@ -37,7 +27,7 @@ import javafx.scene.control.TextField;
 public class CreateMenuTypeController extends BaseController {
 
   private static final Logger logger = LoggerFactory.getLogger(CreateMenuTypeController.class);
-  
+
   /**
    * 导航模板xml文件路径.
    */
@@ -71,8 +61,8 @@ public class CreateMenuTypeController extends BaseController {
   }
 
   private void createMenuType() {
-    String name = txtName.getText().trim();
-    String desc = txtDesc.getText().trim();
+    final String name = txtName.getText().trim();
+    final String desc = txtDesc.getText().trim();
 
     // 提示框
     Alert tip = new Alert(Alert.AlertType.INFORMATION);
@@ -113,22 +103,22 @@ public class CreateMenuTypeController extends BaseController {
       tip.showAndWait();
       return;
     }
-    
-    //判断name是否只含小写字母
+
+    // 判断name是否只含小写字母
     if (!StringValidator.validateLowercase(name)) {
       tip.setContentText("简称只能包含小写字母，请重新输入");
       tip.showAndWait();
       return;
     }
-    
-    //判断desc是否只含大小写字母和空格
+
+    // 判断desc是否只含大小写字母和空格
     if (!StringValidator.validateLowerUpperWhitespace(desc)) {
       tip.setContentText("全称只能包含大小写字母和空格，请重新输入");
       tip.showAndWait();
       return;
     }
-    
-    //判断简称和全称是否已存在
+
+    // 判断简称和全称是否已存在
     Menus loadedMenus = MenuLoader.loadMenus(menuXmlPath);
     for (MetaMenu metaMenu : loadedMenus.getMetaMenus()) {
       if (StringUtils.equalsIgnoreCase(name, metaMenu.getName())) {
@@ -139,12 +129,11 @@ public class CreateMenuTypeController extends BaseController {
     }
 
     boolean res = MenuLoader.addMenuType(menuXmlPath, new MetaMenu(name, desc));
-    
-    tip.setContentText(res?"创建成功":"创建失败");
+    logger.warn(desc + "(" + name + ")" + (res ? "创建成功" : "创建失败"));
+    tip.setContentText(res ? "创建成功" : "创建失败");
     tip.showAndWait();
-    
+
     Main.getInstance().rebuildMenuBar();
   }
-  
-  
+
 }

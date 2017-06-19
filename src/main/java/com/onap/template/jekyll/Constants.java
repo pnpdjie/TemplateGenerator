@@ -1,10 +1,9 @@
 package com.onap.template.jekyll;
 
 /**
- * Jekyll项目常量
+ * Jekyll项目常量.
  * 
- * @author ywx474563
- *    2017年6月13日
+ * @author ywx474563 2017年6月13日
  */
 public class Constants {
 
@@ -39,7 +38,7 @@ public class Constants {
   public static final String JEKYLL_DATA_PATH_SEPARATOR = "/";
 
   /**
-   * Jekyll项目yml文件参数和值之间必须有一个空格
+   * Jekyll项目yml文件参数和值之间必须有一个空格.
    */
   public static final String JEKYLL_YML_SEPARATOR = " ";
 
