@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane hgap="5.0" vgap="5.0" minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.onap.template.controller.CreatedMenuController">
+<GridPane hgap="5.0" minHeight="600.0" minWidth="800.0" vgap="5.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.onap.template.controller.CreatedMenuController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="120.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="650.0" minWidth="650.0" />
   </columnConstraints>
   <rowConstraints>
+      <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="30.0" minHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="220.0" minHeight="200.0" vgrow="SOMETIMES" />
@@ -21,15 +21,29 @@
       <RowConstraints maxHeight="220.0" minHeight="220.0" prefHeight="50.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label text="名称：" />
-      <Label fx:id="lblName" GridPane.columnIndex="1" />
-      <Label text="导航数据文件路径：" GridPane.rowIndex="1" />
-      <Label fx:id="lblLeftTreePath" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TextArea fx:id="areaLeftTreeFile" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Label text="主页文件路径：" GridPane.rowIndex="3" />
-      <Label fx:id="lblIndexPath" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <TextArea fx:id="areaIndexFile" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <Label text="导航数据文件内容：" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-      <Label text="主页文件内容" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+      <Label text="简称：" />
+      <Label fx:id="lblName" prefHeight="15.0" prefWidth="600.0" GridPane.columnIndex="1" />
+      <Label text="全称：" GridPane.rowIndex="1" />
+      <Label fx:id="lblDesc" prefHeight="15.0" prefWidth="600.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label text="导航数据文件路径：" GridPane.rowIndex="2" />
+      <Label fx:id="lblLeftTreePath" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextArea fx:id="areaLeftTreeFile" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets top="10.0" />
+         </GridPane.margin></TextArea>
+      <Label text="主页文件路径：" GridPane.rowIndex="4" />
+      <Label fx:id="lblIndexPath" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <TextArea fx:id="areaIndexFile" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <GridPane.margin>
+            <Insets top="10.0" />
+         </GridPane.margin></TextArea>
+      <Label text="导航数据文件内容：" GridPane.rowIndex="3" GridPane.valignment="TOP">
+         <padding>
+            <Insets top="10.0" />
+         </padding></Label>
+      <Label text="主页文件内容" GridPane.rowIndex="5" GridPane.valignment="TOP">
+         <padding>
+            <Insets top="10.0" />
+         </padding></Label>
    </children>
 </GridPane>

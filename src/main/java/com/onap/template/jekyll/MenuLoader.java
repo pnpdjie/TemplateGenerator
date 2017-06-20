@@ -59,7 +59,7 @@ public class MenuLoader {
   }
 
   /**
-   * 在xml文件中增加导航类型.
+   * 在xml文件中增加导航模板.
    * @param xmlPath xml文件路径
    * @param menu Jekyll导航模板
    * @return 是否成功

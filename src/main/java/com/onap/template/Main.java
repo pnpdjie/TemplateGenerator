@@ -256,7 +256,7 @@ public class Main extends Application {
       menus.getItems().add(buildMenuItem(m, loadedMenus));
     }
 
-    MenuItem type = new MenuItem("导航类型");
+    MenuItem type = new MenuItem("导航模板");
     createMenu.getItems().addAll(menus, type);
     type.setOnAction(event -> createJekyllMenuType());
 
@@ -355,7 +355,7 @@ public class Main extends Application {
    */
   private void createJekyllMenuType() {
     try {
-      Tab tab = new Tab("创建导航类型");
+      Tab tab = new Tab("创建导航模板");
       Node node = FXMLLoader.load(Main.class.getResource("ui/CreateMenuType.fxml"));
       tab.setContent(new ScrollPane(node));
       contentTabs.getTabs().add(tab);

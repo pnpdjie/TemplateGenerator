@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <Menus mdCount="3" mdName="sample"> 
-  <MetaMenu name="install" desc="Install"/>  
+  <MetaMenu name="setup" desc="Setup"/>  
   <MetaMenu name="guides" desc="User Guides"/>  
   <MetaMenu name="deploy" desc="Deploy Guides"/> 
 </Menus>

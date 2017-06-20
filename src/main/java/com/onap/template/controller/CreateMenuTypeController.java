@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 创建导航类型控制器.
+ * 创建导航模板控制器.
  * 
  * @author ywx474563 2017年6月16日
  */

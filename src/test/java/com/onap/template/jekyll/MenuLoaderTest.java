@@ -21,7 +21,7 @@ public class MenuLoaderTest {
     assertEquals(menus.getMdCount(), 3);
     assertEquals(menus.getMdName(), "sample");
     // assertEquals(menus.getMetaMenus().size(), 3);
-    assertEquals(menus.getMetaMenus().get(0).getName(), "install");
+    assertEquals(menus.getMetaMenus().get(0).getName(), "setup");
     assertEquals(menus.getMetaMenus().get(1).getName(), "guides");
     assertEquals(menus.getMetaMenus().get(2).getName(), "deploy");
   }

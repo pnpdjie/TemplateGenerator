@@ -5,17 +5,18 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="289.0" prefWidth="455.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="com.onap.template.controller.CreateMenuTypeController">
+<AnchorPane prefHeight="289.0" prefWidth="455.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.onap.template.controller.CreateMenuTypeController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" text="简称：" />
       <Label layoutX="14.0" layoutY="46.0" text="全称：" />
       <TextField fx:id="txtName" layoutX="50.0" layoutY="10.0" prefHeight="23.0" prefWidth="395.0" />
       <TextField fx:id="txtDesc" layoutX="50.0" layoutY="42.0" prefHeight="23.0" prefWidth="395.0" />
-      <Label layoutX="16.0" layoutY="157.0" prefHeight="23.0" prefWidth="424.0" text="简称要求：不含空格和特殊字符，只能包含小写英文字母" />
-      <Label layoutX="16.0" layoutY="180.0" prefHeight="39.0" prefWidth="424.0" text="简称作用：_config.yml文件tocs的参数；_data目录下导航数据文件名称；以及该文件中bigheader属性的值；" textOverrun="CLIP" wrapText="true" />
-      <Label layoutX="15.0" layoutY="219.0" prefHeight="23.0" prefWidth="424.0" text="全称要求：不含特殊字符，只能包含大小写英文字母和空格" />
-      <Label layoutX="15.0" layoutY="242.0" prefHeight="23.0" prefWidth="424.0" text="全称作用：Documentation下菜单上方的描述文字" textOverrun="CLIP" wrapText="true" />
+      <Label layoutX="16.0" layoutY="157.0" prefHeight="23.0" prefWidth="60.0" text="简称要求：" />
+      <Label layoutX="16.0" layoutY="180.0" prefHeight="23.0" prefWidth="424.0" text="简称作用：Documentation下菜单的名称" textOverrun="CLIP" wrapText="true" />
+      <Label layoutX="15.0" layoutY="206.0" prefHeight="23.0" prefWidth="60.0" text="全称要求：" />
+      <Label layoutX="15.0" layoutY="232.0" prefHeight="23.0" prefWidth="424.0" text="全称作用：Documentation下菜单上方的描述文字" textOverrun="CLIP" wrapText="true" />
       <Button fx:id="btnCreate" layoutX="50.0" layoutY="75.0" mnemonicParsing="false" text="创建" />
+      <Label layoutX="76.0" layoutY="157.0" prefHeight="23.0" prefWidth="369.0" text="不含空格和特殊字符，只能包含小写英文字母" textFill="#d70a0a" />
+      <Label layoutX="75.0" layoutY="206.0" prefHeight="23.0" prefWidth="330.0" text="不含特殊字符，只能包含大小写英文字母和空格" textFill="#d70a0a" />
    </children>
 </AnchorPane>

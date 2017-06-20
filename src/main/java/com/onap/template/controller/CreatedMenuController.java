@@ -26,10 +26,16 @@ public class CreatedMenuController extends BaseController {
   private static final Logger logger = LoggerFactory.getLogger(LauncherController.class);
 
   /**
-   * Jekyll项目导航名称.
+   * Jekyll项目导航简称.
    */
   @FXML
   private Label lblName;
+
+  /**
+   * Jekyll项目导航全称.
+   */
+  @FXML
+  private Label lblDesc;
 
   /**
    * Jekyll项目导航数据文件路径.
@@ -66,6 +72,7 @@ public class CreatedMenuController extends BaseController {
    */
   public void initData(JekyllMenu menu) {
     lblName.setText(menu.getName());
+    lblDesc.setText(menu.getDesc());
     lblLeftTreePath.setText(menu.getLeftTreePath());
     lblIndexPath.setText(menu.getIndexPath());
 

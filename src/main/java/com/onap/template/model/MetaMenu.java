@@ -20,7 +20,8 @@ public class MetaMenu implements Serializable {
   }
 
   /**
-   * _config.yml中tocs中的toc名称，_data目录下对应yml文件的bigheader.
+   * _config.yml文件tocs的参数值；_data目录下导航数据yml文件名称；以及该文件中bigheader属性的值；导航名称.
+   * 
    */
   private String name;
 
