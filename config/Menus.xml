@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<Menus mdCount="3" mdName="sample"> 
-  <MetaMenu name="setup" desc="Setup"/>  
-  <MetaMenu name="guides" desc="User Guides"/>  
-  <MetaMenu name="deploy" desc="Deploy Guides"/>  
+<Menus> 
+  <MetaMenu name="setup" desc="Setup"> 
+    <MetaMenuTemplate path="config/MdTemplate.md" uploadPath=""/> 
+  </MetaMenu>  
+  <MetaMenu name="guides" desc="User Guides"> 
+    <MetaMenuTemplate path="config/MdTemplate.md" uploadPath=""/> 
+  </MetaMenu>  
+  <MetaMenu name="deploy" desc="Deploy Guides"> 
+    <MetaMenuTemplate path="config/MdTemplate.md" uploadPath=""/> 
+  </MetaMenu>  
+  <MetaMenu name="a" desc="a b">
+    <MetaMenuTemplate path="config\e94ce970-511f-4eb5-ba53-9d0989e955e1.md" uploadPath="D:\git\pnpdjie.github.io\docs\index.md"/>
+    <MetaMenuTemplate path="config\bf95dd86-d73f-4312-88d6-0fe712d3eab2.md" uploadPath="D:\git\pnpdjie.github.io\docs\guides\jekyll\install-jekyll-in-linux.md"/>
+    <MetaMenuTemplate path="config\ee7ba9e9-c760-4159-9ceb-147cedd94cda.md" uploadPath="D:\git\pnpdjie.github.io\docs\guides\jekyll\page-layout-configuration.md"/>
+  </MetaMenu>
 </Menus>

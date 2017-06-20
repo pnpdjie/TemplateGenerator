@@ -63,9 +63,24 @@ public class Constants {
   public static final String JEKYLL_DATA_BIGHEADER = "bigheader:";
 
   /**
+   * Jekyll项目数据文件中bigheader属性名.
+   */
+  public static final String JEKYLL_DATA_TITLE = "title:";
+  
+  /**
+   * Jekyll项目数据文件中section属性名.
+   */
+  public static final String JEKYLL_DATA_SECTION = "section:";
+
+  /**
    * Jekyll项目数据文件中每项子页前缀.
    */
   public static final String JEKYLL_DATA_TOCS_PRE = "- ";
+
+  /**
+   * Jekyll项目数据文件中每项子页前缀.
+   */
+  public static final String JEKYLL_DATA_TWO_BLANK = "  ";
 
   /**
    * Jekyll项目md文件目录名称.

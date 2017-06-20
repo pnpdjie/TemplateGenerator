@@ -3,6 +3,7 @@ package com.onap.template.jekyll;
 import com.onap.template.model.JekyllMenu;
 import com.onap.template.model.Menus;
 import com.onap.template.model.MetaMenu;
+import com.onap.template.model.MetaMenuTemplate;
 
 import java.io.File;
 import java.io.IOException;
@@ -167,9 +168,14 @@ public abstract class MenuGenerator extends Task<Boolean> {
       // 写入主页路径
       lines.add(Constants.JEKYLL_DATA_TOCS_PRE + menuDir + Constants.JEKYLL_MD_INDEX);
 
+      lines.add(Constants.JEKYLL_DATA_TOCS_PRE + Constants.JEKYLL_DATA_TITLE
+          + Constants.JEKYLL_YML_SEPARATOR + "模板");
+      lines.add(Constants.JEKYLL_DATA_TWO_BLANK + Constants.JEKYLL_DATA_SECTION);
       // 写入示例文件路径
-      for (int i = 0; i < loadedMenus.getMdCount(); i++) {
-        lines.add(Constants.JEKYLL_DATA_TOCS_PRE + menuDir + loadedMenus.getMdName() + (i + 1)
+      List<MetaMenuTemplate> templates = metaMenu.getTemplates();
+      int templateSize = templates.size();
+      for (int i = 0; i < templateSize; i++) {
+        lines.add(Constants.JEKYLL_DATA_TOCS_PRE + menuDir + metaMenu.getName() + (i + 1)
             + Constants.JEKYLL_MD_EXTENSION);
       }
 
@@ -200,7 +206,7 @@ public abstract class MenuGenerator extends Task<Boolean> {
     try {
       updateMessage("--------------创建md文件--------------");
 
-      // md内容模板
+      // 通用md内容模板，主页模板
       File mdTemplate = new File(mdTemplatePath);
       String dataFileRelativePath = Constants.JEKYLL_DATA_DIR + Constants.JEKYLL_DATA_PATH_SEPARATOR
           + metaMenu.getName() + Constants.JEKYLL_DATA_EXTENSION;
@@ -221,14 +227,21 @@ public abstract class MenuGenerator extends Task<Boolean> {
 
       updateMessage("示例文件创建成功，路径：");
       // 写入示例文件路径
-      for (int i = 0; i < loadedMenus.getMdCount(); i++) {
-        // 替换模板中标题和菜单数据文件路径
-        String sampleContent = mdTemplateContent.replaceAll("\\{title\\}",
-            loadedMenus.getMdName() + (i + 1));
+      List<MetaMenuTemplate> templates = metaMenu.getTemplates();
+      int templateSize = templates.size();
+      for (int i = 0; i < templateSize; i++) {
+        // 通用md内容模板，主页模板
+        File template = new File(System.getProperty("user.dir")+ Constants.JEKYLL_DATA_PATH_SEPARATOR+templates.get(i).getPath());
+        String templateContent = FileUtils.readFileToString(template, Constants.ENCODING)
+            .replaceAll("\\{leftTreePath\\}", dataFileRelativePath.replace("\\", "\\\\"));
 
-        // 写数据到sample1...3.md
+        // 如果包含{title}，替换模板中标题和菜单数据文件路径
+        String sampleContent = templateContent.replaceAll("\\{title\\}",
+            metaMenu.getName() + (i + 1));
+
+        // 写数据到md模板文件
         String samplePath = mdDir.getAbsolutePath() + Constants.JEKYLL_DATA_PATH_SEPARATOR
-            + metaMenu.getName() + Constants.JEKYLL_DATA_PATH_SEPARATOR + loadedMenus.getMdName()
+            + metaMenu.getName() + Constants.JEKYLL_DATA_PATH_SEPARATOR + metaMenu.getName()
             + (i + 1) + Constants.JEKYLL_MD_EXTENSION;
         FileUtils.write(new File(samplePath), sampleContent, Constants.ENCODING);
 

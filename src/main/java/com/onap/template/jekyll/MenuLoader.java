@@ -2,6 +2,7 @@ package com.onap.template.jekyll;
 
 import com.onap.template.model.Menus;
 import com.onap.template.model.MetaMenu;
+import com.onap.template.model.MetaMenuTemplate;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,6 +46,9 @@ public class MenuLoader {
     digester.addObjectCreate("Menus/MetaMenu", "com.onap.template.model.MetaMenu");
     digester.addSetProperties("Menus/MetaMenu");
     digester.addSetNext("Menus/MetaMenu", "add");
+    digester.addObjectCreate("Menus/MetaMenu/MetaMenuTemplate", "com.onap.template.model.MetaMenuTemplate");
+    digester.addSetProperties("Menus/MetaMenu/MetaMenuTemplate");
+    digester.addSetNext("Menus/MetaMenu/MetaMenuTemplate", "add");
 
     Menus menus = null;
     try {
@@ -76,7 +80,16 @@ public class MenuLoader {
       // 增加属性
       menuElem.addAttribute("name", menu.getName());
       menuElem.addAttribute("desc", menu.getDesc());
+      
+      for (MetaMenuTemplate template : menu.getTemplates()) {
+        //增加MetaMenuTemplate
+        Element templateElem = menuElem.addElement("MetaMenuTemplate");
 
+        // 增加MetaMenuTemplate属性
+        templateElem.addAttribute("path", template.getPath());
+        templateElem.addAttribute("uploadPath", template.getUploadPath());
+      }
+      
       // 指定文件输出的位置
       FileOutputStream out = new FileOutputStream(xmlPath);
 

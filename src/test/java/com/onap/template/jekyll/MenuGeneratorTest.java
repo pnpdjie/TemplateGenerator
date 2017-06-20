@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 import com.onap.template.model.JekyllMenu;
 import com.onap.template.model.Menus;
 import com.onap.template.model.MetaMenu;
+import com.onap.template.model.MetaMenuTemplate;
 
 import java.io.File;
 import java.util.List;
@@ -37,7 +38,7 @@ public class MenuGeneratorTest {
     // 测试数据路径
     String relativePath = System.getProperty("user.dir") + "\\_test_jekyll_project\\";
     // 读取菜单模板
-    loadedMenus = MenuLoader.loadMenus(relativePath + "data/Menus.xml");
+    loadedMenus = MenuLoader.loadMenus(relativePath + "config/Menus.xml");
     metaMenu = loadedMenus.getMetaMenus().get(0);
 
     // 读取Jekyll项目菜单数据
@@ -67,13 +68,14 @@ public class MenuGeneratorTest {
           fail("docs目录下index.md未创建成功");
         }
 
-        for (int i = 0; i < loadedMenus.getMdCount(); i++) {
-          // sample1...3.md
+        List<MetaMenuTemplate> templates = metaMenu.getTemplates();
+        int templateSize = templates.size();
+        for (int i = 0; i < templateSize; i++) {
           String samplePath = mdDir.getAbsolutePath() + File.separator + metaMenu.getName()
-              + File.separator + loadedMenus.getMdName() + (i + 1) + Constants.JEKYLL_MD_EXTENSION;
+              + File.separator + metaMenu.getName() + (i + 1) + Constants.JEKYLL_MD_EXTENSION;
           File sampleFile = new File(samplePath);
           if (!sampleFile.exists()) {
-            fail("docs目录下" + loadedMenus.getMdName() + (i + 1) + ".md未创建成功");
+            fail("docs目录下" + metaMenu.getName() + (i + 1) + ".md未创建成功");
           }
         }
       }

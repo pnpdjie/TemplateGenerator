@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Menus> 
+  <MetaMenu name="setup" desc="Setup"> 
+    <MetaMenuTemplate path="config/MdTemplate.md" uploadPath=""/> 
+  </MetaMenu>  
+  <MetaMenu name="guides" desc="User Guides"> 
+    <MetaMenuTemplate path="config/MdTemplate.md" uploadPath=""/> 
+  </MetaMenu>  
+  <MetaMenu name="deploy" desc="Deploy Guides"> 
+    <MetaMenuTemplate path="config/MdTemplate.md" uploadPath=""/> 
+  </MetaMenu>  
+  <MetaMenu name="a" desc="a b"> 
+    <MetaMenuTemplate path="config/ca8c0b2a-62d8-4c44-a1b9-f5f316603a37.md" uploadPath=""/>  
+    <MetaMenuTemplate path="config/f7b88096-0176-4400-bda5-cf9fb553c61d.md" uploadPath=""/> 
+  </MetaMenu>  
+  <MetaMenu name="a" desc="a b"> 
+    <MetaMenuTemplate path="config\e3f54662-884a-4d81-9c8b-959ca621a9c4.md" uploadPath=""/>  
+    <MetaMenuTemplate path="config\fbd8cfe2-d2a8-4d17-aa7d-2f0b3b0ab4d6.md" uploadPath=""/> 
+  </MetaMenu>  
+  <MetaMenu name="a" desc="a b"> 
+    <MetaMenuTemplate path="config\c3d6df18-f7c8-447a-a3a2-27321a8d73f7.md" uploadPath=""/>  
+    <MetaMenuTemplate path="config\f7980b6f-a611-4e7c-9062-62820a7b00f2.md" uploadPath=""/> 
+  </MetaMenu>  
+  <MetaMenu name="a" desc="a b"> 
+    <MetaMenuTemplate path="config\0c01ea1c-d894-4fd6-be86-369472e1e678.md" uploadPath=""/>  
+    <MetaMenuTemplate path="config\baeeb475-00b6-4f8b-a7d1-d7436665a4d7.md" uploadPath=""/> 
+  </MetaMenu>  
+  <MetaMenu name="a" desc="a b"> 
+    <MetaMenuTemplate path="config\a340827d-0099-4d7d-a208-fd33b9b5f684.md" uploadPath=""/>  
+    <MetaMenuTemplate path="config\1f91262a-0c84-4582-b36f-ff1b0c8a9b4f.md" uploadPath=""/> 
+  </MetaMenu>  
+  <MetaMenu name="a" desc="a b"> 
+    <MetaMenuTemplate path="config\0898ca59-feac-43a6-ade7-a08136a328f7.md" uploadPath=""/>  
+    <MetaMenuTemplate path="config\a29cabd5-f683-407d-a457-e3eab0a54bb6.md" uploadPath=""/> 
+  </MetaMenu>  
+  <MetaMenu name="a" desc="a b"> 
+    <MetaMenuTemplate path="config\b002f426-7bb2-43be-acc0-8c2940a9447e.md" uploadPath=""/>  
+    <MetaMenuTemplate path="config\abcb9a20-4ffc-42df-bcca-8b1c97033587.md" uploadPath=""/> 
+  </MetaMenu>  
+  <MetaMenu name="a" desc="a b"> 
+    <MetaMenuTemplate path="config\0861b74b-baa3-4025-913d-f65d5c66ddec.md" uploadPath=""/>  
+    <MetaMenuTemplate path="config\0f737cff-db84-4277-97be-1eceb749aa56.md" uploadPath=""/> 
+  </MetaMenu>  
+  <MetaMenu name="a" desc="a b">
+    <MetaMenuTemplate path="config\54f292aa-92b3-427c-be7b-e202b35d2724.md" uploadPath=""/>
+    <MetaMenuTemplate path="config\49369202-606d-4cf2-92d0-61d34ace85c4.md" uploadPath=""/>
+  </MetaMenu>
+</Menus>

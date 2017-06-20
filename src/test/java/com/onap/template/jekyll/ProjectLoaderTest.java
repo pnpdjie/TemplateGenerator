@@ -22,8 +22,8 @@ public class ProjectLoaderTest {
   public void testLoadProjects() {
     Projects projects = ProjectLoader.loadProjects(projectXmlPath);
     // assertEquals(projects.getProjects().size(), 2);
-    assertEquals(projects.getProjects().get(0).getPath(), "D:\\git\\pnpdjie.github.io");
-    assertEquals(projects.getProjects().get(1).getPath(),
+    assertEquals(projects.getProjects().get(1).getPath(), "D:\\git\\pnpdjie.github.io");
+    assertEquals(projects.getProjects().get(0).getPath(),
         "D:\\JAVA\\workspace\\TemplateGenerator\\_test_jekyll_project\\pnpdjie.github.io");
   }
 
