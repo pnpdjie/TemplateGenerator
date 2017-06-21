@@ -157,6 +157,7 @@ public class CreateMenuTypeController extends BaseController {
 
   /**
    * 增加模板路径显示.
+   * 
    * @param list
    *          模板文件列表
    */
@@ -186,9 +187,11 @@ public class CreateMenuTypeController extends BaseController {
       templatePaths.add(templatePath);
       vboxTemplate.getChildren().add(new Label(templatePath));
     }
-    tip.setContentText(sb.toString());
-    tip.showAndWait();
-    return;
+    if (sb.length() > 0) {
+      tip.setContentText(sb.toString());
+      tip.showAndWait();
+      return;
+    }
   }
 
   private void createMenuType() {

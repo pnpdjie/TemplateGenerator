@@ -10,9 +10,25 @@
   <MetaMenu name="deploy" desc="Deploy Guides"> 
     <MetaMenuTemplate path="config/MdTemplate.md" uploadPath=""/> 
   </MetaMenu>  
-  <MetaMenu name="a" desc="a b">
-    <MetaMenuTemplate path="config\e94ce970-511f-4eb5-ba53-9d0989e955e1.md" uploadPath="D:\git\pnpdjie.github.io\docs\index.md"/>
-    <MetaMenuTemplate path="config\bf95dd86-d73f-4312-88d6-0fe712d3eab2.md" uploadPath="D:\git\pnpdjie.github.io\docs\guides\jekyll\install-jekyll-in-linux.md"/>
-    <MetaMenuTemplate path="config\ee7ba9e9-c760-4159-9ceb-147cedd94cda.md" uploadPath="D:\git\pnpdjie.github.io\docs\guides\jekyll\page-layout-configuration.md"/>
+  <MetaMenu name="a" desc="a b"> 
+    <MetaMenuTemplate path="config\e94ce970-511f-4eb5-ba53-9d0989e955e1.md" uploadPath="D:\git\pnpdjie.github.io\docs\index.md"/>  
+    <MetaMenuTemplate path="config\bf95dd86-d73f-4312-88d6-0fe712d3eab2.md" uploadPath="D:\git\pnpdjie.github.io\docs\guides\jekyll\install-jekyll-in-linux.md"/>  
+    <MetaMenuTemplate path="config\ee7ba9e9-c760-4159-9ceb-147cedd94cda.md" uploadPath="D:\git\pnpdjie.github.io\docs\guides\jekyll\page-layout-configuration.md"/> 
+  </MetaMenu>  
+  <MetaMenu name="ab" desc="ab"> 
+    <MetaMenuTemplate path="config\7ec65e23-09d9-4bf7-9d30-7c919d35578f.md" uploadPath="D:\git\pnpdjie.github.io\docs\deploy\index.md"/>  
+    <MetaMenuTemplate path="config\3feb16aa-e1a5-476c-9347-abb4b5032b05.md" uploadPath="D:\git\pnpdjie.github.io\docs\deploy\sample1.md"/>  
+    <MetaMenuTemplate path="config\601db6b8-9b54-445f-becd-5d643522423a.md" uploadPath="D:\git\pnpdjie.github.io\docs\deploy\sample2.md"/>  
+    <MetaMenuTemplate path="config\1d5a77d1-cedd-4afc-98ab-5dd0d1f39d32.md" uploadPath="D:\git\pnpdjie.github.io\docs\deploy\sample3.md"/>  
+    <MetaMenuTemplate path="config\c60fd9e7-18dc-422c-823b-032a31574337.md" uploadPath="D:\git\pnpdjie.github.io\docs\abc\index.md"/>  
+    <MetaMenuTemplate path="config\36b6af54-0d50-4514-9813-25e0469f25b0.md" uploadPath="D:\git\pnpdjie.github.io\docs\abc\sample1.md"/>  
+    <MetaMenuTemplate path="config\26e84435-4dab-4044-a1e8-9d478aa62c22.md" uploadPath="D:\git\pnpdjie.github.io\docs\abc\sample2.md"/>  
+    <MetaMenuTemplate path="config\e5442e35-689a-4d98-a912-b2a225387017.md" uploadPath="D:\git\pnpdjie.github.io\docs\abc\sample3.md"/> 
+  </MetaMenu>  
+  <MetaMenu name="abc" desc="abc">
+    <MetaMenuTemplate path="config\27e0daca-e8b4-4ccf-b9a4-c334612a8ac5.md" uploadPath="D:\git\pnpdjie.github.io\docs\deploy\index.md"/>
+    <MetaMenuTemplate path="config\7fc46a6a-0c03-4f49-a83b-282a571e9f53.md" uploadPath="D:\git\pnpdjie.github.io\docs\deploy\sample1.md"/>
+    <MetaMenuTemplate path="config\19ffe071-979f-4c46-8d83-68df33f9ade5.md" uploadPath="D:\git\pnpdjie.github.io\docs\deploy\sample2.md"/>
+    <MetaMenuTemplate path="config\524c6be2-2c18-43ec-960e-101eb2a56cb7.md" uploadPath="D:\git\pnpdjie.github.io\docs\deploy\sample3.md"/>
   </MetaMenu>
 </Menus>

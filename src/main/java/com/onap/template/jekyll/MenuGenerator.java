@@ -8,9 +8,7 @@ import com.onap.template.model.MetaMenuTemplate;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -168,7 +166,7 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
       List<MetaMenuTemplate> templates = metaMenu.getTemplates();
       int templateSize = templates.size();
       for (int i = 0; i < templateSize; i++) {
-        lines.add(Constants.JEKYLL_DATA_TOCS_PRE + menuDir + metaMenu.getName() + (i + 1)
+        lines.add(Constants.JEKYLL_DATA_TWO_BLANK + Constants.JEKYLL_DATA_TOCS_PRE + menuDir + metaMenu.getName() + (i + 1)
             + Constants.JEKYLL_MD_EXTENSION);
       }
 
