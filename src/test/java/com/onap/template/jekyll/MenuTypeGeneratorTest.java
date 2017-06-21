@@ -1,6 +1,7 @@
 package com.onap.template.jekyll;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +28,12 @@ public class MenuTypeGeneratorTest {
 
       @Override
       public void afterSucceeded() {
-        // TODO Auto-generated method stub
-
+        fail("非md格式文档执行成功");
       }
 
       @Override
       public void afterFailed() {
-        // TODO Auto-generated method stub
-
+        assertEquals(this.getTitle(), "执行失败");
       }
 
     };
