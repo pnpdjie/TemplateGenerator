@@ -46,7 +46,8 @@ public class MenuLoader {
     digester.addObjectCreate("Menus/MetaMenu", "com.onap.template.model.MetaMenu");
     digester.addSetProperties("Menus/MetaMenu");
     digester.addSetNext("Menus/MetaMenu", "add");
-    digester.addObjectCreate("Menus/MetaMenu/MetaMenuTemplate", "com.onap.template.model.MetaMenuTemplate");
+    digester.addObjectCreate("Menus/MetaMenu/MetaMenuTemplate",
+        "com.onap.template.model.MetaMenuTemplate");
     digester.addSetProperties("Menus/MetaMenu/MetaMenuTemplate");
     digester.addSetNext("Menus/MetaMenu/MetaMenuTemplate", "add");
 
@@ -64,11 +65,13 @@ public class MenuLoader {
 
   /**
    * 在xml文件中增加导航模板.
-   * @param xmlPath xml文件路径
-   * @param menu Jekyll导航模板
-   * @return 是否成功
+   * 
+   * @param xmlPath
+   *          xml文件路径
+   * @param menu
+   *          Jekyll导航模板
    */
-  public static boolean addMenuType(String xmlPath, MetaMenu menu) {
+  public static void addMenuType(String xmlPath, MetaMenu menu) {
     try {
       // 读取Menus.xml文件
       Document doc = new SAXReader().read(new File(xmlPath));
@@ -80,16 +83,16 @@ public class MenuLoader {
       // 增加属性
       menuElem.addAttribute("name", menu.getName());
       menuElem.addAttribute("desc", menu.getDesc());
-      
+
       for (MetaMenuTemplate template : menu.getTemplates()) {
-        //增加MetaMenuTemplate
+        // 增加MetaMenuTemplate
         Element templateElem = menuElem.addElement("MetaMenuTemplate");
 
         // 增加MetaMenuTemplate属性
         templateElem.addAttribute("path", template.getPath());
         templateElem.addAttribute("uploadPath", template.getUploadPath());
       }
-      
+
       // 指定文件输出的位置
       FileOutputStream out = new FileOutputStream(xmlPath);
 
@@ -105,20 +108,19 @@ public class MenuLoader {
 
       // 关闭流
       writer.close();
-      
-      return true;
+
     } catch (DocumentException e) {
       logger.error("Menus.xml文件读取出错");
-      return false;
+      throw new RuntimeException("Menus.xml文件读取出错");
     } catch (FileNotFoundException e) {
       logger.error("Menus.xml文件未找到");
-      return false;
+      throw new RuntimeException("Menus.xml文件未找到");
     } catch (UnsupportedEncodingException e) {
-      logger.error("Menus.xml文件不支持utf-8编码");
-      return false;
+      logger.error("Menus.xml文件编码格式错误");
+      throw new RuntimeException("Menus.xml文件编码格式错误");
     } catch (IOException e) {
       logger.error("Menus.xml文件写入出错");
-      return false;
+      throw new RuntimeException("Menus.xml文件写入出错");
     }
   }
 }

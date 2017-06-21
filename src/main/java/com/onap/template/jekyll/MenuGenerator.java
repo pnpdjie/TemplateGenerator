@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javafx.concurrent.Task;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -25,7 +23,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author ywx474563 2017年6月15日
  */
-public abstract class MenuGenerator extends Task<Boolean> {
+public abstract class MenuGenerator extends BaseTask<Boolean> {
 
   private static final Logger logger = LoggerFactory.getLogger(MenuGenerator.class);
 
@@ -47,11 +45,6 @@ public abstract class MenuGenerator extends Task<Boolean> {
   public String getDataFilePath() {
     return dataFilePath;
   }
-
-  /**
-   * 日志.
-   */
-  private StringBuilder logBuilder = new StringBuilder();
 
   /**
    * 菜单对应的数据文件（_data/*.yml）
@@ -231,7 +224,8 @@ public abstract class MenuGenerator extends Task<Boolean> {
       int templateSize = templates.size();
       for (int i = 0; i < templateSize; i++) {
         // 通用md内容模板，主页模板
-        File template = new File(System.getProperty("user.dir")+ Constants.JEKYLL_DATA_PATH_SEPARATOR+templates.get(i).getPath());
+        File template = new File(System.getProperty("user.dir")
+            + Constants.JEKYLL_DATA_PATH_SEPARATOR + templates.get(i).getPath());
         String templateContent = FileUtils.readFileToString(template, Constants.ENCODING)
             .replaceAll("\\{leftTreePath\\}", dataFileRelativePath.replace("\\", "\\\\"));
 
@@ -283,51 +277,7 @@ public abstract class MenuGenerator extends Task<Boolean> {
   }
 
   @Override
-  protected void updateMessage(String message) {
-    logBuilder.append(message + "\r\n");
-    super.updateMessage(logBuilder.toString());
+  public String getLogName() {
+    return MenuGenerator.class.getSimpleName();
   }
-
-  @Override
-  protected void succeeded() {
-    super.succeeded();
-    updateMessage("执行成功");
-
-    createLogFile();
-
-    updateTitle("执行成功");
-
-    afterSucceeded();
-  }
-
-  @Override
-  protected void failed() {
-    super.failed();
-    updateMessage("执行失败");
-
-    createLogFile();
-
-    updateTitle("执行失败");
-
-    afterFailed();
-  }
-
-  /**
-   * 生成日志文件.
-   */
-  private void createLogFile() {
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-    String logPath = System.getProperty("user.dir") + "\\logs\\log_menu_generate_"
-        + formatter.format(new Date()) + ".log";
-    try {
-      FileUtils.write(new File(logPath), logBuilder.toString(), Constants.ENCODING);
-      updateMessage("日志文件路径：" + logPath);
-    } catch (IOException e) {
-      updateMessage("日志文件生成失败");
-    }
-  }
-
-  public abstract void afterSucceeded();
-
-  public abstract void afterFailed();
 }

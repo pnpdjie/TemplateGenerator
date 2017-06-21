@@ -1,5 +1,6 @@
 package com.onap.template;
 
+import com.onap.template.controller.CreateMenuTypeController;
 import com.onap.template.controller.LauncherController;
 import com.onap.template.jekyll.Launcher;
 import com.onap.template.jekyll.MenuGenerator;
@@ -17,6 +18,8 @@ import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -61,7 +64,7 @@ public class Main extends Application {
    * 选中的Jekyll项目路径.
    */
   private String jekyllProjectPath;
-  
+
   private RadioMenuItem selectedJekyllProject;
 
   private static Main instance;
@@ -356,8 +359,18 @@ public class Main extends Application {
   private void createJekyllMenuType() {
     try {
       Tab tab = new Tab("创建导航模板");
-      Node node = FXMLLoader.load(Main.class.getResource("ui/CreateMenuType.fxml"));
-      tab.setContent(new ScrollPane(node));
+
+      FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("ui/CreateMenuType.fxml"));
+      ScrollPane pane = new ScrollPane(fxmlLoader.load());
+      // root.setCenter(fxmlLoader.load());
+      // CreateMenuTypeController createMenuTypeController =
+      // (CreateMenuTypeController) fxmlLoader
+      // .getController(); // 获取Controller的实例对象
+      // createMenuTypeController.setTab(tab);
+
+      // Node node =
+      // FXMLLoader.load(Main.class.getResource("ui/CreateMenuType.fxml"));
+      tab.setContent(pane);
       contentTabs.getTabs().add(tab);
       SingleSelectionModel<Tab> selectionModel = contentTabs.getSelectionModel();
       selectionModel.select(tab);
@@ -375,25 +388,25 @@ public class Main extends Application {
    *          Jekyll项目路径信息
    */
   private boolean switchJekyllProject(ActionEvent event, Project project) {
-    RadioMenuItem menu = (RadioMenuItem)event.getSource();
-    
+    RadioMenuItem menu = (RadioMenuItem) event.getSource();
+
     if (StringUtils.equalsIgnoreCase(project.getPath(), jekyllProjectPath)) {
-//      menu.setSelected(false);
-//      selectedJekyllProject.setSelected(true);
+      // menu.setSelected(false);
+      // selectedJekyllProject.setSelected(true);
       return false;
     }
-    
+
     try {
       List<JekyllMenu> listMenu = launcherController.getJekyllMenu(project.getPath());
       rebuildMainUi(listMenu, project.getPath());
-      //menu.setSelected(true);
+      // menu.setSelected(true);
       selectedJekyllProject = menu;
       return true;
     } catch (RuntimeException e) {
       logger.error(e.getLocalizedMessage());
       menu.setSelected(false);
       selectedJekyllProject.setSelected(true);
-      
+
       Alert tip = new Alert(Alert.AlertType.INFORMATION);
       tip.setTitle("提示");
       tip.initOwner(null);
@@ -402,6 +415,10 @@ public class Main extends Application {
       tip.showAndWait();
       return false;
     }
+  }
+
+  public void closeTab(Tab tab) {
+    contentTabs.getTabs().remove(tab);
   }
 
 }

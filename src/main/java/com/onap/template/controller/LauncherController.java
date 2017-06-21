@@ -77,6 +77,9 @@ public class LauncherController extends BaseController {
   @FXML
   private Button btnCancel;
 
+  /**
+   * 提示框.
+   */
   private Alert tip;
 
   @Override

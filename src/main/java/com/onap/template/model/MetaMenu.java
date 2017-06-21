@@ -16,6 +16,12 @@ public class MetaMenu implements Serializable {
   public MetaMenu() {
   }
 
+  /**
+   * 导航菜单构造方法.
+   * @param name 导航简称
+   * @param desc 导航全称
+   * @param templates 导航模板列表
+   */
   public MetaMenu(String name, String desc, List<MetaMenuTemplate> templates) {
     this.name = name;
     this.desc = desc;
