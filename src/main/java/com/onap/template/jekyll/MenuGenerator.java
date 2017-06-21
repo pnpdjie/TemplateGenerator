@@ -166,8 +166,8 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
       List<MetaMenuTemplate> templates = metaMenu.getTemplates();
       int templateSize = templates.size();
       for (int i = 0; i < templateSize; i++) {
-        lines.add(Constants.JEKYLL_DATA_TWO_BLANK + Constants.JEKYLL_DATA_TOCS_PRE + menuDir + metaMenu.getName() + (i + 1)
-            + Constants.JEKYLL_MD_EXTENSION);
+        lines.add(Constants.JEKYLL_DATA_TWO_BLANK + Constants.JEKYLL_DATA_TOCS_PRE + menuDir
+            + metaMenu.getName() + (i + 1) + Constants.JEKYLL_MD_EXTENSION);
       }
 
       updateMessage("菜单数据文件：");

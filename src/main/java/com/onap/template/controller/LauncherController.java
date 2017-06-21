@@ -145,7 +145,7 @@ public class LauncherController extends BaseController {
     String cwd = System.getProperty("user.dir");
     File file = new File(cwd);
     chooser.setInitialDirectory(file);
-    File chosenDir = chooser.showDialog(null);
+    File chosenDir = chooser.showDialog(mainStage);
     if (chosenDir != null) {
       String choosedPath = chosenDir.getAbsolutePath();
       cbPath.setValue(choosedPath);

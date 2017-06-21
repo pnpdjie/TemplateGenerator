@@ -26,7 +26,7 @@ Packaging Format: exe
 
 点击Generate ant build.xml only的连接(在右边可以找到)。 生成ant编译
 
-验证是否创建一个新的build目录和文件build.xml
+验证是否创建一个新的run目录和文件build.xml
 
 ## 添加安装程序的图标
 
@@ -54,17 +54,17 @@ TemplateGenerator.icns
 
 ## 添加资源
 
-config目录不能自动拷贝。我们必须手动添加它到build目录下:
+config目录不能自动拷贝。我们必须手动添加它到run目录下:
 
 在run目录下创建下面的子目录:
 
 run/dist
 
-拷贝config目录(包含我们应用的图标)到build/dist.
+拷贝config目录(包含我们应用的图标)到run/dist.
 
 ## 编辑build.xml包含图标
 
-E(fx)clipse生成的build/build.xml文件(准备使用Ant执行)。我们的安装器图标和资源图像不能正常工作。
+E(fx)clipse生成的run/build.xml文件(准备使用Ant执行)。我们的安装器图标和资源图像不能正常工作。
 
 当e(fx)clipse没有告诉它包含其它资源，例如config目录和上面添加的安装文件图标时，我们必须手动编辑build.xml文件。
 
@@ -128,6 +128,6 @@ Windows下AddressApp
 
 编译将运行一会(在我的计算机上大概1分钟)。
 
-如果一切都成功，你应该在build/deploy/bundles目录下找到本地打包。
+如果一切都成功，你应该在run/deploy/bundles目录下找到本地打包。
 
 文件TemplateGenerator-1.0.exe可以用作为单个文件安装应用。该安装程序将拷贝打包到C:/Users/[yourname]/AppData/Local/AddressApp目录下。

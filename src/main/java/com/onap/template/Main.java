@@ -249,7 +249,7 @@ public class Main extends Application {
     if (loadedMenus == null) {
       Alert tip = new Alert(Alert.AlertType.INFORMATION);
       tip.setTitle("提示");
-      tip.initOwner(null);
+      tip.initOwner(mainStage);
       tip.setHeaderText(null);
       tip.setContentText("菜单xml文件读取失败");
       tip.showAndWait();
@@ -323,6 +323,7 @@ public class Main extends Application {
   private void createJekyllMenu(MetaMenu metaMenu, Menus loadedMenus) {
     Alert alert = new Alert(AlertType.CONFIRMATION);
     alert.setTitle("确认");
+    alert.initOwner(mainStage);
     alert.setHeaderText(null);
     alert.setContentText("确认创建导航" + metaMenu.getDesc() + "(" + metaMenu.getName() + ")" + "?");
 
@@ -362,11 +363,9 @@ public class Main extends Application {
 
       FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("ui/CreateMenuType.fxml"));
       ScrollPane pane = new ScrollPane(fxmlLoader.load());
-      // root.setCenter(fxmlLoader.load());
-      // CreateMenuTypeController createMenuTypeController =
-      // (CreateMenuTypeController) fxmlLoader
-      // .getController(); // 获取Controller的实例对象
-      // createMenuTypeController.setTab(tab);
+      CreateMenuTypeController createMenuTypeController = (CreateMenuTypeController) fxmlLoader
+          .getController(); // 获取Controller的实例对象
+      createMenuTypeController.setMainStage(mainStage);
 
       // Node node =
       // FXMLLoader.load(Main.class.getResource("ui/CreateMenuType.fxml"));
@@ -409,7 +408,7 @@ public class Main extends Application {
 
       Alert tip = new Alert(Alert.AlertType.INFORMATION);
       tip.setTitle("提示");
-      tip.initOwner(null);
+      tip.initOwner(mainStage);
       tip.setHeaderText(null);
       tip.setContentText(e.getMessage());
       tip.showAndWait();
