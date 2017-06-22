@@ -14,7 +14,7 @@ public class StringValidator {
 
   private static final String REG_LOWERCASE = "^[a-z]+$";
 
-  private static final String REG_LOWERCASE_AND_UPPERCASE_AND_WHITESPACE = "^[A-Za-z\\s]+$";
+  private static final String REG_LOWERCASE_AND_UPPERCASE_AND_WHITESPACE = "^[0-9A-Za-z\\s]+$";
 
   /**
    * 判断是否包含特殊字符.
@@ -29,12 +29,12 @@ public class StringValidator {
   }
 
   /**
-   * 判断是否只含大小写字母和空格.
+   * 判断是否只含大小写字母、数字和空格.
    * 
    * @param data 被验证的字符串
    * @return 验证结果
    */
-  public static boolean validateLowerUpperWhitespace(String data) {
+  public static boolean validateLowerUpperNumberWhitespace(String data) {
     Pattern p = Pattern.compile(REG_LOWERCASE_AND_UPPERCASE_AND_WHITESPACE);
     Matcher matcher = p.matcher(data);
     return matcher.find();

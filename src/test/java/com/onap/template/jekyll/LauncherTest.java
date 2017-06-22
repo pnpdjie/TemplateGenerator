@@ -9,6 +9,7 @@ import com.onap.template.model.JekyllMenu;
 import java.io.File;
 import java.util.List;
 
+import org.apache.log4j.PropertyConfigurator;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -27,6 +28,7 @@ public class LauncherTest {
 
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
+    PropertyConfigurator.configure("config\\log4j.properties");
     launcher = Launcher.getInstance();
   }
 

@@ -214,7 +214,7 @@ public class Launcher {
           for (int j = 0; j < lines.size(); j++) {
             if (StringUtils.startsWith(lines.get(j), Constants.JEKYLL_DATA_ABSTRACT)) {
               String[] abstracts = lines.get(j).split(":");
-              menu.setDesc(StringUtils.remove(abstracts[1], '"'));
+              menu.setDesc(StringUtils.remove(abstracts[1], '"').trim());
               break;
             }
           }

@@ -11,7 +11,6 @@ import com.onap.template.model.Projects;
 import java.util.Date;
 
 import org.junit.Test;
-import org.junit.internal.runners.statements.Fail;
 
 /**
  * ProjectLoader单元测试.

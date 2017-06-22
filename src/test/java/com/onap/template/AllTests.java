@@ -13,6 +13,7 @@ import com.onap.template.model.MetaMenuTest;
 import com.onap.template.model.ProjectTest;
 import com.onap.template.model.ProjectsTest;
 
+import org.apache.log4j.PropertyConfigurator;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -28,5 +29,4 @@ import org.junit.runners.Suite.SuiteClasses;
     JekyllMenuTest.class, MenusTest.class, MetaMenuTemplateTest.class, MetaMenuTest.class,
     ProjectsTest.class, ProjectTest.class })
 public class AllTests {
-
 }

@@ -24,7 +24,6 @@
       <Label text="简称：" />
       <Label fx:id="lblName" prefHeight="15.0" prefWidth="600.0" GridPane.columnIndex="1" />
       <Label text="全称：" GridPane.rowIndex="1" />
-      <Label fx:id="lblDesc" prefHeight="15.0" prefWidth="600.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label text="导航数据文件路径：" GridPane.rowIndex="2" />
       <Label fx:id="lblLeftTreePath" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <TextArea fx:id="areaLeftTreeFile" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -45,6 +44,7 @@
          <padding>
             <Insets top="10.0" />
          </padding></Label>
+      <Label fx:id="lblDesc" layoutX="140.0" layoutY="23.0" prefHeight="15.0" prefWidth="600.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

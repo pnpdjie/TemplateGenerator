@@ -105,8 +105,8 @@ public abstract class MenuTypeGenerator extends BaseTask<Boolean> {
     }
 
     // 判断desc是否只含大小写字母和空格
-    if (!StringValidator.validateLowerUpperWhitespace(desc)) {
-      msg = "全称只能包含大小写字母和空格，请重新输入";
+    if (!StringValidator.validateLowerUpperNumberWhitespace(desc)) {
+      msg = "全称只能包含大小写字母、数字和空格，请重新输入";
       updateMessage("提示：" + msg);
       throw new RuntimeException(msg);
     }

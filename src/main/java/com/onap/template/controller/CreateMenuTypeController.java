@@ -201,13 +201,13 @@ public class CreateMenuTypeController extends BaseController {
     MenuTypeGenerator menuGenerator = new MenuTypeGenerator(name, desc, templatePaths) {
 
       @Override
-      public void afterSucceeded() {
+      public void afterSucceeded(String msg) {
         // 重新初始化界面菜单
         Main.getInstance().rebuildMenuBar();
       }
 
       @Override
-      public void afterFailed() {
+      public void afterFailed(String msg) {
 
       }
     };

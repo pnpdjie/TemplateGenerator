@@ -42,7 +42,7 @@ public abstract class BaseTask<T> extends Task<T> {
 
     updateTitle("执行成功");
 
-    afterSucceeded();
+    afterSucceeded(logBuilder.toString());
   }
 
   /**
@@ -57,7 +57,7 @@ public abstract class BaseTask<T> extends Task<T> {
 
     updateTitle("执行失败");
 
-    afterFailed();
+    afterFailed(logBuilder.toString());
   }
 
   /**
@@ -83,10 +83,10 @@ public abstract class BaseTask<T> extends Task<T> {
   /**
    * 执行成功后.
    */
-  public abstract void afterSucceeded();
+  public abstract void afterSucceeded(String msg);
 
   /**
    * 执行失败后.
    */
-  public abstract void afterFailed();
+  public abstract void afterFailed(String msg);
 }

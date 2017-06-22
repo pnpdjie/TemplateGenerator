@@ -14,8 +14,10 @@ import com.onap.template.ui.ProgressDialog;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -32,97 +34,73 @@ import org.junit.runner.RunWith;
 @RunWith(JfxRunner.class)
 public class MenuGeneratorTest {
 
-  public static MenuGenerator menuGenerator;
-  public static Menus loadedMenus;
-  public static MetaMenu metaMenu;
+  // 测试数据路径
+  static String relativePath = System.getProperty("user.dir") + "\\_test_jekyll_project\\";
 
-  /**
-   * 初始化MenuGenerator.
-   * 
-   * @throws Exception
-   *           异常
-   */
+  // 读取菜单模板
+  static Menus loadedMenus = MenuLoader.loadMenus(relativePath + "config/Menus.xml");
+
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
-
-    // 测试数据路径
-    String relativePath = System.getProperty("user.dir") + "\\_test_jekyll_project\\";
-    // 读取菜单模板
-    loadedMenus = MenuLoader.loadMenus(relativePath + "config/Menus.xml");
-    metaMenu = loadedMenus.getMetaMenus().get(0);
-
     // 读取Jekyll项目菜单数据
     Launcher.getInstance().init(relativePath + "\\pnpdjie.github.io").loadProject();
-
-    // 初始化菜单生成器
-    menuGenerator = new MenuGenerator(metaMenu, loadedMenus, relativePath + "data/MdTemplate.md") {
-      @Override
-      public void afterSucceeded() {
-        List<JekyllMenu> listMenu = Launcher.getInstance().loadProject();
-
-        assertEquals(listMenu.size(), 4);
-        assertEquals(listMenu.get(3).getName(), metaMenu.getName());
-
-        File dataFile = new File(menuGenerator.getDataFilePath());
-        if (!dataFile.exists()) {
-          fail("_data目录下菜单数据文件未创建成功");
-        }
-
-        File mdDir = Launcher.getInstance().getMdDir();
-
-        // index.md路径
-        String indexPath = mdDir.getAbsolutePath() + File.separator + metaMenu.getName()
-            + File.separator + Constants.JEKYLL_MD_INDEX;
-        File indexFile = new File(indexPath);
-        if (!indexFile.exists()) {
-          fail("docs目录下index.md未创建成功");
-        }
-
-        List<MetaMenuTemplate> templates = metaMenu.getTemplates();
-        int templateSize = templates.size();
-        for (int i = 0; i < templateSize; i++) {
-          String samplePath = mdDir.getAbsolutePath() + File.separator + metaMenu.getName()
-              + File.separator + metaMenu.getName() + (i + 1) + Constants.JEKYLL_MD_EXTENSION;
-          File sampleFile = new File(samplePath);
-          if (!sampleFile.exists()) {
-            fail("docs目录下" + metaMenu.getName() + (i + 1) + ".md未创建成功");
-          }
-        }
-      }
-
-      @Override
-      public void afterFailed() {
-        // TODO Auto-generated method stub
-
-      }
-    };
-
-  }
-
-  @AfterClass
-  public static void tearDownAfterClass() throws Exception {
-  }
-
-  @Before
-  public void setUp() throws Exception {
-  }
-
-  @After
-  public void tearDown() throws Exception {
   }
 
   @Test
   @TestInJfxThread
-  public void testExecute() {
+  public void testExecuteSuccess() {
     try {
       assertTrue(Platform.isFxApplicationThread());
-      ProgressDialog.getInstance(null).show().exec(menuGenerator);
-      // Thread th = new Thread(menuGenerator);
-      // th.start();
-      // Platform.runLater(th);
+
+      MetaMenu metaMenu = loadedMenus.getMetaMenus().get(loadedMenus.getMetaMenus().size() - 1);
+
+      MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus,
+          relativePath + "config/MdTemplate.md") {
+        @Override
+        public void afterSucceeded(String msg) {
+          List<JekyllMenu> listMenu = Launcher.getInstance().loadProject();
+
+          assertEquals(listMenu.size(), 4);
+          assertEquals(listMenu.get(3).getName(), metaMenu.getName());
+
+          File dataFile = new File(this.getDataFilePath());
+          if (!dataFile.exists()) {
+            fail("_data目录下菜单数据文件未创建成功");
+          }
+
+          File mdDir = Launcher.getInstance().getMdDir();
+
+          // index.md路径
+          String indexPath = mdDir.getAbsolutePath() + File.separator + metaMenu.getName()
+              + File.separator + Constants.JEKYLL_MD_INDEX;
+          File indexFile = new File(indexPath);
+          if (!indexFile.exists()) {
+            fail("docs目录下index.md未创建成功");
+          }
+
+          List<MetaMenuTemplate> templates = metaMenu.getTemplates();
+          int templateSize = templates.size();
+          for (int i = 0; i < templateSize; i++) {
+            String samplePath = mdDir.getAbsolutePath() + File.separator + metaMenu.getName()
+                + File.separator + metaMenu.getName() + (i + 1) + Constants.JEKYLL_MD_EXTENSION;
+            File sampleFile = new File(samplePath);
+            if (!sampleFile.exists()) {
+              fail("docs目录下" + metaMenu.getName() + (i + 1) + ".md未创建成功");
+            }
+          }
+        }
+
+        @Override
+        public void afterFailed(String msg) {
+          fail("创建导航失败");
+        }
+      };
+      Thread thread = new Thread(menuGenerator);
+      thread.start();
+      thread.join();
     } catch (Exception e) {
       fail("执行出错");
     }
-
   }
+
 }

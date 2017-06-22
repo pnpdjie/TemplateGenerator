@@ -38,12 +38,12 @@
       </ButtonBar>
       <Label prefHeight="23.0" prefWidth="60.0" text="简称要求：" GridPane.rowIndex="4" />
       <Label text="不含空格和特殊字符，只能包含小写英文字母" textFill="#d70a0a" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <Label text="不含特殊字符，只能包含大小写英文字母和空格" textFill="#d70a0a" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Label text="不含特殊字符，只能包含大小写英文字母、数字和空格" textFill="#d70a0a" GridPane.columnIndex="1" GridPane.rowIndex="6" />
       <Label prefHeight="23.0" prefWidth="60.0" text="全称要求：" GridPane.rowIndex="6" />
       <Label prefHeight="23.0" prefWidth="424.0" text="简称作用：" textOverrun="CLIP" wrapText="true" GridPane.rowIndex="5" />
-      <Label text="Documentation下菜单的名称" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <Label text="左上菜单的名称" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <Label prefHeight="23.0" prefWidth="424.0" text="全称作用：" textOverrun="CLIP" wrapText="true" GridPane.rowIndex="7" />
-      <Label text="Documentation下菜单上方的描述文字" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <Label text="左侧导航上方的描述文字" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="7" />
       <Label text="模板路径：" GridPane.rowIndex="2" />
       <VBox fx:id="vboxTemplate" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>

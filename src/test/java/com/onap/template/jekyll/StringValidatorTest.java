@@ -21,14 +21,17 @@ public class StringValidatorTest {
   }
   
   @Test
-  public void testValidateLowerUpperWhitespace() {
+  public void testValidateLowerUpperNumberWhitespace() {
 
-    assertEquals(StringValidator.validateLowerUpperWhitespace("a"), true);
-    assertEquals(StringValidator.validateLowerUpperWhitespace("ab"), true);
-    assertEquals(StringValidator.validateLowerUpperWhitespace("aA"), true);
-    assertEquals(StringValidator.validateLowerUpperWhitespace("a b"), true);
-    assertEquals(StringValidator.validateLowerUpperWhitespace("a B"), true);
-    assertEquals(StringValidator.validateLowerUpperWhitespace("1 B"), false);
+    assertEquals(StringValidator.validateLowerUpperNumberWhitespace("a"), true);
+    assertEquals(StringValidator.validateLowerUpperNumberWhitespace("ab"), true);
+    assertEquals(StringValidator.validateLowerUpperNumberWhitespace("aA"), true);
+    assertEquals(StringValidator.validateLowerUpperNumberWhitespace("a 1"), true);
+    assertEquals(StringValidator.validateLowerUpperNumberWhitespace("ab 2 3"), true);
+    assertEquals(StringValidator.validateLowerUpperNumberWhitespace("aA 3 4"), true);
+    assertEquals(StringValidator.validateLowerUpperNumberWhitespace("a b"), true);
+    assertEquals(StringValidator.validateLowerUpperNumberWhitespace("a B"), true);
+    assertEquals(StringValidator.validateLowerUpperNumberWhitespace("1 B"), true);
   }
   
   @Test

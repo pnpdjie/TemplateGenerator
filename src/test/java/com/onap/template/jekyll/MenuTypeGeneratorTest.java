@@ -13,7 +13,6 @@ import org.junit.Test;
  * 
  * @author ywx474563 2017年6月21日
  */
-//@RunWith(JfxTestRunner.class)
 public class MenuTypeGeneratorTest {
   String relativePath = System.getProperty("user.dir") + "\\_test_jekyll_project\\_test_files\\";
 
@@ -28,12 +27,12 @@ public class MenuTypeGeneratorTest {
     MenuTypeGenerator generator = new MenuTypeGenerator("a", "b", list) {
 
       @Override
-      public void afterSucceeded() {
+      public void afterSucceeded(String msg) {
         fail("非md格式文档执行成功");
       }
 
       @Override
-      public void afterFailed() {
+      public void afterFailed(String msg) {
         assertEquals(this.getTitle(), "执行失败");
       }
 

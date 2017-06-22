@@ -334,14 +334,14 @@ public class Main extends Application {
           System.getProperty("user.dir") + "\\config\\MdTemplate.md") {
 
         @Override
-        public void afterSucceeded() {
+        public void afterSucceeded(String msg) {
           // 重新初始化界面数据
           List<JekyllMenu> listMenu = launcherController.getJekyllMenu(jekyllProjectPath);
           rebuildMainUi(listMenu, jekyllProjectPath);
         }
 
         @Override
-        public void afterFailed() {
+        public void afterFailed(String msg) {
 
         }
       };
