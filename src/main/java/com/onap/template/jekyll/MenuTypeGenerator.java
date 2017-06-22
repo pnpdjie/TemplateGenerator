@@ -43,9 +43,12 @@ public abstract class MenuTypeGenerator extends BaseTask<Boolean> {
   /**
    * 创建模板任务初始化.
    * 
-   * @param name 导航简称
-   * @param desc 导航全称
-   * @param templatePaths 导航模板文件路径
+   * @param name
+   *          导航简称
+   * @param desc
+   *          导航全称
+   * @param templatePaths
+   *          导航模板文件路径
    */
   public MenuTypeGenerator(String name, String desc, List<String> templatePaths) {
     this.name = name;
@@ -110,6 +113,12 @@ public abstract class MenuTypeGenerator extends BaseTask<Boolean> {
 
     // 判断简称和全称是否已存在
     Menus loadedMenus = MenuLoader.loadMenus(menuXmlPath);
+    if (loadedMenus == null) {
+      msg = menuXmlPath + "解析失败";
+      updateMessage("错误：" + msg);
+      updateMessage("解决办法：请保证" + menuXmlPath + "存在且当前用户具有读写权限");
+      throw new RuntimeException(msg);
+    }
     for (MetaMenu metaMenu : loadedMenus.getMetaMenus()) {
       if (StringUtils.equalsIgnoreCase(name, metaMenu.getName())) {
         msg = "简称已存在，请重新输入";

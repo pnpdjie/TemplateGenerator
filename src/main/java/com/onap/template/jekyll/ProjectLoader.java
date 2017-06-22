@@ -64,14 +64,18 @@ public class ProjectLoader {
   /**
    * 在xml文件中增加Jekyll项目路径.
    * 
-   * @param xmlPath xml文件路径
-   * @param project Jekyll项目
-   * @return 执行结果
+   * @param xmlPath
+   *          xml文件路径
+   * @param project
+   *          Jekyll项目
    */
-  public static boolean addProject(String xmlPath, Project project) {
+  public static void addProject(String xmlPath, Project project) {
     try {
       // 判断路径是否已存在
       Projects projects = loadProjects(xmlPath);
+      if (projects == null) {
+        throw new RuntimeException("projects.xml文件读取出错");
+      }
       boolean exist = false;
       for (Project p : projects.getProjects()) {
         if (StringUtils.equalsIgnoreCase(p.getPath(), project.getPath())) {
@@ -122,22 +126,21 @@ public class ProjectLoader {
       // 关闭流
       writer.close();
 
-      return true;
     } catch (DocumentException e) {
       logger.error("projects.xml文件读取出错");
-      return false;
+      throw new RuntimeException("projects.xml文件读取出错");
     } catch (FileNotFoundException e) {
       logger.error("projects.xml文件未找到");
-      return false;
+      throw new RuntimeException("projects.xml文件未找到");
     } catch (UnsupportedEncodingException e) {
-      logger.error("projects.xml文件不支持utf-8编码");
-      return false;
+      logger.error("projects.xml文件编码格式错误");
+      throw new RuntimeException("projects.xml文件编码格式错误");
     } catch (IOException e) {
       logger.error("projects.xml文件写入出错");
-      return false;
+      throw new RuntimeException("projects.xml文件写入出错");
     } catch (ClassCastException e) {
-      logger.error("projects.xml文件写入出错");
-      return false;
+      logger.error("类型转换错误");
+      throw new RuntimeException("类型转换错误");
     }
   }
 }

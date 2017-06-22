@@ -1,6 +1,7 @@
 package com.onap.template.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public class MenusTest {
   public void testAdd() {
     Menus menus = new Menus();
     List<MetaMenuTemplate> templates = new ArrayList<MetaMenuTemplate>();
-    MetaMenu menu=new MetaMenu("a", "b", templates);
+    MetaMenu menu = new MetaMenu("a", "b", templates);
     menus.add(menu);
     assertEquals(menus.getMetaMenus().size(), 1);
     assertEquals(menus.getMetaMenus().get(0).getName(), "a");

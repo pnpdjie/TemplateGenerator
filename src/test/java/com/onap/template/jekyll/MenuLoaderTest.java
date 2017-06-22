@@ -1,6 +1,7 @@
 package com.onap.template.jekyll;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import com.onap.template.model.Menus;
@@ -22,7 +23,14 @@ public class MenuLoaderTest {
   String relativePath = System.getProperty("user.dir") + "\\_test_jekyll_project\\";
 
   @Test
-  public void testLoadFromXml() {
+  public void testLoadFromXmlFail() {
+    Menus menus = MenuLoader.loadMenus(relativePath + "config/Menus1.xml");
+
+    assertEquals(menus, null);
+  }
+
+  @Test
+  public void testLoadFromXmlSuccess() {
     Menus menus = MenuLoader.loadMenus(relativePath + "config/Menus.xml");
     // assertEquals(menus.getMetaMenus().size(), 3);
     assertEquals(menus.getMetaMenus().get(0).getName(), "setup");
@@ -37,7 +45,23 @@ public class MenuLoaderTest {
   }
 
   @Test
-  public void testAddMenuType() {
+  public void testAddMenuTypeFail() {
+    List<MetaMenuTemplate> templates = new ArrayList<MetaMenuTemplate>();
+    String savePath1 = "config\\" + UUID.randomUUID() + Constants.JEKYLL_MD_EXTENSION;
+    String savePath2 = "config\\" + UUID.randomUUID() + Constants.JEKYLL_MD_EXTENSION;
+    templates.add(new MetaMenuTemplate(savePath1, ""));
+    templates.add(new MetaMenuTemplate(savePath2, ""));
+    try {
+      MenuLoader.addMenuType(relativePath + "config/Menus1.xml",
+          new MetaMenu("a", "a b", templates));
+      fail("Menus.xml增加元素失败测试不成功");
+    } catch (Exception e) {
+      assertNotNull(e);
+    }
+  }
+
+  @Test
+  public void testAddMenuTypeSuccess() {
     List<MetaMenuTemplate> templates = new ArrayList<MetaMenuTemplate>();
     String savePath1 = "config\\" + UUID.randomUUID() + Constants.JEKYLL_MD_EXTENSION;
     String savePath2 = "config\\" + UUID.randomUUID() + Constants.JEKYLL_MD_EXTENSION;
@@ -46,14 +70,14 @@ public class MenuLoaderTest {
     try {
       MenuLoader.addMenuType(relativePath + "config/Menus.xml",
           new MetaMenu("a", "a b", templates));
+      
+      Menus menus = MenuLoader.loadMenus(relativePath + "config/Menus.xml");
+      List<MetaMenu> list = menus.getMetaMenus();
+      List<MetaMenuTemplate> templates2 = list.get(list.size() - 1).getTemplates();
+      assertEquals(templates2.size(), 2);
     } catch (Exception e) {
       fail("Menus.xml文件写入失败");
     }
-
-    Menus menus = MenuLoader.loadMenus(relativePath + "config/Menus.xml");
-    List<MetaMenu> list = menus.getMetaMenus();
-    List<MetaMenuTemplate> templates2 = list.get(list.size() - 1).getTemplates();
-    assertEquals(templates2.size(), 2);
   }
 
 }

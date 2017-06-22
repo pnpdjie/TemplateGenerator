@@ -1,27 +1,35 @@
 package com.onap.template.jekyll;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.onap.template.JfxRunner;
+import com.onap.template.TestInJfxThread;
 import com.onap.template.model.JekyllMenu;
 import com.onap.template.model.Menus;
 import com.onap.template.model.MetaMenu;
 import com.onap.template.model.MetaMenuTemplate;
+import com.onap.template.ui.ProgressDialog;
 
 import java.io.File;
 import java.util.List;
+
+import javafx.application.Platform;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * com.onap.template.jekyll.MenuGenerator单元测试.
  * 
  * @author ywx474563 2017年6月15日
  */
+@RunWith(JfxRunner.class)
 public class MenuGeneratorTest {
 
   public static MenuGenerator menuGenerator;
@@ -30,7 +38,9 @@ public class MenuGeneratorTest {
 
   /**
    * 初始化MenuGenerator.
-   * @throws Exception 异常
+   * 
+   * @throws Exception
+   *           异常
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
@@ -102,10 +112,14 @@ public class MenuGeneratorTest {
   }
 
   @Test
+  @TestInJfxThread
   public void testExecute() {
     try {
-      Thread th = new Thread(menuGenerator);
-      th.start();
+      assertTrue(Platform.isFxApplicationThread());
+      ProgressDialog.getInstance(null).show().exec(menuGenerator);
+      // Thread th = new Thread(menuGenerator);
+      // th.start();
+      // Platform.runLater(th);
     } catch (Exception e) {
       fail("执行出错");
     }

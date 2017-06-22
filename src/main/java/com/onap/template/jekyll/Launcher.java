@@ -36,7 +36,7 @@ public class Launcher {
   /**
    * Jekyll项目数据目录_data.
    */
-  public File dataDir;
+  private File dataDir;
 
   /**
    * Jekyll项目md文件目录docs.
@@ -46,7 +46,7 @@ public class Launcher {
   /**
    * Jekyll项目菜单列表.
    */
-  public List<JekyllMenu> listMenu = null;
+  private List<JekyllMenu> listMenu = null;
 
   public String getProjectPath() {
     return projectPath;
@@ -75,7 +75,7 @@ public class Launcher {
    * 
    * @return Launcher唯一实例
    */
-  public static Launcher getInstance() {
+  public static synchronized Launcher getInstance() {
     if (instance == null) {
       instance = new Launcher();
     } else {

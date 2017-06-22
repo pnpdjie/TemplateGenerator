@@ -85,6 +85,11 @@ public class LauncherController extends BaseController {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     Platform.runLater(() -> {
+      tip = new Alert(Alert.AlertType.INFORMATION);
+      tip.setTitle("提示");
+      tip.initOwner(mainStage);
+      tip.setHeaderText(null);
+
       List<Project> projectList = getProjects();
       for (Project project : projectList) {
         cbPath.getItems().add(project.getPath());
@@ -114,6 +119,11 @@ public class LauncherController extends BaseController {
    */
   public List<Project> getProjects() {
     Projects projects = ProjectLoader.loadProjects(projectXmlPath);
+    if (projects == null) {
+      tip.setContentText(projectXmlPath + "读取失败，请保证该文件存在再重新启动程序");
+      tip.showAndWait();
+      return null;
+    }
     List<Project> projectList = projects.getProjects();
     Collections.sort(projectList, new Comparator<Project>() {
       public int compare(Project o1, Project o2) {
@@ -156,11 +166,6 @@ public class LauncherController extends BaseController {
    * 加载Jekyll项目.
    */
   private void loadProject(String choosedPath) {
-    tip = new Alert(Alert.AlertType.INFORMATION);
-    tip.setTitle("提示");
-    tip.initOwner(mainStage);
-    tip.setHeaderText(null);
-
     if (StringUtils.isEmpty(choosedPath)) {
       tip.setContentText("请选择项目路径");
       tip.showAndWait();

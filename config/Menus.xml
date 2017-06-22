@@ -9,5 +9,8 @@
   </MetaMenu>  
   <MetaMenu name="deploy" desc="Deploy Guides"> 
     <MetaMenuTemplate path="config/MdTemplate.md" uploadPath=""/> 
+  </MetaMenu>  
+  <MetaMenu name="a" desc="b">
+    <MetaMenuTemplate path="config\c0717c74-6ce7-41f0-96c8-a60c1413c3b0.md" uploadPath="D:\JAVA\workspace\TemplateGenerator\_test_jekyll_project\_test_files\test1.txt"/>
   </MetaMenu>
 </Menus>

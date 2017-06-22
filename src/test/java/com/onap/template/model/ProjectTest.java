@@ -1,12 +1,11 @@
 package com.onap.template.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Date;
 
 import org.junit.Test;
-
-import com.onap.template.jekyll.Constants;
 
 /**
  * Project单元测试.

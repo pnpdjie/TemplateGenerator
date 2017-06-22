@@ -1,6 +1,7 @@
 package com.onap.template.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +9,9 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * Projects单元测试
+ * Projects单元测试.
  * 
- * @author ywx474563
- *    2017年6月21日
+ * @author ywx474563 2017年6月21日
  */
 public class ProjectsTest {
 
@@ -47,7 +47,7 @@ public class ProjectsTest {
   @Test
   public void testAddProject() {
     Projects projects = new Projects();
-    Project project=new Project("a", "b");
+    Project project = new Project("a", "b");
     projects.addProject(project);
     assertEquals(projects.getProjects().size(), 1);
     assertEquals(projects.getProjects().get(0).getPath(), "a");

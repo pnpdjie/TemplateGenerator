@@ -8,8 +8,7 @@ import org.junit.Test;
 /**
  * MetaMenuTemplate单元测试.
  * 
- * @author ywx474563
- *    2017年6月21日
+ * @author ywx474563 2017年6月21日
  */
 public class MetaMenuTemplateTest {
 
