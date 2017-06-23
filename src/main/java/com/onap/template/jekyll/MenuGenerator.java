@@ -36,7 +36,7 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
   private Menus loadedMenus;
 
   /**
-   * md文件模板.
+   * md文件模板目录.
    */
   private String mdTemplatePath;
 
@@ -61,11 +61,12 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
    * @param mdTemplatePath
    *          markdown文件模板路径
    */
-  public MenuGenerator(MetaMenu metaMenu, Menus loadedMenus, String mdTemplatePath) {
+  public MenuGenerator(MetaMenu metaMenu, Menus loadedMenus, String mdTemplatePath,
+      Launcher launcher) {
     this.metaMenu = metaMenu;
     this.loadedMenus = loadedMenus;
     this.mdTemplatePath = mdTemplatePath;
-    this.launcher = Launcher.getInstance();
+    this.launcher = launcher;
   }
 
   /**
@@ -117,7 +118,7 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
       updateMessage("错误：_config.yml文件处理出错");
       updateMessage("解决办法：确保_config.yml文件没有用其它方式打开。");
       logger.error(e.getMessage());
-      return false;
+      throw new RuntimeException("_config.yml文件处理出错");
     } finally {
       updateMessage("--------------修改_config.yml结束--------------");
     }
@@ -186,7 +187,7 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
       updateMessage("错误：菜单数据文件写入数据出错");
       updateMessage("解决办法：确保菜单数据文件没有用其它方式打开。");
       logger.error(e.getMessage());
-      return false;
+      throw new RuntimeException("菜单数据文件写入数据出错");
     } finally {
       updateMessage("--------------创建菜单数据文件结束--------------");
     }
@@ -200,7 +201,7 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
       updateMessage("--------------创建md文件--------------");
 
       // 通用md内容模板，主页模板
-      File mdTemplate = new File(mdTemplatePath);
+      File mdTemplate = new File(mdTemplatePath+"MdTemplate.md");
       String dataFileRelativePath = Constants.JEKYLL_DATA_DIR + Constants.JEKYLL_DATA_PATH_SEPARATOR
           + metaMenu.getName() + Constants.JEKYLL_DATA_EXTENSION;
       String mdTemplateContent = FileUtils.readFileToString(mdTemplate, Constants.ENCODING)
@@ -224,7 +225,7 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
       int templateSize = templates.size();
       for (int i = 0; i < templateSize; i++) {
         // 通用md内容模板，主页模板
-        File template = new File(System.getProperty("user.dir")
+        File template = new File(mdTemplatePath
             + Constants.JEKYLL_DATA_PATH_SEPARATOR + templates.get(i).getPath());
         String templateContent = FileUtils.readFileToString(template, Constants.ENCODING)
             .replaceAll("\\{leftTreePath\\}", dataFileRelativePath.replace("\\", "\\\\"));
@@ -259,25 +260,64 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
     updateProgress(1, 100);
     // 修改_config.yml，写入tocs数据
     boolean res = writeConfig();
-    updateProgress(30, 100);
 
     if (res) {
+      updateProgress(30, 100);
       // 在_data目录创建菜单对应的数据文件，并写入初始数据.
       res = createDataFile();
-      updateProgress(60, 100);
     }
 
     if (res) {
+      updateProgress(60, 100);
       // 在docs对应菜单目录中创建index.md和示例md文件
       res = createMdFile();
+    }
+    
+    if (res) {
       updateProgress(100, 100);
     }
-
     return res;
   }
 
   @Override
   public String getLogName() {
     return MenuGenerator.class.getSimpleName();
+  }
+
+  /**
+   * 删除_config.yml中刚添加的导航.
+   * 
+   * @return 是否成功
+   */
+  protected boolean removeTocOfConfig() {
+    try {
+      File configFile = launcher.getConfigFile();
+
+      // 读取_config.yml文件
+      List<String> lines = FileUtils.readLines(configFile, Charset.forName(Constants.ENCODING));
+
+      // 查找菜单配置tocs所在行
+      int index = lines.indexOf(Constants.JEKYLL_CONFIG_TOCS);
+      if (index == -1) {
+        return false;
+      }
+      int lastTocIndex = -1;
+      for (int i = index + 1; i < lines.size(); i++) {
+        if (StringUtils.startsWith(lines.get(i),
+            Constants.JEKYLL_CONFIG_TOCS_PRE + metaMenu.getName())) {
+          lastTocIndex = i;
+          break;
+        }
+      }
+      if (lastTocIndex <= index)
+        return false;
+      lines.remove(lastTocIndex);
+      // 覆盖写入_config.yml
+      FileUtils.writeLines(configFile, Constants.ENCODING, lines);
+
+      return true;
+    } catch (IOException e) {
+      return false;
+    }
   }
 }

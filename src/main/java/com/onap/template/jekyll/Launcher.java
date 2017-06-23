@@ -15,7 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 初始化界面数据.
+ * 加载Jekyll项目导航数据. <br/>
+ * 1.验证_config.yml，_data，dosc是否存在<br/>
+ * 2.读取_config.yml中tocs参数，获取导航简称列表<br/>
+ * 3.循环导航简称列表，读取_data对应的导航数据文件，获取全称，以及导航导航数据文件和docs下的主页文件<br/>
  * 
  * @author ywx474563 2017年6月13日
  */
@@ -68,7 +71,7 @@ public class Launcher {
     return listMenu;
   }
 
-  private static Launcher instance;
+  private static Launcher instance  = null;
 
   /**
    * 获取Launcher唯一实例.
@@ -98,6 +101,10 @@ public class Launcher {
       throw new RuntimeException("Jekyll项目路径不正确");
     }
     this.projectPath = jekyllPath;
+    this.configFile = null;
+    this.dataDir = null;
+    this.mdDir = null;
+    this.listMenu = null;
     return this;
   }
 

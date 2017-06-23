@@ -59,6 +59,18 @@ public class LauncherTest {
     assertEquals(launcher.getDataDir(), null);
     assertEquals(launcher.getMdDir(), null);
     assertEquals(launcher.getListMenu(), null);
+    
+    testLoadProject();
+    
+    //加载一次项目后重新选择一个项目
+    launcher.init(jekyllPath);
+
+    assertNotNull(launcher);
+    assertEquals(launcher.getProjectPath(), jekyllPath);
+    assertEquals(launcher.getConfigFile(), null);
+    assertEquals(launcher.getDataDir(), null);
+    assertEquals(launcher.getMdDir(), null);
+    assertEquals(launcher.getListMenu(), null);
   }
 
   /**
