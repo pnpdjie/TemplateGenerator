@@ -201,7 +201,7 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
       updateMessage("--------------创建md文件--------------");
 
       // 通用md内容模板，主页模板
-      File mdTemplate = new File(mdTemplatePath+"MdTemplate.md");
+      File mdTemplate = new File(mdTemplatePath+"config//MdTemplate.md");
       String dataFileRelativePath = Constants.JEKYLL_DATA_DIR + Constants.JEKYLL_DATA_PATH_SEPARATOR
           + metaMenu.getName() + Constants.JEKYLL_DATA_EXTENSION;
       String mdTemplateContent = FileUtils.readFileToString(mdTemplate, Constants.ENCODING)

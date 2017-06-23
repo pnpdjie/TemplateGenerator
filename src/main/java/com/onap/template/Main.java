@@ -331,7 +331,7 @@ public class Main extends Application {
     if (result.get() == ButtonType.OK) {
       // 创建Jekyll菜单
       MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus,
-          System.getProperty("user.dir") + "\\config\\",Launcher.getInstance()) {
+          System.getProperty("user.dir"), Launcher.getInstance()) {
 
         @Override
         public void afterSucceeded(String msg) {

@@ -65,7 +65,7 @@ public class MenuGeneratorTest {
       MetaMenu metaMenu = loadedMenus.getMetaMenus().get(0);
 
       MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus,
-          relativePath + "config/", launcher) {
+          relativePath, launcher) {
         @Override
         public void afterSucceeded(String msg) {
           fail("导航名称重复却创建成功");
@@ -99,7 +99,7 @@ public class MenuGeneratorTest {
       MetaMenu metaMenu = loadedMenus.getMetaMenus().get(0);
 
       MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus,
-          relativePath + "config/", launcher) {
+          relativePath, launcher) {
         @Override
         public void afterSucceeded(String msg) {
         }
@@ -121,10 +121,10 @@ public class MenuGeneratorTest {
     launcher.init(relativePath + "\\pnpdjie.github.io");
     launcher.loadProject();
 
-    MetaMenu metaMenu = loadedMenus.getMetaMenus().get(loadedMenus.getMetaMenus().size() - 1);
+    MetaMenu metaMenu = loadedMenus.getMetaMenus().get(3);
 
     MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus,
-        relativePath + "config/", launcher) {
+        relativePath, launcher) {
       @Override
       public void afterSucceeded(String msg) {
          List<JekyllMenu> listMenu = Launcher.getInstance().loadProject();

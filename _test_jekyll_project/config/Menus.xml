@@ -9,9 +9,13 @@
   </MetaMenu>  
   <MetaMenu name="deploy" desc="Deploy Guides"> 
     <MetaMenuTemplate path="config/MdTemplate.md" uploadPath=""/> 
-  </MetaMenu> 
+  </MetaMenu>  
+  <MetaMenu name="a" desc="a b"> 
+    <MetaMenuTemplate path="config\0b5930b1-63cb-4e35-8c6a-8f54a1b1d4e2.md" uploadPath=""/>  
+    <MetaMenuTemplate path="config\1df9b946-d29b-4310-af7c-a9c445232ce1.md" uploadPath=""/> 
+  </MetaMenu>  
   <MetaMenu name="a" desc="a b">
-    <MetaMenuTemplate path="config\081ad9d2-4ce6-4f2d-a535-265261f37773.md" uploadPath=""/>
-    <MetaMenuTemplate path="config\eda8f9dd-c8d8-4b53-b305-f4d3c1d962ae.md" uploadPath=""/>
+    <MetaMenuTemplate path="config\dbc62f6c-9aa0-4e39-ac0f-f5054cf1f7ac.md" uploadPath=""/>
+    <MetaMenuTemplate path="config\4a54ca10-ef4d-4536-95af-e09602f2b27f.md" uploadPath=""/>
   </MetaMenu>
 </Menus>
