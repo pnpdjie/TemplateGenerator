@@ -157,7 +157,8 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
           + metaMenu.getName() + Constants.JEKYLL_DATA_PATH_SEPARATOR;
 
       // 写入主页路径
-      lines.add(Constants.JEKYLL_DATA_TOCS_PRE + menuDir + Constants.JEKYLL_MD_INDEX);
+      lines.add(Constants.JEKYLL_DATA_TOCS_PRE + Constants.JEKYLL_DATA_PATH
+          + Constants.JEKYLL_YML_SEPARATOR + menuDir + Constants.JEKYLL_MD_INDEX);
 
       lines.add(Constants.JEKYLL_DATA_TOCS_PRE + Constants.JEKYLL_DATA_TITLE
           + Constants.JEKYLL_YML_SEPARATOR + "模板");
@@ -166,7 +167,8 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
       List<MetaMenuTemplate> templates = metaMenu.getTemplates();
       int templateSize = templates.size();
       for (int i = 0; i < templateSize; i++) {
-        lines.add(Constants.JEKYLL_DATA_TWO_BLANK + Constants.JEKYLL_DATA_TOCS_PRE + menuDir
+        lines.add(Constants.JEKYLL_DATA_TWO_BLANK + Constants.JEKYLL_DATA_TOCS_PRE
+            + Constants.JEKYLL_DATA_PATH + Constants.JEKYLL_YML_SEPARATOR + menuDir
             + metaMenu.getName() + (i + 1) + Constants.JEKYLL_MD_EXTENSION);
       }
 

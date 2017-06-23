@@ -71,6 +71,11 @@ public class Constants {
    * Jekyll项目数据文件中section属性名.
    */
   public static final String JEKYLL_DATA_SECTION = "section:";
+  
+  /**
+   * Jekyll项目数据文件中path属性名.
+   */
+  public static final String JEKYLL_DATA_PATH = "path:";
 
   /**
    * Jekyll项目数据文件中每项子页前缀.

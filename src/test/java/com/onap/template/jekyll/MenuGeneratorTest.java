@@ -24,6 +24,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.internal.runners.statements.Fail;
 import org.junit.runner.RunWith;
 
 /**
@@ -45,6 +46,46 @@ public class MenuGeneratorTest {
     // 读取Jekyll项目菜单数据
     Launcher.getInstance().init(relativePath + "\\pnpdjie.github.io").loadProject();
   }
+  
+  private void failWrapper(String msg){
+    fail(msg);
+  }
+
+  private void assertEqualsWrapper(String arg0,String arg1){
+    assertEquals(arg0,arg1);
+  }
+
+  /**
+   * 测试导航名称重复.
+   */
+  @Test
+  @TestInJfxThread
+  public void testNameExist() {
+    try {
+      assertTrue(Platform.isFxApplicationThread());
+
+      MetaMenu metaMenu = loadedMenus.getMetaMenus().get(0);
+
+      MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus,
+          relativePath + "config/MdTemplate.md") {
+        @Override
+        public void afterSucceeded(String msg) {
+          failWrapper("导航名称重复却创建成功");
+        }
+
+        @Override
+        public void afterFailed(String msg) {
+          assertEqualsWrapper(this.getTitle(), "执行失败");
+        }
+      };
+      Thread thread = new Thread(menuGenerator);
+      thread.start();
+      thread.join();
+    } catch (Exception e) {
+      fail("执行出错");
+    }
+  }
+
 
   @Test
   @TestInJfxThread
