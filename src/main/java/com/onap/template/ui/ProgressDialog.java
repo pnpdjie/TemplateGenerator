@@ -79,12 +79,14 @@ public class ProgressDialog {
           ProgressDialog.class.getResource("ProgressDialog.fxml"));
       Parent root = fxmlLoader.load();
 
+      //查找进度条和文本框窗口
       progressExec = (ProgressBar) root.lookup("#progressExec");
       areaLog = (TextArea) root.lookup("#areaLog");
 
       stage = new Stage();
       Scene scene = new Scene(root);
       stage.setScene(scene);
+      //设置窗口类型
       stage.initModality(Modality.WINDOW_MODAL);
       // 设置父窗口
       stage.initOwner(owner);
@@ -121,6 +123,7 @@ public class ProgressDialog {
    *          异步任务
    */
   public void exec(Task task) {
+    //绑定执行进度和日志到控件
     stage.titleProperty().bind(task.titleProperty());
     progressExec.progressProperty().bind(task.progressProperty());
     areaLog.textProperty().bind(task.messageProperty());

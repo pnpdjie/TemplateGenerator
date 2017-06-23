@@ -201,7 +201,7 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
       updateMessage("--------------创建md文件--------------");
 
       // 通用md内容模板，主页模板
-      File mdTemplate = new File(mdTemplatePath+"config//MdTemplate.md");
+      File mdTemplate = new File(mdTemplatePath + "config//MdTemplate.md");
       String dataFileRelativePath = Constants.JEKYLL_DATA_DIR + Constants.JEKYLL_DATA_PATH_SEPARATOR
           + metaMenu.getName() + Constants.JEKYLL_DATA_EXTENSION;
       String mdTemplateContent = FileUtils.readFileToString(mdTemplate, Constants.ENCODING)
@@ -225,8 +225,8 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
       int templateSize = templates.size();
       for (int i = 0; i < templateSize; i++) {
         // 通用md内容模板，主页模板
-        File template = new File(mdTemplatePath
-            + Constants.JEKYLL_DATA_PATH_SEPARATOR + templates.get(i).getPath());
+        File template = new File(
+            mdTemplatePath + Constants.JEKYLL_DATA_PATH_SEPARATOR + templates.get(i).getPath());
         String templateContent = FileUtils.readFileToString(template, Constants.ENCODING)
             .replaceAll("\\{leftTreePath\\}", dataFileRelativePath.replace("\\", "\\\\"));
 
@@ -265,16 +265,22 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
       updateProgress(30, 100);
       // 在_data目录创建菜单对应的数据文件，并写入初始数据.
       res = createDataFile();
+    } else {
+      throw new RuntimeException(" 往_config.yml写入菜单名称失败");
     }
 
     if (res) {
       updateProgress(60, 100);
       // 在docs对应菜单目录中创建index.md和示例md文件
       res = createMdFile();
+    } else {
+      throw new RuntimeException(" 在_data目录创建菜单对应的数据文件失败");
     }
-    
+
     if (res) {
       updateProgress(100, 100);
+    } else {
+      throw new RuntimeException(" 在docs对应菜单目录中创建md文件失败");
     }
     return res;
   }

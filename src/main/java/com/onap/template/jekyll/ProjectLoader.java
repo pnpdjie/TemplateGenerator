@@ -71,11 +71,13 @@ public class ProjectLoader {
    */
   public static void addProject(String xmlPath, Project project) {
     try {
-      // 判断路径是否已存在
+      //加载Jekyll项目历史路径
       Projects projects = loadProjects(xmlPath);
       if (projects == null) {
         throw new RuntimeException("projects.xml文件读取出错");
       }
+
+      // 判断路径是否已存在
       boolean exist = false;
       for (Project p : projects.getProjects()) {
         if (StringUtils.equalsIgnoreCase(p.getPath(), project.getPath())) {
@@ -84,13 +86,14 @@ public class ProjectLoader {
         }
       }
 
-      // 读取Menus.xml文件
+      // 读取projects.xml文件
       Document doc = new SAXReader().read(new File(xmlPath));
 
       // 添加标签
       Element rootElem = doc.getRootElement();
       Element projectElem;
       if (exist) {
+        //相同路径修改时间
         @SuppressWarnings("unchecked")
         List<Element> elemList = rootElem.elements();
         for (Element elem : elemList) {

@@ -182,6 +182,8 @@ public abstract class MenuTypeGenerator extends BaseTask<Boolean> {
 
     if (res) {
       updateProgress(100, 100);
+    }else{
+      throw new RuntimeException(" 创建导航模板失败");
     }
 
     return res;

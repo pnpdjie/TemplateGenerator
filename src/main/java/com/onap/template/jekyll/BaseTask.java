@@ -38,7 +38,7 @@ public abstract class BaseTask<T> extends Task<T> {
     super.succeeded();
     updateMessage("执行成功");
 
-    createLogFile();
+    createLogFile(true);
 
     updateTitle("执行成功");
 
@@ -53,7 +53,7 @@ public abstract class BaseTask<T> extends Task<T> {
     super.failed();
     updateMessage("执行失败");
 
-    createLogFile();
+    createLogFile(false);
 
     updateTitle("执行失败");
 
@@ -63,10 +63,10 @@ public abstract class BaseTask<T> extends Task<T> {
   /**
    * 生成日志文件.
    */
-  private void createLogFile() {
+  private void createLogFile(boolean isSuccess) {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
     String logPath = System.getProperty("user.dir") + "\\logs\\" + getLogName()
-        + formatter.format(new Date()) + ".log";
+        + formatter.format(new Date()) +(isSuccess?"success":"fail")+ ".log";
     try {
       FileUtils.write(new File(logPath), logBuilder.toString(), Constants.ENCODING);
       updateMessage("日志文件路径：" + logPath);

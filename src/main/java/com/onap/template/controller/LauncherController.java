@@ -84,12 +84,16 @@ public class LauncherController extends BaseController {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+    //Lambda允许把函数作为一个方法的参数
     Platform.runLater(() -> {
       tip = new Alert(Alert.AlertType.INFORMATION);
       tip.setTitle("提示");
+      //设置弹出框所属主窗口
       tip.initOwner(mainStage);
+      //取消弹出框头部描述
       tip.setHeaderText(null);
 
+      //获取Jekyll项目路径列表
       List<Project> projectList = getProjects();
       for (Project project : projectList) {
         cbPath.getItems().add(project.getPath());
@@ -98,6 +102,7 @@ public class LauncherController extends BaseController {
         cbPath.getSelectionModel().selectFirst();
       }
 
+      //绑定按钮点击事件
       btnSelectFile.setOnAction(event -> {
         showFileDialog();
       });
@@ -125,6 +130,8 @@ public class LauncherController extends BaseController {
       return null;
     }
     List<Project> projectList = projects.getProjects();
+    
+    //按时间倒叙排列
     Collections.sort(projectList, new Comparator<Project>() {
       public int compare(Project o1, Project o2) {
         return o1.compareTo(o2);
@@ -150,11 +157,18 @@ public class LauncherController extends BaseController {
    * 浏览Jekyll项目.
    */
   private void showFileDialog() {
+    //打开文件夹选择窗口
     DirectoryChooser chooser = new DirectoryChooser();
     chooser.setTitle("选择Jekyll项目");
+    
+    //获取当前程序所在目录
     String cwd = System.getProperty("user.dir");
     File file = new File(cwd);
+    
+    //设置默认打开路径
     chooser.setInitialDirectory(file);
+    
+    //获取选中的文件夹
     File chosenDir = chooser.showDialog(mainStage);
     if (chosenDir != null) {
       String choosedPath = chosenDir.getAbsolutePath();

@@ -239,11 +239,11 @@ public class Main extends Application {
     MenuBar menuBar = new MenuBar();
     menuBar.setUseSystemMenuBar(true);
 
-    // 初始化创建菜单
+    // 初始化“创建”菜单
     Menu createMenu = new Menu("创建");
     Menu menus = new Menu("导航");
 
-    // 从Menus.xml文件加载菜单
+    // 从Menus.xml文件加载导航模板
     String menuXmlPath = System.getProperty("user.dir") + "\\config\\Menus.xml";
     Menus loadedMenus = MenuLoader.loadMenus(menuXmlPath);
     if (loadedMenus == null) {
@@ -286,6 +286,7 @@ public class Main extends Application {
    */
   private MenuItem buildMenuItem(MetaMenu metaMenu, Menus loadedMenus) {
     MenuItem item = new MenuItem(metaMenu.getDesc() + "(" + metaMenu.getName() + ")");
+    //已创建的模板设置为禁用
     for (JekyllMenu jekyllMenu : Launcher.getInstance().getListMenu()) {
       if (StringUtils.equalsIgnoreCase(jekyllMenu.getName(), metaMenu.getName())) {
         item.setDisable(true);
@@ -321,6 +322,7 @@ public class Main extends Application {
    *          项目路径
    */
   private void createJekyllMenu(MetaMenu metaMenu, Menus loadedMenus) {
+    //弹出确认提示框
     Alert alert = new Alert(AlertType.CONFIRMATION);
     alert.setTitle("确认");
     alert.initOwner(mainStage);
@@ -346,6 +348,7 @@ public class Main extends Application {
         }
       };
 
+      //弹出任务执行窗口，显示进度条和日志
       ProgressDialog.getInstance(mainStage).show().exec(menuGenerator);
     }
 
@@ -367,8 +370,7 @@ public class Main extends Application {
           .getController(); // 获取Controller的实例对象
       createMenuTypeController.setMainStage(mainStage);
 
-      // Node node =
-      // FXMLLoader.load(Main.class.getResource("ui/CreateMenuType.fxml"));
+      //加载到tab容器并选中当前tab
       tab.setContent(pane);
       contentTabs.getTabs().add(tab);
       SingleSelectionModel<Tab> selectionModel = contentTabs.getSelectionModel();
