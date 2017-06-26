@@ -10,9 +10,12 @@
   <MetaMenu name="deploy" desc="Deploy Guides"> 
     <MetaMenuTemplate path="config/MdTemplate.md" uploadPath=""/> 
   </MetaMenu>  
-  <MetaMenu name="test" desc="test1">
-    <MetaMenuTemplate path="config\8f44259e-2b9a-4524-a487-82fa11ba7f2a.md" uploadPath="D:\git\pnpdjie.github.io\docs\guides\jekyll\create-new-page.md"/>
-    <MetaMenuTemplate path="config\f3938f11-0dea-4146-9ca3-899f50979107.md" uploadPath="D:\git\pnpdjie.github.io\docs\guides\jekyll\install-jekyll-in-linux.md"/>
-    <MetaMenuTemplate path="config\0b5930b1-63cb-4e35-8c6a-8f54a1b1d4e2.md" uploadPath="D:\git\pnpdjie.github.io\docs\guides\jekyll\page-layout-configuration.md"/>
+  <MetaMenu name="test" desc="test1"> 
+    <MetaMenuTemplate path="config\8f44259e-2b9a-4524-a487-82fa11ba7f2a.md" uploadPath="D:\git\pnpdjie.github.io\docs\guides\jekyll\create-new-page.md"/>  
+    <MetaMenuTemplate path="config\f3938f11-0dea-4146-9ca3-899f50979107.md" uploadPath="D:\git\pnpdjie.github.io\docs\guides\jekyll\install-jekyll-in-linux.md"/>  
+    <MetaMenuTemplate path="config\0b5930b1-63cb-4e35-8c6a-8f54a1b1d4e2.md" uploadPath="D:\git\pnpdjie.github.io\docs\guides\jekyll\page-layout-configuration.md"/> 
+  </MetaMenu>  
+  <MetaMenu name="a" desc="b">
+    <MetaMenuTemplate path="config\bcb6faf6-eaa3-4667-8821-229070e0db72.md" uploadPath="D:\JAVA\workspace\TemplateGenerator\_test_jekyll_project\_test_files\test1.txt"/>
   </MetaMenu>
 </Menus>

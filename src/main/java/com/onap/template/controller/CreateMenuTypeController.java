@@ -142,17 +142,17 @@ public class CreateMenuTypeController extends BaseController {
   private void showFileDialog() {
     FileChooser chooser = new FileChooser();
     chooser.setTitle("选择导航模板文件");
-    
-    //过滤文件类型
+
+    // 过滤文件类型
     chooser.getExtensionFilters().add(new ExtensionFilter("Markdown文件", "*.md"));
-    
-    //设置初始目录
+
+    // 设置初始目录
     if (StringUtils.isEmpty(lastFilePath)) {
       chooser.setInitialDirectory(new File(System.getProperty("user.home")));
     } else {
       chooser.setInitialDirectory(new File(lastFilePath));
     }
-    //选择多个文件
+    // 选择多个文件
     List<File> list = chooser.showOpenMultipleDialog(mainStage);
     if (list != null && list.size() > 0) {
       lastFilePath = FilenameUtils.getFullPath(list.get(0).getAbsolutePath());
@@ -190,11 +190,11 @@ public class CreateMenuTypeController extends BaseController {
       }
 
       templatePaths.add(templatePath);
-      //显示路径到界面
+      // 显示路径到界面
       vboxTemplate.getChildren().add(new Label(templatePath));
     }
-    
-    //弹出提示信息
+
+    // 弹出提示信息
     if (sb.length() > 0) {
       tip.setContentText(sb.toString());
       tip.showAndWait();
@@ -209,7 +209,8 @@ public class CreateMenuTypeController extends BaseController {
     final String name = txtName.getText().trim();
     final String desc = txtDesc.getText().trim();
 
-    MenuTypeGenerator menuGenerator = new MenuTypeGenerator(name, desc, templatePaths) {
+    MenuTypeGenerator menuGenerator = new MenuTypeGenerator(name, desc, templatePaths,
+        menuXmlPath) {
 
       @Override
       public void afterSucceeded(String msg) {

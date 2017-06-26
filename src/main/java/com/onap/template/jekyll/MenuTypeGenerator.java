@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -38,7 +39,7 @@ public abstract class MenuTypeGenerator extends BaseTask<Boolean> {
   /**
    * Menus.xml文件路径.
    */
-  private String menuXmlPath = System.getProperty("user.dir") + "\\config\\Menus.xml";
+  private String menuXmlPath;
 
   /**
    * 创建模板任务初始化.
@@ -50,10 +51,12 @@ public abstract class MenuTypeGenerator extends BaseTask<Boolean> {
    * @param templatePaths
    *          导航模板文件路径
    */
-  public MenuTypeGenerator(String name, String desc, List<String> templatePaths) {
+  public MenuTypeGenerator(String name, String desc, List<String> templatePaths,
+      String menuXmlPath) {
     this.name = name;
     this.desc = desc;
     this.templatePaths = templatePaths;
+    this.menuXmlPath = menuXmlPath;
   }
 
   /**
@@ -153,6 +156,13 @@ public abstract class MenuTypeGenerator extends BaseTask<Boolean> {
       for (String templatePath : templatePaths) {
         File file = new File(templatePath);
 
+        // 判断模板文件是否md类型
+        if (!StringUtils.equalsIgnoreCase(FilenameUtils.getExtension(file.getName()),
+            Constants.JEKYLL_MD_EXTENSION.substring(1))) {
+          updateMessage("提示：模板文件" + templatePath + "不是markdown文件");
+          throw new RuntimeException("模板文件" + templatePath + "不是markdown文件");
+        }
+
         String savePath = "config\\" + UUID.randomUUID() + Constants.JEKYLL_MD_EXTENSION;
         try {
           String fileContent = FileUtils.readFileToString(file, Constants.ENCODING);
@@ -182,7 +192,7 @@ public abstract class MenuTypeGenerator extends BaseTask<Boolean> {
 
     if (res) {
       updateProgress(100, 100);
-    }else{
+    } else {
       throw new RuntimeException(" 创建导航模板失败");
     }
 
@@ -193,4 +203,16 @@ public abstract class MenuTypeGenerator extends BaseTask<Boolean> {
   public String getLogName() {
     return MenuTypeGenerator.class.getSimpleName();
   }
+  
+  /**
+   * 执行失败.
+   */
+  @Override
+  protected void failed() {
+    super.failed();
+
+    // 删除Menus.xml中刚添加的导航
+    MenuLoader.removeMenuType(menuXmlPath, name);
+  }
+
 }

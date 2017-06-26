@@ -11,7 +11,9 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileSystemUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,6 +118,7 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
       return true;
     } catch (IOException e) {
       updateMessage("错误：_config.yml文件处理出错");
+      updateMessage(e.getMessage());
       updateMessage("解决办法：确保_config.yml文件没有用其它方式打开。");
       logger.error(e.getMessage());
       throw new RuntimeException("_config.yml文件处理出错");
@@ -185,6 +188,7 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
       return true;
     } catch (IOException e) {
       updateMessage("错误：菜单数据文件写入数据出错");
+      updateMessage(e.getMessage());
       updateMessage("解决办法：确保菜单数据文件没有用其它方式打开。");
       logger.error(e.getMessage());
       throw new RuntimeException("菜单数据文件写入数据出错");
@@ -201,7 +205,7 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
       updateMessage("--------------创建md文件--------------");
 
       // 通用md内容模板，主页模板
-      File mdTemplate = new File(mdTemplatePath + "config//MdTemplate.md");
+      File mdTemplate = new File(mdTemplatePath + "//config//MdTemplate.md");
       String dataFileRelativePath = Constants.JEKYLL_DATA_DIR + Constants.JEKYLL_DATA_PATH_SEPARATOR
           + metaMenu.getName() + Constants.JEKYLL_DATA_EXTENSION;
       String mdTemplateContent = FileUtils.readFileToString(mdTemplate, Constants.ENCODING)
@@ -247,7 +251,8 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
       return true;
     } catch (IOException e) {
       updateMessage("错误：md文件写入数据出错");
-      updateMessage("解决办法：确认md文件是否存在，若存在请删除重新删除，若不存在确认当前用户拥有写入权限。");
+      updateMessage(e.getMessage());
+      updateMessage("解决办法：确认当前用户拥有docs目录的写入权限，以及工具安装目录中config文件夹下模板文件完整。");
       logger.error(e.getMessage());
       return false;
     } finally {
@@ -291,11 +296,22 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
   }
 
   /**
+   * 执行失败.
+   */
+  @Override
+  protected void failed() {
+    super.failed();
+
+    // 删除_config.yml中刚添加的导航
+    rollback();
+  }
+
+  /**
    * 删除_config.yml中刚添加的导航.
    * 
    * @return 是否成功
    */
-  protected boolean removeTocOfConfig() {
+  protected boolean rollback() {
     try {
       File configFile = launcher.getConfigFile();
 
@@ -315,15 +331,31 @@ public abstract class MenuGenerator extends BaseTask<Boolean> {
           break;
         }
       }
-      if (lastTocIndex <= index)
-        return false;
+      if (lastTocIndex <= index) {
+        return true;
+      }
       lines.remove(lastTocIndex);
       // 覆盖写入_config.yml
       FileUtils.writeLines(configFile, Constants.ENCODING, lines);
+
+      // 删除_data目录中创建的导航数据文件
+      File dataFile = new File(dataFilePath);
+      if (dataFile.exists()) {
+        FileUtils.deleteQuietly(dataFile);
+      }
+
+      // 删除docs目录中创建的md文件
+      File mdDir = launcher.getMdDir();
+      File menuDir = new File(
+          mdDir.getAbsolutePath() + Constants.JEKYLL_DATA_PATH_SEPARATOR + metaMenu.getName());
+      if (menuDir.exists()) {
+        FileUtils.deleteQuietly(menuDir);
+      }
 
       return true;
     } catch (IOException e) {
       return false;
     }
   }
+
 }

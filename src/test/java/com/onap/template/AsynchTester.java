@@ -7,27 +7,40 @@ package com.onap.template;
  */
 public class AsynchTester {
   private Thread thread;
-  private volatile AssertionError exc; 
+  private volatile AssertionError exc;
 
-  public AsynchTester(final Runnable runnable){
-      thread = new Thread(new Runnable(){
-          public void run(){
-              try{            
-                  runnable.run();
-              }catch(AssertionError e){
-                  exc = e;
-              }
-          }
-      });
+  /**
+   * 异步测试，在主线程抛出测试异常.
+   * 
+   * @param runnable
+   *          任务
+   */
+  public AsynchTester(final Runnable runnable) {
+    thread = new Thread(new Runnable() {
+      public void run() {
+        try {
+          runnable.run();
+        } catch (AssertionError e) {
+          exc = e;
+        }
+      }
+    });
   }
 
-  public void start(){
-      thread.start();
+  public void start() {
+    thread.start();
   }
 
-  public void test() throws InterruptedException{
-      thread.join();
-      if (exc != null)
-          throw exc;
+  /**
+   * 运行线程，直到完成.
+   * 
+   * @throws InterruptedException
+   *           异常
+   */
+  public void test() throws InterruptedException {
+    thread.join();
+    if (exc != null) {
+      throw exc;
+    }
   }
 }

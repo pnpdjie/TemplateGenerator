@@ -66,7 +66,7 @@ public abstract class BaseTask<T> extends Task<T> {
   private void createLogFile(boolean isSuccess) {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
     String logPath = System.getProperty("user.dir") + "\\logs\\" + getLogName()
-        + formatter.format(new Date()) +(isSuccess?"success":"fail")+ ".log";
+        + formatter.format(new Date()) + (isSuccess ? "success" : "fail") + ".log";
     try {
       FileUtils.write(new File(logPath), logBuilder.toString(), Constants.ENCODING);
       updateMessage("日志文件路径：" + logPath);

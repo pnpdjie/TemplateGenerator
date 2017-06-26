@@ -69,12 +69,20 @@ public class MenuLoaderTest {
     templates.add(new MetaMenuTemplate(savePath2, ""));
     try {
       MenuLoader.addMenuType(relativePath + "config/Menus.xml",
-          new MetaMenu("a", "a b", templates));
+          new MetaMenu("test", "test 1", templates));
       
       Menus menus = MenuLoader.loadMenus(relativePath + "config/Menus.xml");
       List<MetaMenu> list = menus.getMetaMenus();
-      List<MetaMenuTemplate> templates2 = list.get(list.size() - 1).getTemplates();
-      assertEquals(templates2.size(), 2);
+      assertEquals(list.size(), 5);
+      List<MetaMenuTemplate> addTemplates = list.get(list.size() - 1).getTemplates();
+      assertEquals(addTemplates.size(), 2);
+      
+      MenuLoader.removeMenuType(relativePath + "config/Menus.xml", "test");
+
+      menus = MenuLoader.loadMenus(relativePath + "config/Menus.xml");
+      list = menus.getMetaMenus();
+      assertEquals(list.size(), 4);
+      
     } catch (Exception e) {
       fail("Menus.xml文件写入失败");
     }

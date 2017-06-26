@@ -64,8 +64,8 @@ public class MenuGeneratorTest {
 
       MetaMenu metaMenu = loadedMenus.getMetaMenus().get(0);
 
-      MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus,
-          relativePath, launcher) {
+      MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus, relativePath,
+          launcher) {
         @Override
         public void afterSucceeded(String msg) {
           fail("导航名称重复却创建成功");
@@ -98,8 +98,8 @@ public class MenuGeneratorTest {
 
       MetaMenu metaMenu = loadedMenus.getMetaMenus().get(0);
 
-      MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus,
-          relativePath, launcher) {
+      MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus, relativePath,
+          launcher) {
         @Override
         public void afterSucceeded(String msg) {
         }
@@ -123,43 +123,39 @@ public class MenuGeneratorTest {
 
     MetaMenu metaMenu = loadedMenus.getMetaMenus().get(3);
 
-    MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus,
-        relativePath, launcher) {
+    MenuGenerator menuGenerator = new MenuGenerator(metaMenu, loadedMenus, relativePath, launcher) {
       @Override
       public void afterSucceeded(String msg) {
-         List<JekyllMenu> listMenu = Launcher.getInstance().loadProject();
-        
-         assertEquals(listMenu.size(), 4);
-         assertEquals(listMenu.get(3).getName(), metaMenu.getName());
-        
-         File dataFile = new File(this.getDataFilePath());
-         if (!dataFile.exists()) {
-         fail("_data目录下菜单数据文件未创建成功");
-         }
-        
-         File mdDir = Launcher.getInstance().getMdDir();
-        
-         // index.md路径
-         String indexPath = mdDir.getAbsolutePath() + File.separator +
-         metaMenu.getName()
-         + File.separator + Constants.JEKYLL_MD_INDEX;
-         File indexFile = new File(indexPath);
-         if (!indexFile.exists()) {
-         fail("docs目录下index.md未创建成功");
-         }
-        
-         List<MetaMenuTemplate> templates = metaMenu.getTemplates();
-         int templateSize = templates.size();
-         for (int i = 0; i < templateSize; i++) {
-         String samplePath = mdDir.getAbsolutePath() + File.separator +
-         metaMenu.getName()
-         + File.separator + metaMenu.getName() + (i + 1) +
-         Constants.JEKYLL_MD_EXTENSION;
-         File sampleFile = new File(samplePath);
-         if (!sampleFile.exists()) {
-         fail("docs目录下" + metaMenu.getName() + (i + 1) + ".md未创建成功");
-         }
-         }
+        List<JekyllMenu> listMenu = Launcher.getInstance().loadProject();
+
+        assertEquals(listMenu.size(), 4);
+        assertEquals(listMenu.get(3).getName(), metaMenu.getName());
+
+        File dataFile = new File(this.getDataFilePath());
+        if (!dataFile.exists()) {
+          fail("_data目录下菜单数据文件未创建成功");
+        }
+
+        File mdDir = Launcher.getInstance().getMdDir();
+
+        // index.md路径
+        String indexPath = mdDir.getAbsolutePath() + File.separator + metaMenu.getName()
+            + File.separator + Constants.JEKYLL_MD_INDEX;
+        File indexFile = new File(indexPath);
+        if (!indexFile.exists()) {
+          fail("docs目录下index.md未创建成功");
+        }
+
+        List<MetaMenuTemplate> templates = metaMenu.getTemplates();
+        int templateSize = templates.size();
+        for (int i = 0; i < templateSize; i++) {
+          String samplePath = mdDir.getAbsolutePath() + File.separator + metaMenu.getName()
+              + File.separator + metaMenu.getName() + (i + 1) + Constants.JEKYLL_MD_EXTENSION;
+          File sampleFile = new File(samplePath);
+          if (!sampleFile.exists()) {
+            fail("docs目录下" + metaMenu.getName() + (i + 1) + ".md未创建成功");
+          }
+        }
       }
 
       @Override
@@ -173,7 +169,9 @@ public class MenuGeneratorTest {
 
     try {
       boolean res = menuGenerator.call();
-      menuGenerator.removeTocOfConfig();
+
+      // 删除_config.yml中增加的导航名称
+      menuGenerator.rollback();
       assertEquals(res, true);
     } catch (Exception e) {
       fail(e.getMessage());
