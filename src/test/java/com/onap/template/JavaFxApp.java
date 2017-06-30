@@ -19,7 +19,7 @@ import org.junit.runners.model.InitializationError;
  * 
  * @author ywx474563 2017年6月22日
  */
-public class SingleJfxApplication extends Application {
+public class JavaFxApp extends Application {
 
   /** 已开启标志. */
   private static AtomicBoolean started_jfx = new AtomicBoolean();
@@ -58,7 +58,7 @@ public class SingleJfxApplication extends Application {
       if (!started_jfx.get()) {
         // 开启JFX
         final ExecutorService singleExecutor = Executors.newSingleThreadExecutor();
-        Future<?> jfxFuture = singleExecutor.submit(() -> SingleJfxApplication.launch());
+        Future<?> jfxFuture = singleExecutor.submit(() -> JavaFxApp.launch());
 
         while (!started_jfx.get()) {
           try {
