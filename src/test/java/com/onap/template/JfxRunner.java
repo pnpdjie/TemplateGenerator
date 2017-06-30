@@ -30,7 +30,7 @@ public class JfxRunner extends BlockJUnit4ClassRunner {
   public JfxRunner(final Class<?> clazz) throws InitializationError {
     super(clazz);
 
-    SingleJfxApplication.startJavaFx();
+    SingleJfxApplication.startJfxApplication();
   }
 
   /**

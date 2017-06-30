@@ -20,42 +20,21 @@ import org.junit.runners.model.InitializationError;
  * @author ywx474563 2017年6月22日
  */
 public class SingleJfxApplication extends Application {
-  /** 保证只有一个JavaFX线程运行. */
-  private static final ReentrantLock LOCK = new ReentrantLock();
 
   /** 已开启标志. */
-  private static AtomicBoolean started = new AtomicBoolean();
+  private static AtomicBoolean started_jfx = new AtomicBoolean();
+  
+  /** 保证只有一个JavaFX线程运行. */
+  private static final ReentrantLock LOCK_JFX = new ReentrantLock();
 
   /**
-   * 启动JavaFx.
-   * 
-   * @throws InitializationError InitializationError
-   * @throws InterruptedException InterruptedException
+   * 空启动.
+   *
+   * @param stage 界面
    */
-  public static void startJavaFx() throws InitializationError {
-    try {
-      // 锁定或等待
-      LOCK.lock();
-
-      if (!started.get()) {
-        // start the JavaFX application
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<?> jfxLaunchFuture = executor.submit(() -> SingleJfxApplication.launch());
-
-        while (!started.get()) {
-          try {
-            jfxLaunchFuture.get(1, TimeUnit.MILLISECONDS);
-          } catch (InterruptedException | TimeoutException e) {
-            // continue waiting until success or error
-          }
-          Thread.yield();
-        }
-      }
-    } catch (ExecutionException e) {
-      throw new InitializationError(e);
-    } finally {
-      LOCK.unlock();
-    }
+  @Override
+  public void start(final Stage stage) {
+    started_jfx.set(Boolean.TRUE);
   }
 
   /**
@@ -66,13 +45,38 @@ public class SingleJfxApplication extends Application {
   }
 
   /**
-   * An empty start method.
-   *
-   * @param stage
-   *          The stage
+   * 启动JavaFx.
+   * 
+   * @throws InitializationError InitializationError
+   * @throws InterruptedException InterruptedException
    */
-  @Override
-  public void start(final Stage stage) {
-    started.set(Boolean.TRUE);
+  public static void startJfxApplication() {
+    try {
+      // 锁定或等待
+      LOCK_JFX.lock();
+
+      if (!started_jfx.get()) {
+        // 开启JFX
+        final ExecutorService singleExecutor = Executors.newSingleThreadExecutor();
+        Future<?> jfxFuture = singleExecutor.submit(() -> SingleJfxApplication.launch());
+
+        while (!started_jfx.get()) {
+          try {
+            jfxFuture.get(1, TimeUnit.MILLISECONDS);
+          } catch (InterruptedException | TimeoutException e) {
+            e.printStackTrace();
+          }
+          Thread.yield();
+        }
+      }
+    } catch (ExecutionException e) {
+      try {
+        throw new InitializationError(e);
+      } catch (InitializationError e1) {
+        e1.printStackTrace();
+      }
+    } finally {
+      LOCK_JFX.unlock();
+    }
   }
 }

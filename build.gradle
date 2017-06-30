@@ -42,5 +42,6 @@ dependencies {
     compile 'dom4j:dom4j:1.6.1'
     //compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.8.8'
     //compile 'com.fasterxml.jackson.core:jackson-databind:2.8.8'
+    compile 'com.itextpdf:itext7-core:7.0.3'
 }
 
